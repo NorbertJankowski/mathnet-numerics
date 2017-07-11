@@ -1912,7 +1912,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="vt">If <paramref name="computeVectors"/> is <c>true</c>, on exit VT contains the transposed
         /// right singular vectors.</param>
         /// <remarks>This is equivalent to the GESVD LAPACK routine.</remarks>
-        public virtual void SingularValueDecomposition(bool computeVectors, double[] a, int rowsA, int columnsA, double[] s, double[] u, double[] vt)
+        public virtual void SingularValueDecomposition(SVDVectorsComputation computeVectors, double[] a, int rowsA, int columnsA, double[] s, double[] u, double[] vt)
         {
             if (a == null)
             {
@@ -2030,7 +2030,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                     e[j] = a[(j*rowsA) + l];
                 }
 
-                if (computeVectors && l < nct)
+                if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < nct)
                 {
                     // Place the transformation in "u" for subsequent back multiplication.
                     for (i = l; i < rowsA; i++)
@@ -2096,7 +2096,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                     }
                 }
 
-                if (!computeVectors)
+                if (computeVectors == SVDVectorsComputation.NoVectorComputation)
                 {
                     continue;
                 }
@@ -2130,7 +2130,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
             e[m - 1] = 0.0;
 
             // If required, generate "u".
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 for (j = nctp1 - 1; j < ncu; j++)
                 {
@@ -2187,7 +2187,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
             }
 
             // If it is required, generate v.
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 for (l = columnsA - 1; l >= 0; l--)
                 {
@@ -2236,7 +2236,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                         e[i] = e[i]/r;
                     }
 
-                    if (computeVectors)
+                    if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                     {
                         // A part of column "i" of matrix U from row 0 to end multiply by r
                         for (j = 0; j < rowsA; j++)
@@ -2261,7 +2261,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                 r = t/e[i];
                 e[i] = t;
                 stemp[i + 1] = stemp[i + 1]*r;
-                if (!computeVectors)
+                if (computeVectors == SVDVectorsComputation.NoVectorComputation)
                 {
                     continue;
                 }
@@ -2376,7 +2376,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                                 e[k - 1] = cs*e[k - 1];
                             }
 
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 // Rotate
                                 for (i = 0; i < columnsA; i++)
@@ -2401,7 +2401,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                             stemp[k] = t1;
                             f = -sn*e[k];
                             e[k] = cs*e[k];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 // Rotate
                                 for (i = 0; i < rowsA; i++)
@@ -2460,7 +2460,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                             e[k] = (cs*e[k]) - (sn*stemp[k]);
                             g = sn*stemp[k + 1];
                             stemp[k + 1] = cs*stemp[k + 1];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 for (i = 0; i < columnsA; i++)
                                 {
@@ -2476,7 +2476,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                             stemp[k + 1] = -(sn*e[k]) + (cs*stemp[k + 1]);
                             g = sn*e[k + 1];
                             e[k + 1] = cs*e[k + 1];
-                            if (computeVectors && k < rowsA)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && k < rowsA)
                             {
                                 for (i = 0; i < rowsA; i++)
                                 {
@@ -2498,7 +2498,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                         if (stemp[l] < 0.0)
                         {
                             stemp[l] = -stemp[l];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 // A part of column "l" of matrix VT from row 0 to end multiply by -1
                                 for (i = 0; i < columnsA; i++)
@@ -2519,7 +2519,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                             t = stemp[l];
                             stemp[l] = stemp[l + 1];
                             stemp[l + 1] = t;
-                            if (computeVectors && l < columnsA)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < columnsA)
                             {
                                 // Swap columns l, l + 1
                                 for (i = 0; i < columnsA; i++)
@@ -2530,7 +2530,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                                 }
                             }
 
-                            if (computeVectors && l < rowsA)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < rowsA)
                             {
                                 // Swap columns l, l + 1
                                 for (i = 0; i < rowsA; i++)
@@ -2550,7 +2550,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                 }
             }
 
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 // Finally transpose "v" to get "vt" matrix
                 for (i = 0; i < columnsA; i++)
@@ -2666,7 +2666,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
 
             var clone = new double[a.Length];
             Buffer.BlockCopy(a, 0, clone, 0, a.Length*Constants.SizeOfDouble);
-            SingularValueDecomposition(true, clone, rowsA, columnsA, s, u, vt);
+            SingularValueDecomposition(SVDVectorsComputation.VectorComputation, clone, rowsA, columnsA, s, u, vt);
             SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
         }
 

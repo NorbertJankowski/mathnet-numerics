@@ -33,6 +33,33 @@ using MathNet.Numerics.Properties;
 namespace MathNet.Numerics.LinearAlgebra.Factorization
 {
     /// <summary>
+    /// SVD factorization of the form M = UΣVT can compute U and VT in different ways.
+    /// M is a matrix m x n
+    /// - no U and VT
+    /// - full U and VT
+    /// - simplified U and VT
+    /// </summary>
+    public enum SVDVectorsComputation
+    {
+        /// <summary>
+        /// No U or VT matrix is computed
+        /// </summary>
+        NoVectorComputation = (char) 'N',
+
+        /// <summary>
+        /// U (m x m) and VT (n x n) are computed
+        /// </summary>
+        VectorComputation = (char) 'A',
+
+        /// <summary>
+        /// U (m x n) and VT (n x n) are computed if n &lt; m
+        /// U (m x m) and VT (m x n) are computed if n &gt;= m
+        /// </summary>
+        SimplifiedVectorComputation = (char) 'S'
+    }
+
+
+    /// <summary>
     /// <para>A class which encapsulates the functionality of the singular value decomposition (SVD).</para>
     /// <para>Suppose M is an m-by-n matrix whose entries are real numbers.
     /// Then there exists a factorization of the form M = UΣVT where:
@@ -53,9 +80,9 @@ namespace MathNet.Numerics.LinearAlgebra.Factorization
         readonly Lazy<Matrix<T>> _lazyW;
 
         /// <summary>Indicating whether U and VT matrices have been computed during SVD factorization.</summary>
-        protected readonly bool VectorsComputed;
+        protected readonly SVDVectorsComputation VectorsComputed;
 
-        protected Svd(Vector<T> s, Matrix<T> u, Matrix<T> vt, bool vectorsComputed)
+        protected Svd(Vector<T> s, Matrix<T> u, Matrix<T> vt, SVDVectorsComputation vectorsComputed)
         {
             S = s;
             U = u;
@@ -68,19 +95,12 @@ namespace MathNet.Numerics.LinearAlgebra.Factorization
 
         Matrix<T> ComputeW()
         {
-            var rows = U.RowCount;
-            var columns = VT.ColumnCount;
+            int nm = Math.Min(U.RowCount, VT.ColumnCount);
+            var rows = VectorsComputed != SVDVectorsComputation.SimplifiedVectorComputation ? U.RowCount : nm;
+            var columns = VectorsComputed != SVDVectorsComputation.SimplifiedVectorComputation ? VT.ColumnCount : nm;
             var result = Matrix<T>.Build.SameAs(U, rows, columns);
-            for (var i = 0; i < rows; i++)
-            {
-                for (var j = 0; j < columns; j++)
-                {
-                    if (i == j)
-                    {
-                        result.At(i, i, S[i]);
-                    }
-                }
-            }
+            for (var i = 0; i < nm; i++)
+                result.At(i, i, S[i]);
 
             return result;
         }
@@ -139,7 +159,7 @@ namespace MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="Matrix{T}"/>, <b>X</b>.</returns>
         public virtual Matrix<T> Solve(Matrix<T> input)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }
@@ -163,7 +183,7 @@ namespace MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="Vector{T}"/>, <b>x</b>.</returns>
         public virtual Vector<T> Solve(Vector<T> input)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }

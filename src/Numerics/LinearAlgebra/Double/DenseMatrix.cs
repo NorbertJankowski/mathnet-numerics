@@ -1236,7 +1236,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             return DenseGramSchmidt.Create(this);
         }
 
-        public override Svd<double> Svd(bool computeVectors = true)
+        public override Svd<double> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)
         {
             return DenseSvd.Create(this, computeVectors);
         }

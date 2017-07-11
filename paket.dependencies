@@ -25,4 +25,5 @@ group Benchmark
     source https://www.nuget.org/api/v2
     framework: net45
     nuget BenchmarkDotNet content:none, strategy:min
+    nuget BenchmarkDotNet.Core content:none, strategy:min
     nuget BenchmarkDotNet.Diagnostics.Windows content:none, strategy:min

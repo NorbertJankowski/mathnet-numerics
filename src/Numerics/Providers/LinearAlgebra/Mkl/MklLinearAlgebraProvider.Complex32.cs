@@ -873,7 +873,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
 
             var clone = new Complex32[a.Length];
             a.Copy(clone);
-            SingularValueDecomposition(true, clone, rowsA, columnsA, s, u, vt);
+            SingularValueDecomposition(SVDVectorsComputation.VectorComputation, clone, rowsA, columnsA, s, u, vt);
             SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
         }
 
@@ -891,7 +891,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// right singular vectors.</param>
         /// <remarks>This is equivalent to the GESVD LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void SingularValueDecomposition(bool computeVectors, Complex32[] a, int rowsA, int columnsA, Complex32[] s, Complex32[] u, Complex32[] vt)
+        public override void SingularValueDecomposition(SVDVectorsComputation computeVectors, Complex32[] a, int rowsA, int columnsA, Complex32[] s, Complex32[] u, Complex32[] vt)
         {
             if (a == null)
             {
@@ -913,12 +913,19 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("vt");
             }
 
-            if (u.Length != rowsA * rowsA)
+            int nm = Math.Min(rowsA, columnsA);
+            if ((computeVectors != SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (u.Length != rowsA * rowsA) ||
+                (computeVectors == SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (u.Length != rowsA * nm))
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "u");
             }
 
-            if (vt.Length != columnsA * columnsA)
+            if ((computeVectors != SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (vt.Length != columnsA * columnsA) ||
+                (computeVectors == SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (vt.Length != columnsA * nm))
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "vt");
             }
@@ -928,7 +935,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "s");
             }
 
-            var info = SafeNativeMethods.c_svd_factor(computeVectors, rowsA, columnsA, a, s, u, vt);
+            var info = SafeNativeMethods.c_svd_factor((char)computeVectors, rowsA, columnsA, a, s, u, vt);
 
             if (info == (int)MklError.MemoryAllocation)
             {

@@ -58,18 +58,24 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
         /// <param name="computeVectors">Compute the singular U and VT vectors or not.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="matrix"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">If SVD algorithm failed to converge with matrix <paramref name="matrix"/>.</exception>
-        public static DenseSvd Create(DenseMatrix matrix, bool computeVectors)
+        public static DenseSvd Create(DenseMatrix matrix, LinearAlgebra.Factorization.SVDVectorsComputation computeVectors)
         {
             var nm = Math.Min(matrix.RowCount, matrix.ColumnCount);
             var s = new DenseVector(nm);
-            var u = new DenseMatrix(matrix.RowCount);
-            var vt = new DenseMatrix(matrix.ColumnCount);
+            int sU, sVt;
+            if (computeVectors != LinearAlgebra.Factorization.SVDVectorsComputation.SimplifiedVectorComputation)
+            { sU = matrix.RowCount; sVt = matrix.ColumnCount; }
+            else
+                sU = sVt = nm;
+            var u = new DenseMatrix(matrix.RowCount, sU);
+            var vt = new DenseMatrix(sVt, matrix.ColumnCount);
+
             Control.LinearAlgebraProvider.SingularValueDecomposition(computeVectors, ((DenseMatrix) matrix.Clone()).Values, matrix.RowCount, matrix.ColumnCount, s.Values, u.Values, vt.Values);
 
             return new DenseSvd(s, u, vt, computeVectors);
         }
 
-        DenseSvd(Vector<Complex32> s, Matrix<Complex32> u, Matrix<Complex32> vt, bool vectorsComputed)
+        DenseSvd(Vector<Complex32> s, Matrix<Complex32> u, Matrix<Complex32> vt, LinearAlgebra.Factorization.SVDVectorsComputation vectorsComputed)
             : base(s, u, vt, vectorsComputed)
         {
         }
@@ -81,7 +87,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
         /// <param name="result">The left hand side <see cref="Matrix{T}"/>, <b>X</b>.</param>
         public override void Solve(Matrix<Complex32> input, Matrix<Complex32> result)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == LinearAlgebra.Factorization.SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }
@@ -126,7 +132,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
         /// <param name="result">The left hand side <see cref="Matrix{T}"/>, <b>x</b>.</param>
         public override void Solve(Vector<Complex32> input, Vector<Complex32> result)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == LinearAlgebra.Factorization.SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }

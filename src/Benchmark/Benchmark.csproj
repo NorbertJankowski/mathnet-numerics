@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Benchmark</RootNamespace>
     <AssemblyName>Benchmark</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -38,6 +39,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BenchmarkDotNet">
+      <HintPath>..\..\packages\benchmark\BenchmarkDotNet\lib\net46\BenchmarkDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="BenchmarkDotNet.Core">
+      <HintPath>..\..\packages\benchmark\BenchmarkDotNet.Core\lib\net46\BenchmarkDotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BenchmarkDotNet.Diagnostics.Windows">
+      <HintPath>..\..\packages\benchmark\BenchmarkDotNet.Diagnostics.Windows\lib\net46\BenchmarkDotNet.Diagnostics.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -56,6 +66,7 @@
     <Compile Include="Providers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="paket.references" />
   </ItemGroup>
   <ItemGroup>

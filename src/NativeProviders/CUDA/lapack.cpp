@@ -447,10 +447,15 @@ inline int cholesky_solve_factored(cusolverDnHandle_t solverHandle, int n, int n
 //}
 
 template<typename T, typename GESVD, typename GESVDBSIZE>
-inline int svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int m, int n, T a[], T s[], T u[], T v[], GESVD gesvd, GESVDBSIZE gesvdbsize)
+inline int svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int m, int n, T a[], T s[], T u[], T v[], GESVD gesvd, GESVDBSIZE gesvdbsize)
 {
 	int info = 0;
 	int dim_s = std::min(m, n);
+    int sU, sVt;
+    if (compute_vectors != 'S')
+        sU = matrix.RowCount, sVt = matrix.ColumnCount;
+    else
+        sU = sVt = nm;
 
 	T* d_A = NULL;
 	cudaMalloc((void**)&d_A, m*n*sizeof(T));
@@ -460,10 +465,10 @@ inline int svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int
 	cudaMalloc((void**)&d_S, dim_s*sizeof(T));
 
 	T* d_U = NULL;
-	cudaMalloc((void**)&d_U, m*m*sizeof(T));
+	cudaMalloc((void**)&d_U, m*sU*sizeof(T));
 
 	T* d_V = NULL;
-	cudaMalloc((void**)&d_V, n*n*sizeof(T));
+	cudaMalloc((void**)&d_V, n*sVt*sizeof(T));
 
 	T* work = NULL;
 	int lWork = 0;
@@ -476,8 +481,7 @@ inline int svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int
 	int* d_info = NULL;
 	cudaMalloc((void**)&d_info, sizeof(int));
 
-	char job = compute_vectors ? 'A' : 'N';
-	gesvd(solverHandle, job, job, m, n, d_A, m, d_S, d_U, m, d_V, n, work, lWork, rwork, d_info);
+	gesvd(solverHandle, compute_vectors, compute_vectors, m, n, d_A, m, d_S, d_U, m, d_V, n, work, lWork, rwork, d_info);
 	cudaMemcpy(&info, d_info, sizeof(int), cudaMemcpyDeviceToHost);
 
 	cublasGetVector(dim_s, sizeof(T), d_S, 1, s, 1);
@@ -496,7 +500,7 @@ inline int svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int
 }
 
 template<typename T, typename R, typename GESVD, typename GESVDBSIZE>
-inline int complex_svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int m, int n, T a[], T s[], T u[], T v[], GESVD gesvd, GESVDBSIZE gesvdbsize)
+inline int complex_svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int m, int n, T a[], T s[], T u[], T v[], GESVD gesvd, GESVDBSIZE gesvdbsize)
 {
 	int info = 0;
 	int dim_s = std::min(m, n);
@@ -526,8 +530,7 @@ inline int complex_svd_factor(cusolverDnHandle_t solverHandle, bool compute_vect
 	int* d_info = NULL;
 	cudaMalloc((void**)&d_info, sizeof(int));
 
-	char job = compute_vectors ? 'A' : 'N';
-	gesvd(solverHandle, job, job, m, n, d_A, m, d_S, d_U, m, d_V, n, work, lWork, rwork, d_info);
+	gesvd(solverHandle, compute_vectors, compute_vectors, m, n, d_A, m, d_S, d_U, m, d_V, n, work, lWork, rwork, d_info);
 	cudaMemcpy(&info, d_info, sizeof(int), cudaMemcpyDeviceToHost);
 
 	cublasGetVector(dim_s, sizeof(R), d_S, 1, s_local, 1);
@@ -971,22 +974,22 @@ extern "C" {
 	//	return complex_qr_solve_factored(m, n, bn, r, b, tau, x, work, len, zunmqr, cublasZtrsm);
 	//}
 
-	DLLEXPORT int s_svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int m, int n, float a[], float s[], float u[], float v[])
+	DLLEXPORT int s_svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int m, int n, float a[], float s[], float u[], float v[])
 	{
 		return svd_factor(solverHandle, compute_vectors, m, n, a, s, u, v, sgesvd, sgesvdbsize);
 	}
 
-	DLLEXPORT int d_svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int m, int n, double a[], double s[], double u[], double v[])
+	DLLEXPORT int d_svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int m, int n, double a[], double s[], double u[], double v[])
 	{
 		return svd_factor(solverHandle, compute_vectors, m, n, a, s, u, v,dgesvd, dgesvdbsize);
 	}
 
-	DLLEXPORT int c_svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int m, int n, cuComplex a[], cuComplex s[], cuComplex u[], cuComplex v[])
+	DLLEXPORT int c_svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int m, int n, cuComplex a[], cuComplex s[], cuComplex u[], cuComplex v[])
 	{
 		return complex_svd_factor<cuComplex, float>(solverHandle, compute_vectors, m, n, a, s, u, v, cgesvd, cgesvdbsize);
 	}
 
-	DLLEXPORT int z_svd_factor(cusolverDnHandle_t solverHandle, bool compute_vectors, int m, int n, cuDoubleComplex a[], cuDoubleComplex s[], cuDoubleComplex u[], cuDoubleComplex v[])
+	DLLEXPORT int z_svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int m, int n, cuDoubleComplex a[], cuDoubleComplex s[], cuDoubleComplex u[], cuDoubleComplex v[])
 	{
 		return complex_svd_factor<cuDoubleComplex, double>(solverHandle, compute_vectors, m, n, a, s, u, v, zgesvd, zgesvdbsize);
 	}

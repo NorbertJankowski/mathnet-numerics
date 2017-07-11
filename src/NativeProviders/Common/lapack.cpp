@@ -246,15 +246,16 @@ inline lapack_int complex_qr_solve_factored(lapack_int m, lapack_int n, lapack_i
 }
 
 template<typename T, typename GESVD>
-inline lapack_int svd_factor(bool compute_vectors, lapack_int m, lapack_int n, T a[], T s[], T u[], T v[], GESVD gesvd)
+inline lapack_int svd_factor(char compute_vectors, lapack_int m, lapack_int n, T a[], T s[], T u[], T v[], GESVD gesvd)
 {
 	try
 	{
-		auto job = compute_vectors ? 'A' : 'N';
 		auto dim_s = std::min(m, n);
+        auto ldvt = compute_vectors != 'S' ? n : std::min(m, n);
 		auto superb = array_new<T>(std::max(2, dim_s) - 1);
-        return gesvd(LAPACK_COL_MAJOR, job, job, m, n, a, m, s, u, m, v, n, superb.get());
-	}
+        return gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s, u, m, v, ldvt, superb.get());
+        //return gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s, u, m, v, n, superb.get());
+    }
 	catch (std::bad_alloc&)
 	{
 		return INSUFFICIENT_MEMORY;
@@ -262,15 +263,16 @@ inline lapack_int svd_factor(bool compute_vectors, lapack_int m, lapack_int n, T
 }
 
 template<typename T, typename R, typename GESVD>
-inline lapack_int complex_svd_factor(bool compute_vectors, lapack_int m, lapack_int n, T a[], T s[], T u[], T v[], GESVD gesvd)
+inline lapack_int complex_svd_factor(char compute_vectors, lapack_int m, lapack_int n, T a[], T s[], T u[], T v[], GESVD gesvd)
 {
 	try
 	{
 		auto dim_s = std::min(m, n);
-		auto s_local = array_new<R>(dim_s);
+        auto ldvt = compute_vectors != 'S' ? n : std::min(m, n);
+        auto s_local = array_new<R>(dim_s);
 		auto superb = array_new<R>(std::max(2, dim_s) - 1);
-		auto job = compute_vectors ? 'A' : 'N';
-		auto info = gesvd(LAPACK_COL_MAJOR, job, job, m, n, a, m, s_local.get(), u, m, v, n, superb.get());
+        auto info = gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s_local.get(), u, m, v, ldvt, superb.get());
+        //auto info = gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s_local.get(), u, m, v, n, superb.get());
 
 		for (auto index = 0; index < dim_s; ++index)
 		{
@@ -675,22 +677,22 @@ extern "C" {
 		return complex_qr_solve_factored<lapack_complex_double, double>(m, n, bn, r, b, tau, x, LAPACKE_zunmqr, cblas_ztrsm);
 	}
 
-	DLLEXPORT lapack_int s_svd_factor(bool compute_vectors, lapack_int m, lapack_int n, float a[], float s[], float u[], float v[])
+	DLLEXPORT lapack_int s_svd_factor(char compute_vectors, lapack_int m, lapack_int n, float a[], float s[], float u[], float v[])
 	{
 		return svd_factor(compute_vectors, m, n, a, s, u, v, LAPACKE_sgesvd);
 	}
 
-	DLLEXPORT lapack_int d_svd_factor(bool compute_vectors, lapack_int m, lapack_int n, double a[], double s[], double u[], double v[])
+	DLLEXPORT lapack_int d_svd_factor(char compute_vectors, lapack_int m, lapack_int n, double a[], double s[], double u[], double v[])
 	{
 		return svd_factor(compute_vectors, m, n, a, s, u, v, LAPACKE_dgesvd);
 	}
 
-	DLLEXPORT lapack_int c_svd_factor(bool compute_vectors, lapack_int m, lapack_int n, lapack_complex_float a[], lapack_complex_float s[], lapack_complex_float u[], lapack_complex_float v[])
+	DLLEXPORT lapack_int c_svd_factor(char compute_vectors, lapack_int m, lapack_int n, lapack_complex_float a[], lapack_complex_float s[], lapack_complex_float u[], lapack_complex_float v[])
 	{
 		return complex_svd_factor<lapack_complex_float, float>(compute_vectors, m, n, a, s, u, v, LAPACKE_cgesvd);
 	}
 
-	DLLEXPORT lapack_int z_svd_factor(bool compute_vectors, lapack_int m, lapack_int n, lapack_complex_double a[], lapack_complex_double s[], lapack_complex_double u[], lapack_complex_double v[])
+	DLLEXPORT lapack_int z_svd_factor(char compute_vectors, lapack_int m, lapack_int n, lapack_complex_double a[], lapack_complex_double s[], lapack_complex_double u[], lapack_complex_double v[])
 	{
 		return complex_svd_factor<lapack_complex_double, double>(compute_vectors, m, n, a, s, u, v, LAPACKE_zgesvd);
 	}

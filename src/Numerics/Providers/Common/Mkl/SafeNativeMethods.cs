@@ -292,16 +292,16 @@ namespace MathNet.Numerics.Providers.Common.Mkl
         internal static extern int z_qr_solve_factored(int m, int n, int bn, Complex[] r, Complex[] b, Complex[] tau, [In, Out] Complex[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_svd_factor([MarshalAs(UnmanagedType.U1)] bool computeVectors, int m, int n, [In, Out] float[] a, [In, Out] float[] s, [In, Out] float[] u, [In, Out] float[] v);
+        internal static extern int s_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] float[] a, [In, Out] float[] s, [In, Out] float[] u, [In, Out] float[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_svd_factor([MarshalAs(UnmanagedType.U1)] bool computeVectors, int m, int n, [In, Out] double[] a, [In, Out] double[] s, [In, Out] double[] u, [In, Out] double[] v);
+        internal static extern int d_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] double[] a, [In, Out] double[] s, [In, Out] double[] u, [In, Out] double[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_svd_factor([MarshalAs(UnmanagedType.U1)] bool computeVectors, int m, int n, [In, Out] Complex32[] a, [In, Out] Complex32[] s, [In, Out] Complex32[] u, [In, Out] Complex32[] v);
+        internal static extern int c_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] Complex32[] a, [In, Out] Complex32[] s, [In, Out] Complex32[] u, [In, Out] Complex32[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_svd_factor([MarshalAs(UnmanagedType.U1)] bool computeVectors, int m, int n, [In, Out] Complex[] a, [In, Out] Complex[] s, [In, Out] Complex[] u, [In, Out] Complex[] v);
+        internal static extern int z_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] Complex[] a, [In, Out] Complex[] s, [In, Out] Complex[] u, [In, Out] Complex[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int s_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, int n, [In] float[] a, [In, Out] float[] vectors, [In, Out] Complex[] values, [In, Out] float[] d);

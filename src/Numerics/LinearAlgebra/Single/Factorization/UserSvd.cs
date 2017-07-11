@@ -29,6 +29,7 @@
 
 using System;
 using MathNet.Numerics.Properties;
+using MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
 {
@@ -56,7 +57,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
         /// <param name="computeVectors">Compute the singular U and VT vectors or not.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="matrix"/> is <c>null</c>.</exception>
         /// <exception cref="NonConvergenceException"></exception>
-        public static UserSvd Create(Matrix<float> matrix, bool computeVectors)
+        public static UserSvd Create(Matrix<float> matrix, SVDVectorsComputation computeVectors)
         {
             var nm = Math.Min(matrix.RowCount + 1, matrix.ColumnCount);
             var matrixCopy = matrix.Clone();
@@ -122,7 +123,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                     e[j] = matrixCopy.At(l, j);
                 }
 
-                if (computeVectors && l < nct)
+                if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < nct)
                 {
                     // Place the transformation in u for subsequent back multiplication.
                     for (i = l; i < matrixCopy.RowCount; i++)
@@ -177,7 +178,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                     }
                 }
 
-                if (computeVectors)
+                if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                 {
                     // Place the transformation in v for subsequent back multiplication.
                     for (i = lp1; i < matrixCopy.ColumnCount; i++)
@@ -209,7 +210,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
             e[m - 1] = 0.0f;
 
             // If required, generate u.
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 for (j = nctp1 - 1; j < ncu; j++)
                 {
@@ -254,7 +255,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
             }
 
             // If it is required, generate v.
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 for (l = matrixCopy.ColumnCount - 1; l >= 0; l--)
                 {
@@ -297,7 +298,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                         e[i] = e[i]/r;
                     }
 
-                    if (computeVectors)
+                    if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                     {
                         DscalColumn(u, matrixCopy.RowCount, i, 0, r);
                     }
@@ -315,7 +316,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                     r = t/e[i];
                     e[i] = t;
                     s[i + 1] = s[i + 1]*r;
-                    if (computeVectors)
+                    if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                     {
                         DscalColumn(vt, matrixCopy.ColumnCount, i + 1, 0, r);
                     }
@@ -424,7 +425,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                                 e[k - 1] = cs*e[k - 1];
                             }
 
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 Drot(vt, matrixCopy.ColumnCount, k, m - 1, cs, sn);
                             }
@@ -443,7 +444,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                             s[k] = t1;
                             f = -sn*e[k];
                             e[k] = cs*e[k];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 Drot(u, matrixCopy.RowCount, k, l - 1, cs, sn);
                             }
@@ -495,7 +496,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                             e[k] = (cs*e[k]) - (sn*s[k]);
                             g = sn*s[k + 1];
                             s[k + 1] = cs*s[k + 1];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 Drot(vt, matrixCopy.ColumnCount, k, k + 1, cs, sn);
                             }
@@ -506,7 +507,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                             s[k + 1] = (-sn*e[k]) + (cs*s[k + 1]);
                             g = sn*e[k + 1];
                             e[k + 1] = cs*e[k + 1];
-                            if (computeVectors && k < matrixCopy.RowCount)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && k < matrixCopy.RowCount)
                             {
                                 Drot(u, matrixCopy.RowCount, k, k + 1, cs, sn);
                             }
@@ -522,7 +523,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                         if (s[l] < 0.0)
                         {
                             s[l] = -s[l];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 DscalColumn(vt, matrixCopy.ColumnCount, l, 0, -1.0f);
                             }
@@ -539,12 +540,12 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                             t = s[l];
                             s[l] = s[l + 1];
                             s[l + 1] = t;
-                            if (computeVectors && l < matrixCopy.ColumnCount)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < matrixCopy.ColumnCount)
                             {
                                 Dswap(vt, matrixCopy.ColumnCount, l, l + 1);
                             }
 
-                            if (computeVectors && l < matrixCopy.RowCount)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < matrixCopy.RowCount)
                             {
                                 Dswap(u, matrixCopy.RowCount, l, l + 1);
                             }
@@ -558,7 +559,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                 }
             }
 
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 vt = vt.Transpose();
             }
@@ -581,7 +582,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
             return new UserSvd(s, u, vt, computeVectors);
         }
 
-        UserSvd(Vector<float> s, Matrix<float> u, Matrix<float> vt, bool vectorsComputed)
+        UserSvd(Vector<float> s, Matrix<float> u, Matrix<float> vt, SVDVectorsComputation vectorsComputed)
             : base(s, u, vt, vectorsComputed)
         {
         }
@@ -785,7 +786,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
         /// <param name="result">The left hand side <see cref="Matrix{T}"/>, <b>X</b>.</param>
         public override void Solve(Matrix<float> input, Matrix<float> result)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }
@@ -851,7 +852,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
         /// <param name="result">The left hand side <see cref="Matrix{T}"/>, <b>x</b>.</param>
         public override void Solve(Vector<float> input, Vector<float> result)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }

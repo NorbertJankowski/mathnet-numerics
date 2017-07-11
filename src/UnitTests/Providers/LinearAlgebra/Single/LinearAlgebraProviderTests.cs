@@ -919,7 +919,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var u = new float[matrix.RowCount*matrix.RowCount];
             var vt = new float[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var w = new DenseMatrix(matrix.RowCount, matrix.ColumnCount);
             for (var index = 0; index < s.Length; index++)
@@ -956,7 +956,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var u = new float[matrix.RowCount*matrix.RowCount];
             var vt = new float[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var w = new DenseMatrix(matrix.RowCount, matrix.ColumnCount);
             for (var index = 0; index < s.Length; index++)
@@ -990,7 +990,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var u = new float[matrix.RowCount*matrix.RowCount];
             var vt = new float[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var w = new DenseMatrix(matrix.RowCount, matrix.ColumnCount);
             for (var index = 0; index < s.Length; index++)
@@ -1077,7 +1077,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var u = new float[matrix.RowCount*matrix.RowCount];
             var vt = new float[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var b = new[] {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f};
             var x = new float[matrix.ColumnCount*2];
@@ -1109,7 +1109,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var u = new float[matrix.RowCount*matrix.RowCount];
             var vt = new float[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var b = new[] {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f};
             var x = new float[matrix.ColumnCount*2];

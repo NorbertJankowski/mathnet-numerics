@@ -71,7 +71,18 @@ namespace MathNet.Numerics.LinearAlgebra
         /// </summary>
         /// <param name="computeVectors">Compute the singular U and VT vectors or not.</param>
         /// <returns>The SVD decomposition object.</returns>
-        public abstract Svd<T> Svd(bool computeVectors = true);
+        public Svd<T> Svd(bool computeVectors)
+        {
+            return Svd(computeVectors == true ? SVDVectorsComputation.VectorComputation : SVDVectorsComputation.NoVectorComputation);
+        }
+        //public abstract Svd<T> Svd(bool computeVectors = true);
+
+        /// <summary>
+        /// Computes the SVD decomposition for a matrix.
+        /// </summary>
+        /// <param name="computeVectors">Compute the singular U and VT vectors or not.</param>
+        /// <returns>The SVD decomposition object.</returns>
+        public abstract Svd<T> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation);
 
         /// <summary>
         /// Computes the EVD decomposition for a matrix.

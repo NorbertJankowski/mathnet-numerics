@@ -878,7 +878,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
 
             var clone = new double[a.Length];
             a.Copy(clone);
-            SingularValueDecomposition(true, clone, rowsA, columnsA, s, u, vt);
+            SingularValueDecomposition(SVDVectorsComputation.VectorComputation, clone, rowsA, columnsA, s, u, vt);
             SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
         }
 
@@ -896,7 +896,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// right singular vectors.</param>
         /// <remarks>This is equivalent to the GESVD LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void SingularValueDecomposition(bool computeVectors, double[] a, int rowsA, int columnsA, double[] s, double[] u, double[] vt)
+        public override void SingularValueDecomposition(SVDVectorsComputation computeVectors, double[] a, int rowsA, int columnsA, double[] s, double[] u, double[] vt)
         {
             if (a == null)
             {
@@ -933,7 +933,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "s");
             }
 
-            var info = SafeNativeMethods.d_svd_factor(computeVectors, rowsA, columnsA, a, s, u, vt);
+            var info = SafeNativeMethods.d_svd_factor((char)computeVectors, rowsA, columnsA, a, s, u, vt);
 
             if (info == (int)NativeError.MemoryAllocation)
             {

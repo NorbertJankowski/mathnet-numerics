@@ -50,7 +50,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double.Factorization
     /// </remarks>
     internal abstract class Svd : Svd<double>
     {
-        protected Svd(Vector<double> s, Matrix<double> u, Matrix<double> vt, bool vectorsComputed)
+        protected Svd(Vector<double> s, Matrix<double> u, Matrix<double> vt, SVDVectorsComputation vectorsComputed)
             : base(s, u, vt, vectorsComputed)
         {
         }

@@ -11,6 +11,7 @@ FRAMEWORK: NET45
 NUGET
   remote: https://www.nuget.org/api/v2
     BenchmarkDotNet (0.10.6) - content: none
+    BenchmarkDotNet.Core (0.10.8) - content: none
     BenchmarkDotNet.Diagnostics.Windows (0.10.6) - content: none
 
 GROUP Build

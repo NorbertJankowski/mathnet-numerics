@@ -60,7 +60,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentNullException("data");
             }
 
-            if (data.Length != rows*columns)
+            if (data.Length < rows*columns)
             {
                 throw new ArgumentOutOfRangeException("data", string.Format(Resources.ArgumentArrayWrongLength, rows*columns));
             }

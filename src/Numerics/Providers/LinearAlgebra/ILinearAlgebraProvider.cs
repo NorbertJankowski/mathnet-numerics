@@ -407,7 +407,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="vt">If <paramref name="computeVectors"/> is <c>true</c>, on exit VT contains the transposed
         /// right singular vectors.</param>
         /// <remarks>This is equivalent to the GESVD LAPACK routine.</remarks>
-        void SingularValueDecomposition(bool computeVectors, T[] a, int rowsA, int columnsA, T[] s, T[] u, T[] vt);
+        void SingularValueDecomposition(SVDVectorsComputation computeVectors, T[] a, int rowsA, int columnsA, T[] s, T[] u, T[] vt);
 
         /// <summary>
         /// Solves A*X=B for X using the singular value decomposition of A.

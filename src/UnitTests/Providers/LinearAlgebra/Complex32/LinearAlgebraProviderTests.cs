@@ -921,7 +921,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var u = new Complex32[matrix.RowCount*matrix.RowCount];
             var vt = new Complex32[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var w = new DenseMatrix(matrix.RowCount, matrix.ColumnCount);
             for (var index = 0; index < s.Length; index++)
@@ -958,7 +958,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var u = new Complex32[matrix.RowCount*matrix.RowCount];
             var vt = new Complex32[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var w = new DenseMatrix(matrix.RowCount, matrix.ColumnCount);
             for (var index = 0; index < s.Length; index++)
@@ -992,7 +992,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var u = new Complex32[matrix.RowCount*matrix.RowCount];
             var vt = new Complex32[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var w = new DenseMatrix(matrix.RowCount, matrix.ColumnCount);
             for (var index = 0; index < s.Length; index++)
@@ -1079,7 +1079,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var u = new Complex32[matrix.RowCount*matrix.RowCount];
             var vt = new Complex32[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var b = new[] {new Complex32(1.0f, 0.0f), 2.0f, 3.0f, 4.0f, 5.0f, 6.0f};
             var x = new Complex32[matrix.ColumnCount*2];
@@ -1111,7 +1111,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var u = new Complex32[matrix.RowCount*matrix.RowCount];
             var vt = new Complex32[matrix.ColumnCount*matrix.ColumnCount];
 
-            Control.LinearAlgebraProvider.SingularValueDecomposition(true, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
+            Control.LinearAlgebraProvider.SingularValueDecomposition(SVDVectorsComputation.VectorComputation, a, matrix.RowCount, matrix.ColumnCount, s, u, vt);
 
             var b = new[] {new Complex32(1.0f, 0.0f), 2.0f, 3.0f, 4.0f, 5.0f, 6.0f};
             var x = new Complex32[matrix.ColumnCount*2];

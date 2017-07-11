@@ -212,23 +212,21 @@ inline int complex_qr_solve_factored(int m, int n, int bn, T r[], T b[], T tau[]
 }
 
 template<typename T, typename GESVD>
-inline int svd_factor(bool compute_vectors, int m, int n, T a[], T s[], T u[], T v[], T work[], int len, GESVD gesvd)
+inline int svd_factor(char compute_vectors, int m, int n, T a[], T s[], T u[], T v[], T work[], int len, GESVD gesvd)
 {
 	int info = 0;
-	char job = compute_vectors ? 'A' : 'N';
-	gesvd(&job, &job, &m, &n, a, &m, s, u, &m, v, &n, work, &len, &info);
+	gesvd(&compute_vectors, &compute_vectors, &m, &n, a, &m, s, u, &m, v, &n, work, &len, &info);
 	return info;
 }
 
 template<typename T, typename R, typename GESVD>
-inline int complex_svd_factor(bool compute_vectors, int m, int n, T a[], T s[], T u[], T v[], T work[], int len, GESVD gesvd)
+inline int complex_svd_factor(char compute_vectors, int m, int n, T a[], T s[], T u[], T v[], T work[], int len, GESVD gesvd)
 {
 	int info = 0;
 	int dim_s = std::min(m, n);
 	R* rwork = new R[5 * dim_s];
 	R* s_local = new R[dim_s];
-	char job = compute_vectors ? 'A' : 'N';
-	gesvd(&job, &job, &m, &n, a, &m, s_local, u, &m, v, &n, work, &len, rwork, &info);
+	gesvd(&compute_vectors, &compute_vectors, &m, &n, a, &m, s_local, u, &m, v, &n, work, &len, rwork, &info);
 
 	for (int index = 0; index < dim_s; ++index)
 	{
@@ -602,22 +600,22 @@ extern "C" {
 		return complex_qr_solve_factored<Complex16>(m, n, bn, r, b, tau, x, work, len, zunmqr, cblas_ztrsm);	
 	}
 
-	DLLEXPORT int s_svd_factor(bool compute_vectors, int m, int n, float a[], float s[], float u[], float v[], float work[], int len)
+	DLLEXPORT int s_svd_factor(char compute_vectors, int m, int n, float a[], float s[], float u[], float v[], float work[], int len)
 	{
 		return svd_factor<float>(compute_vectors, m, n, a, s, u, v, work, len, sgesvd);
 	}
 
-	DLLEXPORT int d_svd_factor(bool compute_vectors, int m, int n, double a[], double s[], double u[], double v[], double work[], int len)
+	DLLEXPORT int d_svd_factor(char compute_vectors, int m, int n, double a[], double s[], double u[], double v[], double work[], int len)
 	{
 		return svd_factor<double>(compute_vectors, m, n, a, s, u, v, work, len, dgesvd);
 	}
 
-	DLLEXPORT int c_svd_factor(bool compute_vectors, int m, int n, Complex8 a[], Complex8 s[], Complex8 u[], Complex8 v[], Complex8 work[], int len)
+	DLLEXPORT int c_svd_factor(char compute_vectors, int m, int n, Complex8 a[], Complex8 s[], Complex8 u[], Complex8 v[], Complex8 work[], int len)
 	{
 		return complex_svd_factor<Complex8, float>(compute_vectors, m, n, a, s, u, v, work, len, cgesvd);
 	}
 	
-	DLLEXPORT int z_svd_factor(bool compute_vectors, int m, int n, Complex16 a[], Complex16 s[], Complex16 u[], Complex16 v[], Complex16 work[], int len)
+	DLLEXPORT int z_svd_factor(char compute_vectors, int m, int n, Complex16 a[], Complex16 s[], Complex16 u[], Complex16 v[], Complex16 work[], int len)
 	{
 		return complex_svd_factor<Complex16, double>(compute_vectors, m, n, a, s, u, v, work, len, zgesvd);
 	}*/

@@ -1,3 +1,4 @@
 group Benchmark
     BenchmarkDotNet
+    BenchmarkDotNet.Core
     BenchmarkDotNet.Diagnostics.Windows

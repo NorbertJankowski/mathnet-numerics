@@ -32,6 +32,7 @@ using MathNet.Numerics.Properties;
 
 namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
 {
+    using MathNet.Numerics.LinearAlgebra.Factorization;
 
 #if NOSYSNUMERICS
     using Numerics;
@@ -63,7 +64,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
         /// <param name="computeVectors">Compute the singular U and VT vectors or not.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="matrix"/> is <c>null</c>.</exception>
         /// <exception cref="NonConvergenceException"></exception>
-        public static UserSvd Create(Matrix<Complex> matrix, bool computeVectors)
+        public static UserSvd Create(Matrix<Complex> matrix, SVDVectorsComputation computeVectors)
         {
             var nm = Math.Min(matrix.RowCount + 1, matrix.ColumnCount);
             var matrixCopy = matrix.Clone();
@@ -131,7 +132,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                     e[j] = matrixCopy.At(l, j).Conjugate();
                 }
 
-                if (computeVectors && l < nct)
+                if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < nct)
                 {
                     // Place the transformation in u for subsequent back multiplication.
                     for (i = l; i < matrixCopy.RowCount; i++)
@@ -192,7 +193,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                     }
                 }
 
-                if (computeVectors)
+                if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                 {
                     // Place the transformation in v for subsequent back multiplication.
                     for (i = lp1; i < matrixCopy.ColumnCount; i++)
@@ -224,7 +225,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
             e[m - 1] = Complex.Zero;
 
             // If required, generate u.
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 for (j = nctp1 - 1; j < ncu; j++)
                 {
@@ -272,7 +273,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
             }
 
             // If it is required, generate v.
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 for (l = matrixCopy.ColumnCount - 1; l >= 0; l--)
                 {
@@ -318,7 +319,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                         e[i] = e[i]/r;
                     }
 
-                    if (computeVectors)
+                    if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                     {
                         CscalColumn(u, matrixCopy.RowCount, i, 0, r);
                     }
@@ -336,7 +337,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                     r = t/e[i];
                     e[i] = t;
                     s[i + 1] = s[i + 1]*r;
-                    if (computeVectors)
+                    if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                     {
                         CscalColumn(vt, matrixCopy.ColumnCount, i + 1, 0, r);
                     }
@@ -445,7 +446,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                                 e[k - 1] = cs*e[k - 1];
                             }
 
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 Csrot(vt, matrixCopy.ColumnCount, k, m - 1, cs, sn);
                             }
@@ -464,7 +465,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                             s[k] = t1;
                             f = -sn*e[k].Real;
                             e[k] = cs*e[k];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 Csrot(u, matrixCopy.RowCount, k, l - 1, cs, sn);
                             }
@@ -517,7 +518,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                             e[k] = (cs*e[k]) - (sn*s[k]);
                             g = sn*s[k + 1].Real;
                             s[k + 1] = cs*s[k + 1];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 Csrot(vt, matrixCopy.ColumnCount, k, k + 1, cs, sn);
                             }
@@ -528,7 +529,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                             s[k + 1] = (-sn*e[k]) + (cs*s[k + 1]);
                             g = sn*e[k + 1].Real;
                             e[k + 1] = cs*e[k + 1];
-                            if (computeVectors && k < matrixCopy.RowCount)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && k < matrixCopy.RowCount)
                             {
                                 Csrot(u, matrixCopy.RowCount, k, k + 1, cs, sn);
                             }
@@ -544,7 +545,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                         if (s[l].Real < 0.0)
                         {
                             s[l] = -s[l];
-                            if (computeVectors)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
                             {
                                 CscalColumn(vt, matrixCopy.ColumnCount, l, 0, -1.0);
                             }
@@ -561,12 +562,12 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                             t = s[l];
                             s[l] = s[l + 1];
                             s[l + 1] = t;
-                            if (computeVectors && l < matrixCopy.ColumnCount)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < matrixCopy.ColumnCount)
                             {
                                 Swap(vt, matrixCopy.ColumnCount, l, l + 1);
                             }
 
-                            if (computeVectors && l < matrixCopy.RowCount)
+                            if (computeVectors != SVDVectorsComputation.NoVectorComputation && l < matrixCopy.RowCount)
                             {
                                 Swap(u, matrixCopy.RowCount, l, l + 1);
                             }
@@ -580,7 +581,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                 }
             }
 
-            if (computeVectors)
+            if (computeVectors != SVDVectorsComputation.NoVectorComputation)
             {
                 vt = vt.ConjugateTranspose();
             }
@@ -603,7 +604,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
             return new UserSvd(s, u, vt, computeVectors);
         }
 
-        UserSvd(Vector<Complex> s, Matrix<Complex> u, Matrix<Complex> vt, bool vectorsComputed)
+        UserSvd(Vector<Complex> s, Matrix<Complex> u, Matrix<Complex> vt, SVDVectorsComputation vectorsComputed)
             : base(s, u, vt, vectorsComputed)
         {
         }
@@ -807,7 +808,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
         /// <param name="result">The left hand side <see cref="Matrix{T}"/>, <b>X</b>.</param>
         public override void Solve(Matrix<Complex> input, Matrix<Complex> result)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }
@@ -873,7 +874,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
         /// <param name="result">The left hand side <see cref="Matrix{T}"/>, <b>x</b>.</param>
         public override void Solve(Vector<Complex> input, Vector<Complex> result)
         {
-            if (!VectorsComputed)
+            if (VectorsComputed == SVDVectorsComputation.NoVectorComputation)
             {
                 throw new InvalidOperationException(Resources.SingularVectorsNotComputed);
             }
