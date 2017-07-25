@@ -108,9 +108,13 @@
     <Compile Include="Interpolation\TransformedInterpolation.cs" />
     <Compile Include="LinearAlgebra\CreateMatrix.cs" />
     <Compile Include="LinearAlgebra\Options.cs" />
+    <Compile Include="LinearAlgebra\Single\DenseMatrixBM.cs" />
     <Compile Include="LinearAlgebra\Solvers\DelegateStopCriterion.cs" />
     <Compile Include="LinearAlgebra\CreateVector.cs" />
     <Compile Include="LinearAlgebra\MatrixExtensions.cs" />
+    <Compile Include="LinearAlgebra\Storage\DataTableStorage.cs" />
+    <Compile Include="LinearAlgebra\Storage\DenseColumnMajorMatrixStorageBM.cs" />
+    <Compile Include="LinearAlgebra\Storage\DenseColumnMajorMatrixStorageBM_Float.cs" />
     <Compile Include="LinearAlgebra\VectorExtensions.cs" />
     <Compile Include="LinearRegression\Options.cs" />
     <Compile Include="OdeSolvers\AdamsBashforth.cs" />

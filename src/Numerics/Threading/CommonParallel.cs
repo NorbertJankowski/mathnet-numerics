@@ -63,7 +63,11 @@ namespace MathNet.Numerics.Threading
         /// <param name="body">The body to be invoked for each iteration range.</param>
         public static void For(int fromInclusive, int toExclusive, Action<int, int> body)
         {
-            For(fromInclusive, toExclusive, Math.Max(1, (toExclusive - fromInclusive)/Control.MaxDegreeOfParallelism), body);
+            For(fromInclusive, toExclusive, Math.Max(1, (toExclusive - fromInclusive) / Control.MaxDegreeOfParallelism), body);
+        }
+        public static void For(long fromInclusive, long toExclusive, Action<long, long> body)
+        {
+            For(fromInclusive, toExclusive, Math.Max(1, (toExclusive - fromInclusive) / Control.MaxDegreeOfParallelism), body);
         }
 
         /// <summary>
@@ -105,6 +109,49 @@ namespace MathNet.Numerics.Threading
 
             // Special case: not worth to parallelize, inline
             if (Control.MaxDegreeOfParallelism < 2 || (rangeSize*2) > length)
+            {
+                body(fromInclusive, toExclusive);
+                return;
+            }
+
+            // Common case
+            Parallel.ForEach(
+                Partitioner.Create(fromInclusive, toExclusive, rangeSize),
+                CreateParallelOptions(),
+                range => body(range.Item1, range.Item2));
+        }
+        public static void For(long fromInclusive, long toExclusive, long rangeSize, Action<long, long> body)
+        {
+            if (body == null)
+            {
+                throw new ArgumentNullException("body");
+            }
+
+            if (fromInclusive < 0)
+            {
+                throw new ArgumentOutOfRangeException("fromInclusive");
+            }
+
+            if (fromInclusive > toExclusive)
+            {
+                throw new ArgumentOutOfRangeException("toExclusive");
+            }
+
+            if (rangeSize < 1)
+            {
+                throw new ArgumentOutOfRangeException("rangeSize");
+            }
+
+            var length = toExclusive - fromInclusive;
+
+            // Special case: nothing to do
+            if (length <= 0)
+            {
+                return;
+            }
+
+            // Special case: not worth to parallelize, inline
+            if (Control.MaxDegreeOfParallelism < 2 || (rangeSize * 2) > length)
             {
                 body(fromInclusive, toExclusive);
                 return;
