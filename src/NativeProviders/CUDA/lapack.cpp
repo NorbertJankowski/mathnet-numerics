@@ -451,11 +451,12 @@ inline int svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int
 {
 	int info = 0;
 	int dim_s = std::min(m, n);
+    int ldvt = compute_vectors != 'S' ? n : std::min(m, n);
     int sU, sVt;
     if (compute_vectors != 'S')
-        sU = matrix.RowCount, sVt = matrix.ColumnCount;
+        sU = m, sVt = n;
     else
-        sU = sVt = nm;
+        sU = sVt = dim_s;
 
 	T* d_A = NULL;
 	cudaMalloc((void**)&d_A, m*n*sizeof(T));
@@ -481,7 +482,7 @@ inline int svd_factor(cusolverDnHandle_t solverHandle, char compute_vectors, int
 	int* d_info = NULL;
 	cudaMalloc((void**)&d_info, sizeof(int));
 
-	gesvd(solverHandle, compute_vectors, compute_vectors, m, n, d_A, m, d_S, d_U, m, d_V, n, work, lWork, rwork, d_info);
+	gesvd(solverHandle, compute_vectors, compute_vectors, m, n, d_A, m, d_S, d_U, m, d_V, ldvt, work, lWork, rwork, d_info);
 	cudaMemcpy(&info, d_info, sizeof(int), cudaMemcpyDeviceToHost);
 
 	cublasGetVector(dim_s, sizeof(T), d_S, 1, s, 1);
