@@ -109,6 +109,11 @@
     <Compile Include="LinearAlgebra\CreateMatrix.cs" />
     <Compile Include="LinearAlgebra\Options.cs" />
     <Compile Include="LinearAlgebra\Single\DenseMatrixBM.cs" />
+    <Compile Include="LinearAlgebra\Single\Factorization\DenseCholeskyBM.cs" />
+    <Compile Include="LinearAlgebra\Single\Factorization\DenseEvdBM.cs" />
+    <Compile Include="LinearAlgebra\Single\Factorization\DenseLUBM.cs" />
+    <Compile Include="LinearAlgebra\Single\Factorization\DenseQRBM.cs" />
+    <Compile Include="LinearAlgebra\Single\Factorization\DenseSvdBM.cs" />
     <Compile Include="LinearAlgebra\Solvers\DelegateStopCriterion.cs" />
     <Compile Include="LinearAlgebra\CreateVector.cs" />
     <Compile Include="LinearAlgebra\MatrixExtensions.cs" />
@@ -198,11 +203,16 @@
     <Compile Include="Providers\Common\Cuda\CudaProvider.cs" />
     <Compile Include="Providers\Common\Mkl\MklProvider.cs" />
     <Compile Include="Providers\Common\Mkl\MklProviderPrecision.cs" />
+    <Compile Include="Providers\Common\Mkl\SafeNativeMethodsBM_Complex.cs" />
+    <Compile Include="Providers\Common\Mkl\SafeNativeMethodsBM_Complex32.cs" />
+    <Compile Include="Providers\Common\Mkl\SafeNativeMethodsBM_Double.cs" />
+    <Compile Include="Providers\Common\Mkl\SafeNativeMethodsBM_Float.cs" />
     <Compile Include="Providers\Common\OpenBlas\OpenBlasProvider.cs" />
     <Compile Include="Providers\FourierTransform\IFourierTransformProvider.cs" />
     <Compile Include="Providers\FourierTransform\FourierTransformControl.cs" />
     <Compile Include="Providers\FourierTransform\ManagedFourierTransformProvider.cs" />
     <Compile Include="Providers\FourierTransform\Mkl\MklFourierTransformProvider.cs" />
+    <Compile Include="Providers\LinearAlgebra\ILinearAlgebraProviderBM.cs" />
     <Compile Include="Providers\LinearAlgebra\Acml\AcmlLinearAlgebraProvider.Complex.cs" />
     <Compile Include="Providers\LinearAlgebra\Acml\AcmlLinearAlgebraProvider.Complex32.cs" />
     <Compile Include="Providers\LinearAlgebra\Acml\AcmlLinearAlgebraProvider.Double.cs" />
@@ -217,6 +227,8 @@
     <Compile Include="Providers\Common\Cuda\SafeNativeMethods.cs" />
     <Compile Include="Providers\Common\Mkl\MklProviderCapabilities.cs" />
     <Compile Include="Providers\LinearAlgebra\LinearAlgebraControl.cs" />
+    <Compile Include="Providers\LinearAlgebra\Mkl\MklLinearAlgebraProviderBM.cs" />
+    <Compile Include="Providers\LinearAlgebra\Mkl\MklLinearAlgebraProviderBM.Single.cs" />
     <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProvider.cs" />
     <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProvider.Complex.cs" />
     <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProvider.Complex32.cs" />

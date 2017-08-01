@@ -252,7 +252,7 @@ inline lapack_int svd_factor(char compute_vectors, lapack_int m, lapack_int n, T
 	{
 		auto dim_s = std::min(m, n);
         auto ldvt = compute_vectors != 'S' ? n : std::min(m, n);
-		auto superb = array_new<T>(std::max(2, dim_s) - 1);
+		auto superb = array_new<T>(std::max((lapack_int)2, dim_s) - 1);
         return gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s, u, m, v, ldvt, superb.get());
         //return gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s, u, m, v, n, superb.get());
     }
@@ -270,7 +270,7 @@ inline lapack_int complex_svd_factor(char compute_vectors, lapack_int m, lapack_
 		auto dim_s = std::min(m, n);
         auto ldvt = compute_vectors != 'S' ? n : std::min(m, n);
         auto s_local = array_new<R>(dim_s);
-		auto superb = array_new<R>(std::max(2, dim_s) - 1);
+		auto superb = array_new<R>(std::max((lapack_int)2, dim_s) - 1);
         auto info = gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s_local.get(), u, m, v, ldvt, superb.get());
         //auto info = gesvd(LAPACK_COL_MAJOR, compute_vectors, compute_vectors, m, n, a, m, s_local.get(), u, m, v, n, superb.get());
 

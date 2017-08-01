@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
-
+using MathNet.Numerics;
 namespace Anemon
 {
     public partial class DataTableStorage
@@ -95,6 +96,15 @@ namespace Anemon
             IntPtr sourceStorage, IntPtr resultStorage,
             long form, long count, float value);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ConjugateArray_Float(
+            IntPtr sourceStorage, IntPtr resultStorage, long count);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SvdSolveFactored_Float(
+            long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, 
+            float[] b, long columnsB, float[] x);
+
     }
 
     public class DataTableStorage_Float : IDisposable
@@ -137,8 +147,11 @@ namespace Anemon
             {
                 RowCount = rowCount;
                 ColumnCount = columnCount;
+                float x = default(float);
                 storage = DataTableStorage.DataTableStorage_AllocByte(
-                    RowCount * ColumnCount * sizeof(float));
+                    RowCount * ColumnCount *
+                    System.Runtime.InteropServices.Marshal.SizeOf(x));
+                    //sizeof(float));
                 if (storage == IntPtr.Zero)
                     throw new Exception("ERROR: Out of memory in DataTableStorage");
             }
@@ -267,6 +280,15 @@ namespace Anemon
             IntPtr sourceStorage, IntPtr resultStorage,
             long form, long count, double value);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ConjugateArray_Double(
+            IntPtr sourceStorage, IntPtr resultStorage, long count);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SvdSolveFactored_Double(
+            long rowsA, long columnsA, double[] s, IntPtr u, IntPtr vt, 
+            double[] b, long columnsB, double[] x);
+
     }
 
     public class DataTableStorage_Double : IDisposable
@@ -309,8 +331,11 @@ namespace Anemon
             {
                 RowCount = rowCount;
                 ColumnCount = columnCount;
+                double x = default(double);
                 storage = DataTableStorage.DataTableStorage_AllocByte(
-                    RowCount * ColumnCount * sizeof(double));
+                    RowCount * ColumnCount *
+                    System.Runtime.InteropServices.Marshal.SizeOf(x));
+                    //sizeof(double));
                 if (storage == IntPtr.Zero)
                     throw new Exception("ERROR: Out of memory in DataTableStorage");
             }
@@ -439,6 +464,15 @@ namespace Anemon
             IntPtr sourceStorage, IntPtr resultStorage,
             long form, long count, byte value);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ConjugateArray_Byte(
+            IntPtr sourceStorage, IntPtr resultStorage, long count);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SvdSolveFactored_Byte(
+            long rowsA, long columnsA, byte[] s, IntPtr u, IntPtr vt, 
+            byte[] b, long columnsB, byte[] x);
+
     }
 
     public class DataTableStorage_Byte : IDisposable
@@ -481,8 +515,11 @@ namespace Anemon
             {
                 RowCount = rowCount;
                 ColumnCount = columnCount;
+                byte x = default(byte);
                 storage = DataTableStorage.DataTableStorage_AllocByte(
-                    RowCount * ColumnCount * sizeof(byte));
+                    RowCount * ColumnCount *
+                    System.Runtime.InteropServices.Marshal.SizeOf(x));
+                    //sizeof(byte));
                 if (storage == IntPtr.Zero)
                     throw new Exception("ERROR: Out of memory in DataTableStorage");
             }
@@ -611,6 +648,15 @@ namespace Anemon
             IntPtr sourceStorage, IntPtr resultStorage,
             long form, long count, bool value);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ConjugateArray_Bool(
+            IntPtr sourceStorage, IntPtr resultStorage, long count);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SvdSolveFactored_Bool(
+            long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt, 
+            bool[] b, long columnsB, bool[] x);
+
     }
 
     public class DataTableStorage_Bool : IDisposable
@@ -653,8 +699,11 @@ namespace Anemon
             {
                 RowCount = rowCount;
                 ColumnCount = columnCount;
+                bool x = default(bool);
                 storage = DataTableStorage.DataTableStorage_AllocByte(
-                    RowCount * ColumnCount * sizeof(bool));
+                    RowCount * ColumnCount *
+                    System.Runtime.InteropServices.Marshal.SizeOf(x));
+                    //sizeof(bool));
                 if (storage == IntPtr.Zero)
                     throw new Exception("ERROR: Out of memory in DataTableStorage");
             }
@@ -688,6 +737,374 @@ namespace Anemon
             set
             {
                 DataTableStorage.DataTableStorage_SetElementAt_Bool(
+                    storage, ColumnCount, rowId, columnId, value);
+            }
+        }
+
+        public int GetHash()
+        {
+            return 0;
+        }
+    }
+
+}
+
+﻿
+namespace Anemon
+{
+    public partial class DataTableStorage            // Complex
+    {
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetRow_Complex(
+            IntPtr storage, long columnCount, long rowId, Complex[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetRow_Complex(
+            IntPtr storage, long columnCount, long rowId, IntPtr row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetRow_Complex(
+            IntPtr storage, long columnCount, long rowId, Complex[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetRow_Complex(
+            IntPtr storage, long columnCount, long rowId, IntPtr row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetSubRow_Complex(
+            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, Complex[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetSubRow_Complex(
+            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, Complex[] row);
+
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetColumn_Complex(
+            IntPtr storage, long rowCount, long columnCount, long columnId, Complex[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetColumn_Complex(
+            IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetColumn_Complex(
+            IntPtr storage, long rowCount, long columnCount, long columnId, Complex[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetColumn_Complex(
+            IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetSubColumn_Complex(
+            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetSubColumn_Complex(
+            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex[] column);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern Complex DataTableStorage_GetElementAt_Complex(
+            IntPtr storage, long columnCount, long rowId, long columnId);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetElementAt_Complex(
+            IntPtr storage, long columnCount, long rowId, long columnId, Complex value);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetRowSkip_Complex(
+            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, Complex[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetRowSkip_Complex(
+            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, Complex[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetColumnSkip_Complex(
+            IntPtr storage, long[] rowSkip, long skipSize, long columnId, Complex[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetColumnSkip_Complex(
+            IntPtr storage, long[] rowSkip, long skipSize, long columnId, Complex[] column);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_Clear_Complex(
+            IntPtr storage, long startPos, long length, Complex value);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ClearRow_Complex(
+            IntPtr storage, long columnCount, long rowId, Complex value);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ClearColumn_Complex(
+            IntPtr storage, long columnCount, long rowCount, long columnId, Complex value);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_Add_Complex(
+            IntPtr sourceStorage, IntPtr resultStorage, 
+            long columnCount, long rowCount, Complex value);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_Multiply_Complex(
+            IntPtr sourceStorage, IntPtr resultStorage,
+            long form, long count, Complex value);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ConjugateArray_Complex(
+            IntPtr sourceStorage, IntPtr resultStorage, long count);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SvdSolveFactored_Complex(
+            long rowsA, long columnsA, Complex[] s, IntPtr u, IntPtr vt, 
+            Complex[] b, long columnsB, Complex[] x);
+
+    }
+
+    public class DataTableStorage_Complex : IDisposable
+    {
+        public IntPtr storage;
+        public long RowCount { get; private set; }
+        public long ColumnCount { get; private set; }
+
+        ~DataTableStorage_Complex()
+        {
+            Free();
+        }
+        public void Free()
+        {
+            if (storage != IntPtr.Zero)
+            {
+                DataTableStorage.DataTableStorage_Free(storage);
+                storage = IntPtr.Zero;
+            }
+        }
+        public void Dispose()
+        {
+            Free();
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < RowCount; i++)
+            {
+                for (int j = 0; j < ColumnCount; j++)
+                    sb.AppendFormat("{0}, ", this[i, j]);
+                sb.Append("\n");
+            }
+
+            return sb.ToString();
+        }
+        public void Init(long rowCount, long columnCount)
+        {
+            if (storage == IntPtr.Zero)
+            {
+                RowCount = rowCount;
+                ColumnCount = columnCount;
+                Complex x = default(Complex);
+                storage = DataTableStorage.DataTableStorage_AllocByte(
+                    RowCount * ColumnCount *
+                    System.Runtime.InteropServices.Marshal.SizeOf(x));
+                    //sizeof(Complex));
+                if (storage == IntPtr.Zero)
+                    throw new Exception("ERROR: Out of memory in DataTableStorage");
+            }
+            else
+                throw new Exception("Data storage is already allocated. First free it....");
+        }
+
+        public void GetRow(long rowId, Complex[] t)
+        {
+            DataTableStorage.DataTableStorage_GetRow_Complex(storage, ColumnCount, rowId, t);
+        }
+        public void SetRow(long rowId, Complex[] t)
+        {
+            DataTableStorage.DataTableStorage_SetRow_Complex(storage, ColumnCount, rowId, t);
+        }
+        public void GetColumn(long columnId, Complex[] t)
+        {
+            DataTableStorage.DataTableStorage_GetColumn_Complex(storage, RowCount, ColumnCount, columnId, t);
+        }
+        public void SetColumn(long columnId, Complex[] t)
+        {
+            DataTableStorage.DataTableStorage_SetColumn_Complex(storage, RowCount, ColumnCount, columnId, t);
+        }
+        public Complex this[long rowId, long columnId]
+        {
+            get
+            {
+                return DataTableStorage.DataTableStorage_GetElementAt_Complex(
+                  storage, ColumnCount, rowId, columnId);
+            }
+            set
+            {
+                DataTableStorage.DataTableStorage_SetElementAt_Complex(
+                    storage, ColumnCount, rowId, columnId, value);
+            }
+        }
+
+        public int GetHash()
+        {
+            return 0;
+        }
+    }
+
+}
+
+﻿
+namespace Anemon
+{
+    public partial class DataTableStorage            // Complex32
+    {
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetRow_Complex32(
+            IntPtr storage, long columnCount, long rowId, Complex32[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetRow_Complex32(
+            IntPtr storage, long columnCount, long rowId, IntPtr row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetRow_Complex32(
+            IntPtr storage, long columnCount, long rowId, Complex32[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetRow_Complex32(
+            IntPtr storage, long columnCount, long rowId, IntPtr row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetSubRow_Complex32(
+            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, Complex32[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetSubRow_Complex32(
+            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, Complex32[] row);
+
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetColumn_Complex32(
+            IntPtr storage, long rowCount, long columnCount, long columnId, Complex32[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetColumn_Complex32(
+            IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetColumn_Complex32(
+            IntPtr storage, long rowCount, long columnCount, long columnId, Complex32[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetColumn_Complex32(
+            IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetSubColumn_Complex32(
+            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex32[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetSubColumn_Complex32(
+            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex32[] column);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern Complex32 DataTableStorage_GetElementAt_Complex32(
+            IntPtr storage, long columnCount, long rowId, long columnId);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetElementAt_Complex32(
+            IntPtr storage, long columnCount, long rowId, long columnId, Complex32 value);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetRowSkip_Complex32(
+            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, Complex32[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetRowSkip_Complex32(
+            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, Complex32[] row);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_GetColumnSkip_Complex32(
+            IntPtr storage, long[] rowSkip, long skipSize, long columnId, Complex32[] column);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SetColumnSkip_Complex32(
+            IntPtr storage, long[] rowSkip, long skipSize, long columnId, Complex32[] column);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_Clear_Complex32(
+            IntPtr storage, long startPos, long length, Complex32 value);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ClearRow_Complex32(
+            IntPtr storage, long columnCount, long rowId, Complex32 value);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ClearColumn_Complex32(
+            IntPtr storage, long columnCount, long rowCount, long columnId, Complex32 value);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_Add_Complex32(
+            IntPtr sourceStorage, IntPtr resultStorage, 
+            long columnCount, long rowCount, Complex32 value);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_Multiply_Complex32(
+            IntPtr sourceStorage, IntPtr resultStorage,
+            long form, long count, Complex32 value);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_ConjugateArray_Complex32(
+            IntPtr sourceStorage, IntPtr resultStorage, long count);
+
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_SvdSolveFactored_Complex32(
+            long rowsA, long columnsA, Complex32[] s, IntPtr u, IntPtr vt, 
+            Complex32[] b, long columnsB, Complex32[] x);
+
+    }
+
+    public class DataTableStorage_Complex32 : IDisposable
+    {
+        public IntPtr storage;
+        public long RowCount { get; private set; }
+        public long ColumnCount { get; private set; }
+
+        ~DataTableStorage_Complex32()
+        {
+            Free();
+        }
+        public void Free()
+        {
+            if (storage != IntPtr.Zero)
+            {
+                DataTableStorage.DataTableStorage_Free(storage);
+                storage = IntPtr.Zero;
+            }
+        }
+        public void Dispose()
+        {
+            Free();
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < RowCount; i++)
+            {
+                for (int j = 0; j < ColumnCount; j++)
+                    sb.AppendFormat("{0}, ", this[i, j]);
+                sb.Append("\n");
+            }
+
+            return sb.ToString();
+        }
+        public void Init(long rowCount, long columnCount)
+        {
+            if (storage == IntPtr.Zero)
+            {
+                RowCount = rowCount;
+                ColumnCount = columnCount;
+                Complex32 x = default(Complex32);
+                storage = DataTableStorage.DataTableStorage_AllocByte(
+                    RowCount * ColumnCount *
+                    System.Runtime.InteropServices.Marshal.SizeOf(x));
+                    //sizeof(Complex32));
+                if (storage == IntPtr.Zero)
+                    throw new Exception("ERROR: Out of memory in DataTableStorage");
+            }
+            else
+                throw new Exception("Data storage is already allocated. First free it....");
+        }
+
+        public void GetRow(long rowId, Complex32[] t)
+        {
+            DataTableStorage.DataTableStorage_GetRow_Complex32(storage, ColumnCount, rowId, t);
+        }
+        public void SetRow(long rowId, Complex32[] t)
+        {
+            DataTableStorage.DataTableStorage_SetRow_Complex32(storage, ColumnCount, rowId, t);
+        }
+        public void GetColumn(long columnId, Complex32[] t)
+        {
+            DataTableStorage.DataTableStorage_GetColumn_Complex32(storage, RowCount, ColumnCount, columnId, t);
+        }
+        public void SetColumn(long columnId, Complex32[] t)
+        {
+            DataTableStorage.DataTableStorage_SetColumn_Complex32(storage, RowCount, ColumnCount, columnId, t);
+        }
+        public Complex32 this[long rowId, long columnId]
+        {
+            get
+            {
+                return DataTableStorage.DataTableStorage_GetElementAt_Complex32(
+                  storage, ColumnCount, rowId, columnId);
+            }
+            set
+            {
+                DataTableStorage.DataTableStorage_SetElementAt_Complex32(
                     storage, ColumnCount, rowId, columnId, value);
             }
         }

@@ -37,9 +37,15 @@ using Anemon;
 
 namespace MathNet.Numerics.LinearAlgebra.Storage
 {
+    public interface IStorageBM
+    {
+        IntPtr Data { get; }
+        long Length { get; }
+    }
+
     [Serializable]
     [DataContract(Namespace = "urn:MathNet/Numerics/LinearAlgebra")]
-    public abstract class DenseColumnMajorMatrixStorageBM<T> : MatrixStorage<T>, IDisposable
+    public abstract class DenseColumnMajorMatrixStorageBM<T> : MatrixStorage<T>, IStorageBM, IDisposable
         where T : struct, IEquatable<T>, IFormattable
     {
         // [ruegg] public fields are OK here
@@ -81,11 +87,6 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
         ~DenseColumnMajorMatrixStorageBM()
         {
             Free();
-        }
-
-        public static implicit operator IntPtr(DenseColumnMajorMatrixStorageBM<T> storage)
-        {
-            return storage.Data;
         }
 
         /// <summary>

@@ -48,6 +48,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
             Common.Mkl.MklAccuracy accuracy = Common.Mkl.MklAccuracy.High)
         {
             Control.LinearAlgebraProvider = new Mkl.MklLinearAlgebraProvider(consistency, precision, accuracy);
+            MathNet.Numerics.LinearAlgebra.Single.DenseMatrixBM.SetLinearAlgebraProvider(new Mkl.MklLinearAlgebraProvider_Float(consistency, precision, accuracy));
         }
 
         [CLSCompliant(false)]

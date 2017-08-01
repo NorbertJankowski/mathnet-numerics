@@ -98,6 +98,10 @@ namespace MathNet.Numerics
             : base(string.Format(Resources.InvalidParameterWithNumber, parameter))
         {
         }
+        public InvalidParameterException(long parameter)
+            : base(string.Format(Resources.InvalidParameterWithNumber, parameter))
+        {
+        }
 
         public InvalidParameterException(int parameter, Exception innerException)
             : base(string.Format(Resources.InvalidParameterWithNumber, parameter), innerException)
@@ -145,7 +149,7 @@ namespace MathNet.Numerics
         {
         }
 
-        public SingularUMatrixException(int element)
+        public SingularUMatrixException(long element)
             : base(string.Format(Resources.SingularUMatrixWithElement, element))
         {
         }
