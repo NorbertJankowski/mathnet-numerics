@@ -57,7 +57,10 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
             Common.Mkl.MklPrecision precision = Common.Mkl.MklPrecision.Double,
             Common.Mkl.MklAccuracy accuracy = Common.Mkl.MklAccuracy.High)
         {
-            return TryUse(new Mkl.MklLinearAlgebraProvider(consistency, precision, accuracy));
+            bool ok = TryUse(new Mkl.MklLinearAlgebraProvider(consistency, precision, accuracy));
+            if(ok)
+                MathNet.Numerics.LinearAlgebra.Single.DenseMatrixBM.SetLinearAlgebraProvider(new Mkl.MklLinearAlgebraProvider_Float(consistency, precision, accuracy));
+            return ok;
         }
 
         public static void UseNativeCUDA()

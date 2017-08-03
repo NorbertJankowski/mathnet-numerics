@@ -311,7 +311,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="tau">A min(m,n) vector. On exit, contains additional information
         /// to be used by the QR solve routine.</param>
         /// <remarks>This is similar to the GEQRF and ORGQR LAPACK routines.</remarks>
-        void QRFactor(IStorageBM a, int rowsA, int columnsA, IStorageBM q, float[] tau);
+        void QRFactor(IStorageBM a, int rowsA, int columnsA, IStorageBM q, T[] tau);
 
         /// <summary>
         /// Computes the thin QR factorization of A where M &gt; N.

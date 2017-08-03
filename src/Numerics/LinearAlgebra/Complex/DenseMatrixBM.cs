@@ -1,4 +1,4 @@
-﻿// <copyright file="DenseMatrixBM.cs" company="Math.NET">
+// <copyright file="DenseMatrixBM.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -32,22 +32,29 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using MathNet.Numerics.Distributions;
+using MathNet.Numerics.LinearAlgebra.Complex.Factorization;
 using MathNet.Numerics.LinearAlgebra.Factorization;
-using MathNet.Numerics.LinearAlgebra.Single.Factorization;
 using MathNet.Numerics.LinearAlgebra.Storage;
 using MathNet.Numerics.Properties;
 using MathNet.Numerics.Providers.LinearAlgebra;
 using MathNet.Numerics.Threading;
 using Anemon;
 
-namespace MathNet.Numerics.LinearAlgebra.Single
+namespace MathNet.Numerics.LinearAlgebra.Complex
 {
+
+#if NOSYSNUMERICS
+    using Complex = Numerics.Complex;
+#else
+    using Complex = System.Numerics.Complex;
+#endif
+
     /// <summary>
     /// A Matrix class with dense storage. The underlying storage is a one dimensional array in column-major order (column by column).
     /// </summary>
     [Serializable]
-    [DebuggerDisplay("DenseMatrixBM {RowCount}x{ColumnCount}-Single")]
-    public class DenseMatrixBM : Matrix, IDisposable
+    [DebuggerDisplay("DenseMatrixBM {RowCount}x{ColumnCount}-Complex")]
+    public class DenseMatrixBM : Matrix
     {
         /// <summary>
         /// Number of rows.
@@ -67,21 +74,21 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        DenseColumnMajorMatrixStorageBM<float> _values;
+        DenseColumnMajorMatrixStorageBM<Complex> _values;
 
-        static ILinearAlgebraProviderBM<float> linearAlgebraProvider;
-        static public void SetLinearAlgebraProvider(ILinearAlgebraProviderBM<float> provider)
+        static ILinearAlgebraProviderBM<Complex> linearAlgebraProvider;
+        static public void SetLinearAlgebraProvider(ILinearAlgebraProviderBM<Complex> provider)
         {
             linearAlgebraProvider = provider;
         }
-        public ILinearAlgebraProviderBM<float> LinearAlgebraProvider { get { return linearAlgebraProvider; } }
+        public ILinearAlgebraProviderBM<Complex> LinearAlgebraProvider { get { return linearAlgebraProvider; } }
         /// <summary>
         /// Create a new dense matrix straight from an initialized matrix storage instance.
         /// The storage is used directly without copying.
         /// Intended for advanced scenarios where you're working directly with
         /// storage for performance or interop reasons.
         /// </summary>
-        public DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float> storage)
+        public DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex> storage)
             : base(storage)
         {
             _rowCount = storage.RowCount;
@@ -96,7 +103,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <exception cref="ArgumentException">If the order is less than one.</exception>
         public DenseMatrixBM(int order)
-            : this(new DenseColumnMajorMatrixStorageBM<float>(order, order))
+            : this(new DenseColumnMajorMatrixStorageBM<Complex>(order, order))
         {
         }
 
@@ -107,7 +114,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <exception cref="ArgumentException">If the row or column count is less than one.</exception>
         public DenseMatrixBM(int rows, int columns)
-            : this(new DenseColumnMajorMatrixStorageBM<float>(rows, columns))
+            : this(new DenseColumnMajorMatrixStorageBM<Complex>(rows, columns))
         {
         }
 
@@ -118,7 +125,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <seealso href="http://en.wikipedia.org/wiki/Row-major_order"/>
         public DenseMatrixBM(int rows, int columns, IntPtr storage)
-            : this(new DenseColumnMajorMatrixStorageBM<float>(rows, columns, storage))
+            : this(new DenseColumnMajorMatrixStorageBM<Complex>(rows, columns, storage))
         {
         }
 
@@ -127,9 +134,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the other matrix.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfMatrix(Matrix<float> matrix)
+        public static DenseMatrixBM OfMatrix(Matrix<Complex> matrix)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfMatrix(matrix.Storage));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfMatrix(matrix.Storage));
         }
 
         /// <summary>
@@ -137,9 +144,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the provided array.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfArray(float[,] array)
+        public static DenseMatrixBM OfArray(Complex[,] array)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfArray(array));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfArray(array));
         }
 
         /// <summary>
@@ -148,9 +155,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerable.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfIndexed(int rows, int columns, IEnumerable<Tuple<int, int, float>> enumerable)
+        public static DenseMatrixBM OfIndexed(int rows, int columns, IEnumerable<Tuple<int, int, Complex>> enumerable)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfIndexedEnumerable(rows, columns, enumerable));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfIndexedEnumerable(rows, columns, enumerable));
         }
 
         /// <summary>
@@ -159,9 +166,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerable.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnMajor(int rows, int columns, IEnumerable<float> columnMajor)
+        public static DenseMatrixBM OfColumnMajor(int rows, int columns, IEnumerable<Complex> columnMajor)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnMajorEnumerable(rows, columns, columnMajor));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfColumnMajorEnumerable(rows, columns, columnMajor));
         }
 
         /// <summary>
@@ -170,7 +177,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumns(IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfColumns(IEnumerable<IEnumerable<Complex>> data)
         {
             return OfColumnArrays(data.Select(v => v.ToArray()).ToArray());
         }
@@ -181,9 +188,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumns(int rows, int columns, IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfColumns(int rows, int columns, IEnumerable<IEnumerable<Complex>> data)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnEnumerables(rows, columns, data));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfColumnEnumerables(rows, columns, data));
         }
 
         /// <summary>
@@ -191,9 +198,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnArrays(params float[][] columns)
+        public static DenseMatrixBM OfColumnArrays(params Complex[][] columns)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnArrays(columns));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfColumnArrays(columns));
         }
 
         /// <summary>
@@ -201,9 +208,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnArrays(IEnumerable<float[]> columns)
+        public static DenseMatrixBM OfColumnArrays(IEnumerable<Complex[]> columns)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnArrays((columns as float[][]) ?? columns.ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfColumnArrays((columns as Complex[][]) ?? columns.ToArray()));
         }
 
         /// <summary>
@@ -211,14 +218,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnVectors(params Vector<float>[] columns)
+        public static DenseMatrixBM OfColumnVectors(params Vector<Complex>[] columns)
         {
-            var storage = new VectorStorage<float>[columns.Length];
+            var storage = new VectorStorage<Complex>[columns.Length];
             for (int i = 0; i < columns.Length; i++)
             {
                 storage[i] = columns[i].Storage;
             }
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnVectors(storage));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfColumnVectors(storage));
         }
 
         /// <summary>
@@ -226,9 +233,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnVectors(IEnumerable<Vector<float>> columns)
+        public static DenseMatrixBM OfColumnVectors(IEnumerable<Vector<Complex>> columns)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnVectors(columns.Select(c => c.Storage).ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfColumnVectors(columns.Select(c => c.Storage).ToArray()));
         }
 
         /// <summary>
@@ -237,7 +244,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRows(IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfRows(IEnumerable<IEnumerable<Complex>> data)
         {
             return OfRowArrays(data.Select(v => v.ToArray()).ToArray());
         }
@@ -248,9 +255,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRows(int rows, int columns, IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfRows(int rows, int columns, IEnumerable<IEnumerable<Complex>> data)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowEnumerables(rows, columns, data));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfRowEnumerables(rows, columns, data));
         }
 
         /// <summary>
@@ -258,9 +265,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowArrays(params float[][] rows)
+        public static DenseMatrixBM OfRowArrays(params Complex[][] rows)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowArrays(rows));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfRowArrays(rows));
         }
 
         /// <summary>
@@ -268,9 +275,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowArrays(IEnumerable<float[]> rows)
+        public static DenseMatrixBM OfRowArrays(IEnumerable<Complex[]> rows)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowArrays((rows as float[][]) ?? rows.ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfRowArrays((rows as Complex[][]) ?? rows.ToArray()));
         }
 
         /// <summary>
@@ -278,14 +285,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowVectors(params Vector<float>[] rows)
+        public static DenseMatrixBM OfRowVectors(params Vector<Complex>[] rows)
         {
-            var storage = new VectorStorage<float>[rows.Length];
+            var storage = new VectorStorage<Complex>[rows.Length];
             for (int i = 0; i < rows.Length; i++)
             {
                 storage[i] = rows[i].Storage;
             }
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowVectors(storage));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfRowVectors(storage));
         }
 
         /// <summary>
@@ -293,9 +300,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowVectors(IEnumerable<Vector<float>> rows)
+        public static DenseMatrixBM OfRowVectors(IEnumerable<Vector<Complex>> rows)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowVectors(rows.Select(r => r.Storage).ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfRowVectors(rows.Select(r => r.Storage).ToArray()));
         }
 
         /// <summary>
@@ -303,7 +310,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vector.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalVector(Vector<float> diagonal)
+        public static DenseMatrixBM OfDiagonalVector(Vector<Complex> diagonal)
         {
             var m = new DenseMatrixBM(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
@@ -315,7 +322,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vector.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalVector(int rows, int columns, Vector<float> diagonal)
+        public static DenseMatrixBM OfDiagonalVector(int rows, int columns, Vector<Complex> diagonal)
         {
             var m = new DenseMatrixBM(rows, columns);
             m.SetDiagonal(diagonal);
@@ -327,7 +334,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the array.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalArray(float[] diagonal)
+        public static DenseMatrixBM OfDiagonalArray(Complex[] diagonal)
         {
             var m = new DenseMatrixBM(diagonal.Length, diagonal.Length);
             m.SetDiagonal(diagonal);
@@ -339,7 +346,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the array.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalArray(int rows, int columns, float[] diagonal)
+        public static DenseMatrixBM OfDiagonalArray(int rows, int columns, Complex[] diagonal)
         {
             var m = new DenseMatrixBM(rows, columns);
             m.SetDiagonal(diagonal);
@@ -349,35 +356,35 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <summary>
         /// Create a new dense matrix and initialize each value to the same provided value.
         /// </summary>
-        public static DenseMatrixBM Create(int rows, int columns, float value)
+        public static DenseMatrixBM Create(int rows, int columns, Complex value)
         {
-            if (value == 0f) return new DenseMatrixBM(rows, columns);
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfValue(rows, columns, value));
+            if (value == Complex.Zero) return new DenseMatrixBM(rows, columns);
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfValue(rows, columns, value));
         }
 
         /// <summary>
         /// Create a new dense matrix and initialize each value using the provided init function.
         /// </summary>
-        public static DenseMatrixBM Create(int rows, int columns, Func<int, int, float> init)
+        public static DenseMatrixBM Create(int rows, int columns, Func<int, int, Complex> init)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfInit(rows, columns, init));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfInit(rows, columns, init));
         }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value to the same provided value.
         /// </summary>
-        public static DenseMatrixBM CreateDiagonal(int rows, int columns, float value)
+        public static DenseMatrixBM CreateDiagonal(int rows, int columns, Complex value)
         {
-            if (value == 0f) return new DenseMatrixBM(rows, columns);
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfDiagonalInit(rows, columns, i => value));
+            if (value == Complex.Zero) return new DenseMatrixBM(rows, columns);
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfDiagonalInit(rows, columns, i => value));
         }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value using the provided init function.
         /// </summary>
-        public static DenseMatrixBM CreateDiagonal(int rows, int columns, Func<int, float> init)
+        public static DenseMatrixBM CreateDiagonal(int rows, int columns, Func<int, Complex> init)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfDiagonalInit(rows, columns, init));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfDiagonalInit(rows, columns, init));
         }
 
         /// <summary>
@@ -385,7 +392,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrixBM CreateIdentity(int order)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfDiagonalInit(order, order, i => One));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<Complex>.OfDiagonalInit(order, order, i => One));
         }
 
         /// <summary>
@@ -393,14 +400,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrixBM CreateRandom(int rows, int columns, IContinuousDistribution distribution)
         {
-            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<float>(rows, columns, Generate.RandomSingle(rows*columns, distribution)));
+            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<Complex>(rows, columns, Generate.RandomComplex(rows*columns, distribution)));
         }
 
         /// <summary>
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        public DenseColumnMajorMatrixStorageBM<float> Values
+        public DenseColumnMajorMatrixStorageBM<Complex> Values
         {
             get { return _values; }
         }
@@ -430,7 +437,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// Negate each element of this matrix and place the results into the result matrix.
         /// </summary>
         /// <param name="result">The result of the negation.</param>
-        protected override void DoNegate(Matrix<float> result)
+        protected override void DoNegate(Matrix<Complex> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult != null)
@@ -443,11 +450,27 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         }
 
         /// <summary>
+        /// Complex conjugates each element of this matrix and place the results into the result matrix.
+        /// </summary>
+        /// <param name="result">The result of the conjugation.</param>
+        protected override void DoConjugate(Matrix<Complex> result)
+        {
+            var denseResult = result as DenseMatrixBM;
+            if (denseResult != null)
+            {
+                LinearAlgebraProvider.ConjugateArray(_values, denseResult._values);
+                return;
+            }
+
+            base.DoConjugate(result);
+        }
+
+        /// <summary>
         /// Add a scalar to each element of the matrix and stores the result in the result vector.
         /// </summary>
         /// <param name="scalar">The scalar to add.</param>
         /// <param name="result">The matrix to store the result of the addition.</param>
-        protected override void DoAdd(float scalar, Matrix<float> result)
+        protected override void DoAdd(Complex scalar, Matrix<Complex> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -456,7 +479,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
-            DataTableStorage.DataTableStorage_Add_Float(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, scalar);
+            DataTableStorage.DataTableStorage_Add_Complex(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, scalar);
         }
 
         /// <summary>
@@ -466,11 +489,11 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The matrix to store the result of add</param>
         /// <exception cref="ArgumentNullException">If the other matrix is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">If the two matrices don't have the same dimensions.</exception>
-        protected override void DoAdd(Matrix<float> other, Matrix<float> result)
+        protected override void DoAdd(Matrix<Complex> other, Matrix<Complex> result)
         {
             // dense + dense = dense
-            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<float>;
-            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<Complex>;
+            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<Complex>;
             if (denseOther != null && denseResult != null)
             {
                 LinearAlgebraProvider.AddArrays(_values, denseOther, denseResult);
@@ -478,7 +501,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
 
             // dense + diagonal = any
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
             if (diagonalOther != null)
             {
                 Storage.CopyToUnchecked(result.Storage, ExistingData.Clear);
@@ -498,7 +521,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="scalar">The scalar to subtract.</param>
         /// <param name="result">The matrix to store the result of the subtraction.</param>
-        protected override void DoSubtract(float scalar, Matrix<float> result)
+        protected override void DoSubtract(Complex scalar, Matrix<Complex> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -507,7 +530,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
-            DataTableStorage.DataTableStorage_Add_Float(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, -scalar);
+            DataTableStorage.DataTableStorage_Add_Complex(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, -scalar);
         }
 
         /// <summary>
@@ -515,11 +538,11 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to subtract.</param>
         /// <param name="result">The matrix to store the result of the subtraction.</param>
-        protected override void DoSubtract(Matrix<float> other, Matrix<float> result)
+        protected override void DoSubtract(Matrix<Complex> other, Matrix<Complex> result)
         {
             // dense + dense = dense
-            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<float>;
-            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<Complex>;
+            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<Complex>;
             if (denseOther != null && denseResult != null)
             {
                 LinearAlgebraProvider.SubtractArrays(_values, denseOther, denseResult);
@@ -527,7 +550,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
 
             // dense + diagonal = matrix
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
             if (diagonalOther != null)
             {
                 CopyTo(result);
@@ -547,7 +570,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="scalar">The scalar to multiply the matrix with.</param>
         /// <param name="result">The matrix to store the result of the multiplication.</param>
-        protected override void DoMultiply(float scalar, Matrix<float> result)
+        protected override void DoMultiply(Complex scalar, Matrix<Complex> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -565,7 +588,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="rightSide">The vector to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoMultiply(Vector<float> rightSide, Vector<float> result)
+        protected override void DoMultiply(Vector<Complex> rightSide, Vector<Complex> result)
         {
             var denseRight = rightSide as DenseVector;
             var denseResult = result as DenseVector;
@@ -592,7 +615,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoMultiply(Matrix<Complex> other, Matrix<Complex> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -609,7 +632,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
             if (diagonalOther != null)
             {
                 var diagonal = diagonalOther.Data;
@@ -620,7 +643,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 }
                 for (int j = 0; j < d; j++)
                 {
-                    DataTableStorage.DataTableStorage_Multiply_Float(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
+                    DataTableStorage.DataTableStorage_Multiply_Complex(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
                 }
                 return;
             }
@@ -633,7 +656,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeAndMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoTransposeAndMultiply(Matrix<Complex> other, Matrix<Complex> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -642,19 +665,19 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 LinearAlgebraProvider.MatrixMultiplyWithUpdate(
                     Providers.LinearAlgebra.Transpose.DontTranspose,
                     Providers.LinearAlgebra.Transpose.Transpose,
-                    1.0f,
+                    1.0,
                     _values,
                     _rowCount,
                     _columnCount,
                     denseOther._values,
                     denseOther._rowCount,
                     denseOther._columnCount,
-                    0.0f,
+                    0.0,
                     denseResult._values);
                 return;
             }
 
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
             if (diagonalOther != null)
             {
                 var diagonal = diagonalOther.Data;
@@ -663,10 +686,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 {
                     result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
                 }
-                int index = 0;
                 for (int j = 0; j < d; j++)
                 {
-                    DataTableStorage.DataTableStorage_Multiply_Float(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
+                    DataTableStorage.DataTableStorage_Multiply_Complex(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
                 }
                 return;
             }
@@ -675,11 +697,63 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         }
 
         /// <summary>
+        /// Multiplies this matrix with the conjugate transpose of another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoConjugateTransposeAndMultiply(Matrix<Complex> other, Matrix<Complex> result)
+        {
+            var denseOther = other as DenseMatrixBM;
+            var denseResult = result as DenseMatrixBM;
+            if (denseOther != null && denseResult != null)
+            {
+                LinearAlgebraProvider.MatrixMultiplyWithUpdate(
+                    Providers.LinearAlgebra.Transpose.DontTranspose,
+                    Providers.LinearAlgebra.Transpose.ConjugateTranspose,
+                    1.0,
+                    _values,
+                    _rowCount,
+                    _columnCount,
+                    denseOther._values,
+                    denseOther._rowCount,
+                    denseOther._columnCount,
+                    0.0,
+                    denseResult._values);
+                return;
+            }
+
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
+            if (diagonalOther != null)
+            {
+                var diagonal = diagonalOther.Data;
+                var conjugateDiagonal = new Complex[diagonal.Length];
+                for (int i = 0; i < diagonal.Length; i++)
+                {
+                    conjugateDiagonal[i] = diagonal[i].Conjugate();
+                }
+
+                var d = Math.Min(ColumnCount, other.RowCount);
+                if (d < other.RowCount)
+                {
+                    result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
+                }
+                int index = 0;
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_Multiply_Complex(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, conjugateDiagonal[j]);
+                }
+                return;
+            }
+
+            base.DoConjugateTransposeAndMultiply(other, result);
+        }
+
+        /// <summary>
         /// Multiplies the transpose of this matrix with a vector and places the results into the result vector.
         /// </summary>
         /// <param name="rightSide">The vector to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeThisAndMultiply(Vector<float> rightSide, Vector<float> result)
+        protected override void DoTransposeThisAndMultiply(Vector<Complex> rightSide, Vector<Complex> result)
         {
             var denseRight = rightSide as DenseVector;
             var denseResult = result as DenseVector;
@@ -693,16 +767,45 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 LinearAlgebraProvider.MatrixMultiplyWithUpdate(
                     Providers.LinearAlgebra.Transpose.Transpose,
                     Providers.LinearAlgebra.Transpose.DontTranspose,
-                    1.0f,
+                    1.0,
                     _values,
                     _rowCount,
                     _columnCount,
                     denseRight.Values,
                     denseRight.Count,
                     1,
-                    0.0f,
+                    0.0,
                     denseResult.Values);
             }
+        }
+
+        /// <summary>
+        /// Multiplies the conjugate transpose of this matrix with a vector and places the results into the result vector.
+        /// </summary>
+        /// <param name="rightSide">The vector to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoConjugateTransposeThisAndMultiply(Vector<Complex> rightSide, Vector<Complex> result)
+        {
+            var denseRight = rightSide as DenseVector;
+            var denseResult = result as DenseVector;
+            if (denseRight != null && denseResult != null)
+            {
+                LinearAlgebraProvider.MatrixMultiplyWithUpdate(
+                    Providers.LinearAlgebra.Transpose.ConjugateTranspose,
+                    Providers.LinearAlgebra.Transpose.DontTranspose,
+                    1.0,
+                    _values,
+                    _rowCount,
+                    _columnCount,
+                    denseRight.Values,
+                    denseRight.Count,
+                    1,
+                    0.0,
+                    denseResult.Values);
+                return;
+            }
+
+	    this.ConjugateTranspose().Multiply(rightSide, result);
         }
 
         /// <summary>
@@ -710,7 +813,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeThisAndMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoTransposeThisAndMultiply(Matrix<Complex> other, Matrix<Complex> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -719,19 +822,19 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 LinearAlgebraProvider.MatrixMultiplyWithUpdate(
                     Providers.LinearAlgebra.Transpose.Transpose,
                     Providers.LinearAlgebra.Transpose.DontTranspose,
-                    1.0f,
+                    1.0,
                     _values,
                     _rowCount,
                     _columnCount,
                     denseOther._values,
                     denseOther._rowCount,
                     denseOther._columnCount,
-                    0.0f,
+                    0.0,
                     denseResult._values);
                 return;
             }
 
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
             if (diagonalOther != null)
             {
                 this.Transpose(result);
@@ -743,11 +846,48 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         }
 
         /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoConjugateTransposeThisAndMultiply(Matrix<Complex> other, Matrix<Complex> result)
+        {
+            var denseOther = other as DenseMatrixBM;
+            var denseResult = result as DenseMatrixBM;
+            if (denseOther != null && denseResult != null)
+            {
+                LinearAlgebraProvider.MatrixMultiplyWithUpdate(
+                    Providers.LinearAlgebra.Transpose.ConjugateTranspose,
+                    Providers.LinearAlgebra.Transpose.DontTranspose,
+                    1.0,
+                    _values,
+                    _rowCount,
+                    _columnCount,
+                    denseOther._values,
+                    denseOther._rowCount,
+                    denseOther._columnCount,
+                    0.0,
+                    denseResult._values);
+                return;
+            }
+
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
+            if (diagonalOther != null)
+            {
+                this.ConjugateTranspose(result);
+                result.Multiply(other, result);
+                return;
+            }
+
+            base.DoConjugateTransposeThisAndMultiply(other, result);
+        }
+
+        /// <summary>
         /// Divides each element of the matrix by a scalar and places results into the result matrix.
         /// </summary>
         /// <param name="divisor">The scalar to divide the matrix with.</param>
         /// <param name="result">The matrix to store the result of the division.</param>
-        protected override void DoDivide(float divisor, Matrix<float> result)
+        protected override void DoDivide(Complex divisor, Matrix<Complex> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -756,7 +896,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
             else
             {
-                LinearAlgebraProvider.ScaleArray(1.0f/divisor, _values, denseResult._values);
+                LinearAlgebraProvider.ScaleArray(1.0/divisor, _values, denseResult._values);
             }
         }
 
@@ -765,7 +905,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to pointwise multiply with this one.</param>
         /// <param name="result">The matrix to store the result of the pointwise multiplication.</param>
-        protected override void DoPointwiseMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoPointwiseMultiply(Matrix<Complex> other, Matrix<Complex> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -785,7 +925,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="divisor">The matrix to pointwise divide this one by.</param>
         /// <param name="result">The matrix to store the result of the pointwise division.</param>
-        protected override void DoPointwiseDivide(Matrix<float> divisor, Matrix<float> result)
+        protected override void DoPointwiseDivide(Matrix<Complex> divisor, Matrix<Complex> result)
         {
             var denseOther = divisor as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -805,7 +945,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="exponent">The exponent to raise this matrix values to.</param>
         /// <param name="result">The vector to store the result of the pointwise power.</param>
-        protected override void DoPointwisePower(Matrix<float> exponent, Matrix<float> result)
+        protected override void DoPointwisePower(Matrix<Complex> exponent, Matrix<Complex> result)
         {
             var denseExponent = exponent as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -820,139 +960,20 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
         }
 
-        /// <summary>
-        /// Computes the canonical modulus, where the result has the sign of the divisor,
-        /// for the given divisor each element of the matrix.
-        /// </summary>
-        /// <param name="divisor">The scalar denominator to use.</param>
-        /// <param name="result">Matrix to store the results in.</param>
-        protected override void DoModulus(float divisor, Matrix<float> result)
-        {
-            var denseResult = result as DenseMatrixBM;
-            if (denseResult == null)
-            {
-                base.DoModulus(divisor, result);
-                return;
-            }
-
-            CommonParallel.For(0, _values.ColumnCount, (a, b) =>
-            {
-                var v = new float[_values.RowCount];
-                for (int i = a; i < b; i++)
-                {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
-                    for (int j = 0; j < RowCount; j++)
-                    {
-                        v[i] = Euclid.Modulus(v[i], divisor);
-                    }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
-                }
-            });
-        }
-
-        /// <summary>
-        /// Computes the canonical modulus, where the result has the sign of the divisor,
-        /// for the given dividend for each element of the matrix.
-        /// </summary>
-        /// <param name="dividend">The scalar numerator to use.</param>
-        /// <param name="result">A vector to store the results in.</param>
-        protected override void DoModulusByThis(float dividend, Matrix<float> result)
-        {
-            var denseResult = result as DenseMatrixBM;
-            if (denseResult == null)
-            {
-                base.DoModulusByThis(dividend, result);
-                return;
-            }
-
-            CommonParallel.For(0, _values.ColumnCount, 4096, (a, b) =>
-            {
-                var v = new float[_values.RowCount];
-                for (int i = a; i < b; i++)
-                {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
-                    for (int j = 0; j < RowCount; j++)
-                    {
-                        v[i] = Euclid.Modulus(dividend, v[i]);
-                    }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
-                }
-            });
-        }
-
-        /// <summary>
-        /// Computes the remainder (% operator), where the result has the sign of the dividend,
-        /// for the given divisor each element of the matrix.
-        /// </summary>
-        /// <param name="divisor">The scalar denominator to use.</param>
-        /// <param name="result">Matrix to store the results in.</param>
-        protected override void DoRemainder(float divisor, Matrix<float> result)
-        {
-            var denseResult = result as DenseMatrixBM;
-            if (denseResult == null)
-            {
-                base.DoRemainder(divisor, result);
-                return;
-            }
-
-            CommonParallel.For(0, _values.ColumnCount, (a, b) =>
-            {
-                var v = new float[_values.RowCount];
-                for (int i = a; i < b; i++)
-                {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
-                    for (int j = 0; j < RowCount; j++)
-                    {
-                        v[i] %= divisor;
-                    }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
-                }
-            });
-        }
-
-        /// <summary>
-        /// Computes the remainder (% operator), where the result has the sign of the dividend,
-        /// for the given dividend for each element of the matrix.
-        /// </summary>
-        /// <param name="dividend">The scalar numerator to use.</param>
-        /// <param name="result">A vector to store the results in.</param>
-        protected override void DoRemainderByThis(float dividend, Matrix<float> result)
-        {
-            var denseResult = result as DenseMatrixBM;
-            if (denseResult == null)
-            {
-                base.DoRemainderByThis(dividend, result);
-                return;
-            }
-
-            CommonParallel.For(0, _values.ColumnCount, 4096, (a, b) =>
-            {
-                var v = new float[_values.RowCount];
-                for (int i = a; i < b; i++)
-                {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
-                    for (int j = 0; j < RowCount; j++)
-                    {
-                        v[i] = dividend % v[i];
-                    }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
-                }
-            });
-        }
 
         /// <summary>
         /// Computes the trace of this matrix.
         /// </summary>
         /// <returns>The trace of this matrix</returns>
         /// <exception cref="ArgumentException">If the matrix is not square</exception>
-        public override float Trace()
+        public override Complex Trace()
         {
             if (_rowCount != _columnCount)
             {
                 throw new ArgumentException(Resources.ArgumentMatrixSquare);
             }
 
-            var sum = 0.0f;
+            var sum = Complex.Zero;
             for (var i = 0; i < _rowCount; i++)
             {
                 sum += _values.At(i, i);
@@ -1062,7 +1083,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="rightSide">The constant to multiply the matrix by.</param>
         /// <returns>The result of the multiplication.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="leftSide"/> is <see langword="null" />.</exception>
-        public static DenseMatrixBM operator *(DenseMatrixBM leftSide, float rightSide)
+        public static DenseMatrixBM operator *(DenseMatrixBM leftSide, Complex rightSide)
         {
             if (leftSide == null)
             {
@@ -1079,7 +1100,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="rightSide">The constant to multiply the matrix by.</param>
         /// <returns>The result of the multiplication.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="rightSide"/> is <see langword="null" />.</exception>
-        public static DenseMatrixBM operator *(float leftSide, DenseMatrixBM rightSide)
+        public static DenseMatrixBM operator *(Complex leftSide, DenseMatrixBM rightSide)
         {
             if (rightSide == null)
             {
@@ -1161,7 +1182,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="rightSide">The constant to multiply the matrix by.</param>
         /// <returns>The result of the multiplication.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="leftSide"/> is <see langword="null" />.</exception>
-        public static DenseMatrixBM operator %(DenseMatrixBM leftSide, float rightSide)
+        public static DenseMatrixBM operator %(DenseMatrixBM leftSide, Complex rightSide)
         {
             if (leftSide == null)
             {
@@ -1180,12 +1201,12 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             {
                 return false;
             }
-            var v = new float[ColumnCount];
-            var h = new float[ColumnCount];
+            var v = new Complex[ColumnCount];
+            var h = new Complex[ColumnCount];
             for (var j = 0; j < ColumnCount; j++)
             {
-                DataTableStorage.DataTableStorage_GetColumn_Float(_values.Data, ColumnCount, ColumnCount, j, v);
-                DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, ColumnCount, j, h);
+                DataTableStorage.DataTableStorage_GetColumn_Complex(_values.Data, ColumnCount, ColumnCount, j, v);
+                DataTableStorage.DataTableStorage_GetRow_Complex(_values.Data, ColumnCount, j, h);
                 for (var i = j; i < ColumnCount; i++)
                 {
                     if (v[i] != h[i])
@@ -1197,33 +1218,62 @@ namespace MathNet.Numerics.LinearAlgebra.Single
 
             return true;
         }
+	
+        /// <summary>
+        /// Evaluates whether this matrix is hermitian (conjugate symmetric).
+        /// </summary>
+        public override bool IsHermitian()
+        {
+            if (RowCount != ColumnCount)
+            {
+                return false;
+            }
+            for (int i = 0; i < RowCount; i++)
+            {
+                if (!At(i, i).IsReal())
+                    return false;
+            }
 
-        public override Cholesky<float> Cholesky()
+            for (int i = 0; i < RowCount; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (At(i, j) != At(j, i).Conjugate())
+                        return false;
+                }
+
+            }
+
+            return true;
+        }
+
+
+        public override Cholesky<Complex> Cholesky()
         {
             return DenseCholeskyBM.Create(this);
         }
 
-        public override LU<float> LU()
+        public override LU<Complex> LU()
         {
             return DenseLUBM.Create(this);
         }
 
-        public override QR<float> QR(QRMethod method = QRMethod.Thin)
+        public override QR<Complex> QR(QRMethod method = QRMethod.Thin)
         {
             return DenseQRBM.Create(this, method);
         }
 
-        public override GramSchmidt<float> GramSchmidt()
+        public override GramSchmidt<Complex> GramSchmidt()
         {
             return DenseGramSchmidt.Create(this);
         }
 
-        public override Svd<float> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)
+        public override Svd<Complex> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)
         {
             return DenseSvdBM.Create(this, computeVectors);
         }
 
-        public override Evd<float> Evd(Symmetricity symmetricity = Symmetricity.Unknown)
+        public override Evd<Complex> Evd(Symmetricity symmetricity = Symmetricity.Unknown)
         {
             return DenseEvdBM.Create(this, symmetricity);
         }

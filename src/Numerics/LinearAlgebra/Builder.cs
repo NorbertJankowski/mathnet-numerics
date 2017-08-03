@@ -53,6 +53,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             return new DenseMatrix(storage);
         }
+        public override Matrix<double> DenseBM(DenseColumnMajorMatrixStorageBM<double> storage)
+        {
+            return new DenseMatrixBM(storage);
+        }
 
         public override Matrix<double> Sparse(SparseCompressedRowMatrixStorage<double> storage)
         {
@@ -127,6 +131,10 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         public override Matrix<float> Dense(DenseColumnMajorMatrixStorage<float> storage)
         {
             return new DenseMatrix(storage);
+        }
+        public override Matrix<float> DenseBM(DenseColumnMajorMatrixStorageBM<float> storage)
+        {
+            return new DenseMatrixBM(storage);
         }
 
         public override Matrix<float> Sparse(SparseCompressedRowMatrixStorage<float> storage)
@@ -209,6 +217,10 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         {
             return new DenseMatrix(storage);
         }
+        public override Matrix<Complex> DenseBM(DenseColumnMajorMatrixStorageBM<Complex> storage)
+        {
+            return new DenseMatrixBM(storage);
+        }
 
         public override Matrix<Complex> Sparse(SparseCompressedRowMatrixStorage<Complex> storage)
         {
@@ -283,6 +295,10 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
         public override Matrix<Numerics.Complex32> Dense(DenseColumnMajorMatrixStorage<Numerics.Complex32> storage)
         {
             return new DenseMatrix(storage);
+        }
+        public override Matrix<Numerics.Complex32> DenseBM(DenseColumnMajorMatrixStorageBM<Numerics.Complex32> storage)
+        {
+            return new DenseMatrixBM(storage);
         }
 
         public override Matrix<Numerics.Complex32> Sparse(SparseCompressedRowMatrixStorage<Numerics.Complex32> storage)
@@ -395,6 +411,7 @@ namespace MathNet.Numerics.LinearAlgebra
             where TU : struct, IEquatable<TU>, IFormattable
         {
             var storage = example.Storage;
+            if (storage is DenseColumnMajorMatrixStorageBM<T>) return DenseBM(rows, columns);
             if (storage is DenseColumnMajorMatrixStorage<T>) return Dense(rows, columns);
             if (storage is DiagonalMatrixStorage<T>) return fullyMutable ? Sparse(rows, columns) : Diagonal(rows, columns);
             if (storage is SparseCompressedRowMatrixStorage<T>) return Sparse(rows, columns);
@@ -497,6 +514,7 @@ namespace MathNet.Numerics.LinearAlgebra
         /// storage for performance or interop reasons.
         /// </summary>
         public abstract Matrix<T> Dense(DenseColumnMajorMatrixStorage<T> storage);
+        public abstract Matrix<T> DenseBM(DenseColumnMajorMatrixStorageBM<T> storage);
 
         /// <summary>
         /// Create a new dense matrix with the given number of rows and columns.
@@ -506,6 +524,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> Dense(int rows, int columns)
         {
             return Dense(new DenseColumnMajorMatrixStorage<T>(rows, columns));
+        }
+        public Matrix<T> DenseBM(int rows, int columns)
+        {
+            return DenseBM(new DenseColumnMajorMatrixStorageBM<T>(rows, columns));
         }
 
         /// <summary>
@@ -518,6 +540,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(new DenseColumnMajorMatrixStorage<T>(rows, columns, storage));
         }
+        public Matrix<T> DenseBM(int rows, int columns, IntPtr storage)
+        {
+            return DenseBM(new DenseColumnMajorMatrixStorageBM<T>(rows, columns, storage));
+        }
 
         /// <summary>
         /// Create a new dense matrix and initialize each value to the same provided value.
@@ -527,6 +553,11 @@ namespace MathNet.Numerics.LinearAlgebra
             if (Zero.Equals(value)) return Dense(rows, columns);
             return Dense(DenseColumnMajorMatrixStorage<T>.OfValue(rows, columns, value));
         }
+        public Matrix<T> DenseBM(int rows, int columns, T value)
+        {
+            if (Zero.Equals(value)) return DenseBM(rows, columns);
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfValue(rows, columns, value));
+        }
 
         /// <summary>
         /// Create a new dense matrix and initialize each value using the provided init function.
@@ -534,6 +565,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> Dense(int rows, int columns, Func<int, int, T> init)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfInit(rows, columns, init));
+        }
+        public Matrix<T> DenseBM(int rows, int columns, Func<int, int, T> init)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfInit(rows, columns, init));
         }
 
         /// <summary>
@@ -544,6 +579,11 @@ namespace MathNet.Numerics.LinearAlgebra
             if (Zero.Equals(value)) return Dense(rows, columns);
             return Dense(DenseColumnMajorMatrixStorage<T>.OfDiagonalInit(rows, columns, i => value));
         }
+        public Matrix<T> DenseDiagonalBM(int rows, int columns, T value)
+        {
+            if (Zero.Equals(value)) return DenseBM(rows, columns);
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfDiagonalInit(rows, columns, i => value));
+        }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value to the same provided value.
@@ -553,6 +593,11 @@ namespace MathNet.Numerics.LinearAlgebra
             if (Zero.Equals(value)) return Dense(order, order);
             return Dense(DenseColumnMajorMatrixStorage<T>.OfDiagonalInit(order, order, i => value));
         }
+        public Matrix<T> DenseDiagonalBM(int order, T value)
+        {
+            if (Zero.Equals(value)) return Dense(order, order);
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfDiagonalInit(order, order, i => value));
+        }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value using the provided init function.
@@ -560,6 +605,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseDiagonal(int rows, int columns, Func<int, T> init)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfDiagonalInit(rows, columns, init));
+        }
+        public Matrix<T> DenseDiagonalBM(int rows, int columns, Func<int, T> init)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfDiagonalInit(rows, columns, init));
         }
 
         /// <summary>
@@ -569,6 +618,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfDiagonalInit(rows, columns, i => One));
         }
+        public Matrix<T> DenseIdentityBM(int rows, int columns)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfDiagonalInit(rows, columns, i => One));
+        }
 
         /// <summary>
         /// Create a new diagonal dense identity matrix with a one-diagonal.
@@ -576,6 +629,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseIdentity(int order)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfDiagonalInit(order, order, i => One));
+        }
+        public Matrix<T> DenseIdentityBM(int order)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfDiagonalInit(order, order, i => One));
         }
 
         /// <summary>
@@ -587,6 +644,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfMatrix(matrix.Storage));
         }
+        public Matrix<T> DenseOfMatrixBM(Matrix<T> matrix)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfMatrix(matrix.Storage));
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given two-dimensional array.
@@ -596,6 +657,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfArray(T[,] array)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfArray(array));
+        }
+        public Matrix<T> DenseOfArrayBM(T[,] array)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfArray(array));
         }
 
         /// <summary>
@@ -608,6 +673,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfIndexedEnumerable(rows, columns, enumerable));
         }
+        public Matrix<T> DenseOfIndexedBM(int rows, int columns, IEnumerable<Tuple<int, int, T>> enumerable)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfIndexedEnumerable(rows, columns, enumerable));
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given enumerable.
@@ -618,6 +687,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfColumnMajor(int rows, int columns, IEnumerable<T> columnMajor)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfColumnMajorEnumerable(rows, columns, columnMajor));
+        }
+        public Matrix<T> DenseOfColumnMajorBM(int rows, int columns, IEnumerable<T> columnMajor)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfColumnMajorEnumerable(rows, columns, columnMajor));
         }
 
         /// <summary>
@@ -630,6 +703,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfColumnArrays(data.Select(v => (v as T[]) ?? v.ToArray()).ToArray()));
         }
+        public Matrix<T> DenseOfColumnsBM(IEnumerable<IEnumerable<T>> data)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfColumnArrays(data.Select(v => (v as T[]) ?? v.ToArray()).ToArray()));
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given enumerable of enumerable columns.
@@ -641,6 +718,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfColumnEnumerables(rows, columns, data));
         }
+        public Matrix<T> DenseOfColumnsBM(int rows, int columns, IEnumerable<IEnumerable<T>> data)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfColumnEnumerables(rows, columns, data));
+        }
 
         /// <summary>
         /// Create a new dense matrix of T as a copy of the given column arrays.
@@ -651,6 +732,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfColumnArrays(columns));
         }
+        public Matrix<T> DenseOfColumnArraysBM(params T[][] columns)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfColumnArrays(columns));
+        }
 
         /// <summary>
         /// Create a new dense matrix of T as a copy of the given column arrays.
@@ -660,6 +745,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfColumnArrays(IEnumerable<T[]> columns)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfColumnArrays((columns as T[][]) ?? columns.ToArray()));
+        }
+        public Matrix<T> DenseOfColumnArraysBM(IEnumerable<T[]> columns)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfColumnArrays((columns as T[][]) ?? columns.ToArray()));
         }
 
         /// <summary>
@@ -676,6 +765,13 @@ namespace MathNet.Numerics.LinearAlgebra
             }
             return Dense(DenseColumnMajorMatrixStorage<T>.OfColumnVectors(storage));
         }
+        public Matrix<T> DenseOfColumnVectorsBM(params Vector<T>[] columns)
+        {
+            var storage = new DenseColumnMajorMatrixStorageBM<T>(columns.Length, columns[0].Count);
+            for (int i = 0; i < columns.Length; i++)
+                storage.dataTableStorage.DataTableStorage_SetRow(storage.Data, columns[0].Count, i, columns[i].ToArray());
+            return DenseBM(storage);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given column vectors.
@@ -685,6 +781,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfColumnVectors(IEnumerable<Vector<T>> columns)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfColumnVectors(columns.Select(c => c.Storage).ToArray()));
+        }
+        public Matrix<T> DenseOfColumnVectorsBM(IEnumerable<Vector<T>> columns)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfColumnVectors(columns.Select(c => c.Storage).ToArray()));
         }
 
         /// <summary>
@@ -697,6 +797,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfRowMajorEnumerable(rows, columns, columnMajor));
         }
+        public Matrix<T> DenseOfRowMajorBM(int rows, int columns, IEnumerable<T> columnMajor)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfRowMajorEnumerable(rows, columns, columnMajor));
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given enumerable of enumerable rows.
@@ -707,6 +811,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfRows(IEnumerable<IEnumerable<T>> data)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfRowArrays(data.Select(v => (v as T[]) ?? v.ToArray()).ToArray()));
+        }
+        public Matrix<T> DenseOfRowsBM(IEnumerable<IEnumerable<T>> data)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfRowArrays(data.Select(v => (v as T[]) ?? v.ToArray()).ToArray()));
         }
 
         /// <summary>
@@ -719,6 +827,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfRowEnumerables(rows, columns, data));
         }
+        public Matrix<T> DenseOfRowsBM(int rows, int columns, IEnumerable<IEnumerable<T>> data)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfRowEnumerables(rows, columns, data));
+        }
 
         /// <summary>
         /// Create a new dense matrix of T as a copy of the given row arrays.
@@ -729,6 +841,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfRowArrays(rows));
         }
+        public Matrix<T> DenseOfRowArraysBM(params T[][] rows)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfRowArrays(rows));
+        }
 
         /// <summary>
         /// Create a new dense matrix of T as a copy of the given row arrays.
@@ -738,6 +854,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfRowArrays(IEnumerable<T[]> rows)
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfRowArrays((rows as T[][]) ?? rows.ToArray()));
+        }
+        public Matrix<T> DenseOfRowArraysBM(IEnumerable<T[]> rows)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfRowArrays((rows as T[][]) ?? rows.ToArray()));
         }
 
         /// <summary>
@@ -754,6 +874,15 @@ namespace MathNet.Numerics.LinearAlgebra
             }
             return Dense(DenseColumnMajorMatrixStorage<T>.OfRowVectors(storage));
         }
+        public Matrix<T> DenseOfRowVectorsBM(params Vector<T>[] rows)
+        {
+            var storage = new VectorStorage<T>[rows.Length];
+            for (int i = 0; i < rows.Length; i++)
+            {
+                storage[i] = rows[i].Storage;
+            }
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfRowVectors(storage));
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given row vectors.
@@ -764,6 +893,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(DenseColumnMajorMatrixStorage<T>.OfRowVectors(rows.Select(r => r.Storage).ToArray()));
         }
+        public Matrix<T> DenseOfRowVectorsBM(IEnumerable<Vector<T>> rows)
+        {
+            return DenseBM(DenseColumnMajorMatrixStorageBM<T>.OfRowVectors(rows.Select(r => r.Storage).ToArray()));
+        }
 
         /// <summary>
         /// Create a new dense matrix with the diagonal as a copy of the given vector.
@@ -773,6 +906,12 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfDiagonalVector(Vector<T> diagonal)
         {
             var m = Dense(diagonal.Count, diagonal.Count);
+            m.SetDiagonal(diagonal);
+            return m;
+        }
+        public Matrix<T> DenseOfDiagonalVectorBM(Vector<T> diagonal)
+        {
+            var m = DenseBM(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -788,6 +927,12 @@ namespace MathNet.Numerics.LinearAlgebra
             m.SetDiagonal(diagonal);
             return m;
         }
+        public Matrix<T> DenseOfDiagonalVectorBM(int rows, int columns, Vector<T> diagonal)
+        {
+            var m = DenseBM(rows, columns);
+            m.SetDiagonal(diagonal);
+            return m;
+        }
 
         /// <summary>
         /// Create a new dense matrix with the diagonal as a copy of the given array.
@@ -800,6 +945,12 @@ namespace MathNet.Numerics.LinearAlgebra
             m.SetDiagonal(diagonal);
             return m;
         }
+        public Matrix<T> DenseOfDiagonalArrayBM(T[] diagonal)
+        {
+            var m = DenseBM(diagonal.Length, diagonal.Length);
+            m.SetDiagonal(diagonal);
+            return m;
+        }
 
         /// <summary>
         /// Create a new dense matrix with the diagonal as a copy of the given array.
@@ -809,6 +960,12 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> DenseOfDiagonalArray(int rows, int columns, T[] diagonal)
         {
             var m = Dense(rows, columns);
+            m.SetDiagonal(diagonal);
+            return m;
+        }
+        public Matrix<T> DenseOfDiagonalArrayBM(int rows, int columns, T[] diagonal)
+        {
+            var m = DenseBM(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -832,6 +989,32 @@ namespace MathNet.Numerics.LinearAlgebra
                 }
             }
             var m = Dense(rowspans.Sum(), colspans.Sum());
+            int rowoffset = 0;
+            for (int i = 0; i < rowspans.Length; i++)
+            {
+                int coloffset = 0;
+                for (int j = 0; j < colspans.Length; j++)
+                {
+                    m.SetSubMatrix(rowoffset, coloffset, matrices[i, j]);
+                    coloffset += colspans[j];
+                }
+                rowoffset += rowspans[i];
+            }
+            return m;
+        }
+        public Matrix<T> DenseOfMatrixArrayBM(Matrix<T>[,] matrices)
+        {
+            var rowspans = new int[matrices.GetLength(0)];
+            var colspans = new int[matrices.GetLength(1)];
+            for (int i = 0; i < rowspans.Length; i++)
+            {
+                for (int j = 0; j < colspans.Length; j++)
+                {
+                    rowspans[i] = Math.Max(rowspans[i], matrices[i, j].RowCount);
+                    colspans[j] = Math.Max(colspans[j], matrices[i, j].ColumnCount);
+                }
+            }
+            var m = DenseBM(rowspans.Sum(), colspans.Sum());
             int rowoffset = 0;
             for (int i = 0; i < rowspans.Length; i++)
             {

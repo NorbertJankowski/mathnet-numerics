@@ -199,8 +199,8 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
 
             if (!ReferenceEquals(x, result))
             {
-                DenseColumnMajorMatrixStorageBM_Float _x = x as DenseColumnMajorMatrixStorageBM_Float;
-                DenseColumnMajorMatrixStorageBM_Float _result = result as DenseColumnMajorMatrixStorageBM_Float;
+                DenseColumnMajorMatrixStorageBM<float> _x = x as DenseColumnMajorMatrixStorageBM<float>;
+                DenseColumnMajorMatrixStorageBM<float> _result = result as DenseColumnMajorMatrixStorageBM<float>;
                 DataTableStorage.DataTableStorage_ConjugateArray_Float(_x.Data, _result.Data, _x.Length);
             }
         }
@@ -1079,10 +1079,10 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
             }
 
             var s = new float[Math.Min(rowsA, columnsA)];
-            var u = new DenseColumnMajorMatrixStorageBM_Float(rowsA, rowsA);
-            var vt = new DenseColumnMajorMatrixStorageBM_Float(columnsA, columnsA);
+            var u = new DenseColumnMajorMatrixStorageBM<float>(rowsA, rowsA);
+            var vt = new DenseColumnMajorMatrixStorageBM<float>(columnsA, columnsA);
 
-            var clone = new DenseColumnMajorMatrixStorageBM_Float(rowsA, columnsA);
+            var clone = new DenseColumnMajorMatrixStorageBM<float>(rowsA, columnsA);
             DataTableStorage.DataTableStorage_GetRow_Float(a.Data, a.Length, 0, clone.Data);
             SingularValueDecomposition(SVDVectorsComputation.VectorComputation, clone, rowsA, columnsA, s, u, vt);
             SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
@@ -1318,9 +1318,9 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         {
             if (_vectorFunctionsMajor != 0 || _vectorFunctionsMinor < 1)
             {
-                DenseColumnMajorMatrixStorageBM_Float _x = x as DenseColumnMajorMatrixStorageBM_Float;
-                DenseColumnMajorMatrixStorageBM_Float _y = y as DenseColumnMajorMatrixStorageBM_Float;
-                DenseColumnMajorMatrixStorageBM_Float _result = result as DenseColumnMajorMatrixStorageBM_Float;
+                DenseColumnMajorMatrixStorageBM<float> _x = x as DenseColumnMajorMatrixStorageBM<float>;
+                DenseColumnMajorMatrixStorageBM<float> _y = y as DenseColumnMajorMatrixStorageBM<float>;
+                DenseColumnMajorMatrixStorageBM<float> _result = result as DenseColumnMajorMatrixStorageBM<float>;
                 var vx = new float[_x.RowCount];
                 var vy = new float[_x.RowCount];
                 for (int i = 0; i < _x.ColumnCount; i++)

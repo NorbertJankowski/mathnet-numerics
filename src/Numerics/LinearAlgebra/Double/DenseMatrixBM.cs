@@ -1,4 +1,4 @@
-﻿// <copyright file="DenseMatrixBM.cs" company="Math.NET">
+// <copyright file="DenseMatrixBM.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -32,21 +32,21 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using MathNet.Numerics.Distributions;
+using MathNet.Numerics.LinearAlgebra.Double.Factorization;
 using MathNet.Numerics.LinearAlgebra.Factorization;
-using MathNet.Numerics.LinearAlgebra.Single.Factorization;
 using MathNet.Numerics.LinearAlgebra.Storage;
 using MathNet.Numerics.Properties;
 using MathNet.Numerics.Providers.LinearAlgebra;
 using MathNet.Numerics.Threading;
 using Anemon;
 
-namespace MathNet.Numerics.LinearAlgebra.Single
+namespace MathNet.Numerics.LinearAlgebra.Double
 {
     /// <summary>
     /// A Matrix class with dense storage. The underlying storage is a one dimensional array in column-major order (column by column).
     /// </summary>
     [Serializable]
-    [DebuggerDisplay("DenseMatrixBM {RowCount}x{ColumnCount}-Single")]
+    [DebuggerDisplay("DenseMatrixBM {RowCount}x{ColumnCount}-Double")]
     public class DenseMatrixBM : Matrix, IDisposable
     {
         /// <summary>
@@ -67,21 +67,21 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        DenseColumnMajorMatrixStorageBM<float> _values;
+        DenseColumnMajorMatrixStorageBM<double> _values;
 
-        static ILinearAlgebraProviderBM<float> linearAlgebraProvider;
-        static public void SetLinearAlgebraProvider(ILinearAlgebraProviderBM<float> provider)
+        static ILinearAlgebraProviderBM<double> linearAlgebraProvider;
+        static public void SetLinearAlgebraProvider(ILinearAlgebraProviderBM<double> provider)
         {
             linearAlgebraProvider = provider;
         }
-        public ILinearAlgebraProviderBM<float> LinearAlgebraProvider { get { return linearAlgebraProvider; } }
+        public ILinearAlgebraProviderBM<double> LinearAlgebraProvider { get { return linearAlgebraProvider; } }
         /// <summary>
         /// Create a new dense matrix straight from an initialized matrix storage instance.
         /// The storage is used directly without copying.
         /// Intended for advanced scenarios where you're working directly with
         /// storage for performance or interop reasons.
         /// </summary>
-        public DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float> storage)
+        public DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double> storage)
             : base(storage)
         {
             _rowCount = storage.RowCount;
@@ -96,7 +96,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <exception cref="ArgumentException">If the order is less than one.</exception>
         public DenseMatrixBM(int order)
-            : this(new DenseColumnMajorMatrixStorageBM<float>(order, order))
+            : this(new DenseColumnMajorMatrixStorageBM<double>(order, order))
         {
         }
 
@@ -107,7 +107,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <exception cref="ArgumentException">If the row or column count is less than one.</exception>
         public DenseMatrixBM(int rows, int columns)
-            : this(new DenseColumnMajorMatrixStorageBM<float>(rows, columns))
+            : this(new DenseColumnMajorMatrixStorageBM<double>(rows, columns))
         {
         }
 
@@ -118,7 +118,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <seealso href="http://en.wikipedia.org/wiki/Row-major_order"/>
         public DenseMatrixBM(int rows, int columns, IntPtr storage)
-            : this(new DenseColumnMajorMatrixStorageBM<float>(rows, columns, storage))
+            : this(new DenseColumnMajorMatrixStorageBM<double>(rows, columns, storage))
         {
         }
 
@@ -127,9 +127,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the other matrix.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfMatrix(Matrix<float> matrix)
+        public static DenseMatrixBM OfMatrix(Matrix<double> matrix)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfMatrix(matrix.Storage));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfMatrix(matrix.Storage));
         }
 
         /// <summary>
@@ -137,9 +137,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the provided array.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfArray(float[,] array)
+        public static DenseMatrixBM OfArray(double[,] array)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfArray(array));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfArray(array));
         }
 
         /// <summary>
@@ -148,9 +148,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerable.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfIndexed(int rows, int columns, IEnumerable<Tuple<int, int, float>> enumerable)
+        public static DenseMatrixBM OfIndexed(int rows, int columns, IEnumerable<Tuple<int, int, double>> enumerable)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfIndexedEnumerable(rows, columns, enumerable));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfIndexedEnumerable(rows, columns, enumerable));
         }
 
         /// <summary>
@@ -159,9 +159,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerable.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnMajor(int rows, int columns, IEnumerable<float> columnMajor)
+        public static DenseMatrixBM OfColumnMajor(int rows, int columns, IEnumerable<double> columnMajor)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnMajorEnumerable(rows, columns, columnMajor));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfColumnMajorEnumerable(rows, columns, columnMajor));
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumns(IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfColumns(IEnumerable<IEnumerable<double>> data)
         {
             return OfColumnArrays(data.Select(v => v.ToArray()).ToArray());
         }
@@ -181,9 +181,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumns(int rows, int columns, IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfColumns(int rows, int columns, IEnumerable<IEnumerable<double>> data)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnEnumerables(rows, columns, data));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfColumnEnumerables(rows, columns, data));
         }
 
         /// <summary>
@@ -191,9 +191,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnArrays(params float[][] columns)
+        public static DenseMatrixBM OfColumnArrays(params double[][] columns)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnArrays(columns));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfColumnArrays(columns));
         }
 
         /// <summary>
@@ -201,9 +201,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnArrays(IEnumerable<float[]> columns)
+        public static DenseMatrixBM OfColumnArrays(IEnumerable<double[]> columns)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnArrays((columns as float[][]) ?? columns.ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfColumnArrays((columns as double[][]) ?? columns.ToArray()));
         }
 
         /// <summary>
@@ -211,14 +211,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnVectors(params Vector<float>[] columns)
+        public static DenseMatrixBM OfColumnVectors(params Vector<double>[] columns)
         {
-            var storage = new VectorStorage<float>[columns.Length];
+            var storage = new VectorStorage<double>[columns.Length];
             for (int i = 0; i < columns.Length; i++)
             {
                 storage[i] = columns[i].Storage;
             }
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnVectors(storage));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfColumnVectors(storage));
         }
 
         /// <summary>
@@ -226,9 +226,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfColumnVectors(IEnumerable<Vector<float>> columns)
+        public static DenseMatrixBM OfColumnVectors(IEnumerable<Vector<double>> columns)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfColumnVectors(columns.Select(c => c.Storage).ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfColumnVectors(columns.Select(c => c.Storage).ToArray()));
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRows(IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfRows(IEnumerable<IEnumerable<double>> data)
         {
             return OfRowArrays(data.Select(v => v.ToArray()).ToArray());
         }
@@ -248,9 +248,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the enumerables.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRows(int rows, int columns, IEnumerable<IEnumerable<float>> data)
+        public static DenseMatrixBM OfRows(int rows, int columns, IEnumerable<IEnumerable<double>> data)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowEnumerables(rows, columns, data));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfRowEnumerables(rows, columns, data));
         }
 
         /// <summary>
@@ -258,9 +258,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowArrays(params float[][] rows)
+        public static DenseMatrixBM OfRowArrays(params double[][] rows)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowArrays(rows));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfRowArrays(rows));
         }
 
         /// <summary>
@@ -268,9 +268,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the arrays.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowArrays(IEnumerable<float[]> rows)
+        public static DenseMatrixBM OfRowArrays(IEnumerable<double[]> rows)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowArrays((rows as float[][]) ?? rows.ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfRowArrays((rows as double[][]) ?? rows.ToArray()));
         }
 
         /// <summary>
@@ -278,14 +278,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowVectors(params Vector<float>[] rows)
+        public static DenseMatrixBM OfRowVectors(params Vector<double>[] rows)
         {
-            var storage = new VectorStorage<float>[rows.Length];
+            var storage = new VectorStorage<double>[rows.Length];
             for (int i = 0; i < rows.Length; i++)
             {
                 storage[i] = rows[i].Storage;
             }
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowVectors(storage));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfRowVectors(storage));
         }
 
         /// <summary>
@@ -293,9 +293,9 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vectors.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfRowVectors(IEnumerable<Vector<float>> rows)
+        public static DenseMatrixBM OfRowVectors(IEnumerable<Vector<double>> rows)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfRowVectors(rows.Select(r => r.Storage).ToArray()));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfRowVectors(rows.Select(r => r.Storage).ToArray()));
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vector.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalVector(Vector<float> diagonal)
+        public static DenseMatrixBM OfDiagonalVector(Vector<double> diagonal)
         {
             var m = new DenseMatrixBM(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
@@ -315,7 +315,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the vector.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalVector(int rows, int columns, Vector<float> diagonal)
+        public static DenseMatrixBM OfDiagonalVector(int rows, int columns, Vector<double> diagonal)
         {
             var m = new DenseMatrixBM(rows, columns);
             m.SetDiagonal(diagonal);
@@ -327,7 +327,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the array.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalArray(float[] diagonal)
+        public static DenseMatrixBM OfDiagonalArray(double[] diagonal)
         {
             var m = new DenseMatrixBM(diagonal.Length, diagonal.Length);
             m.SetDiagonal(diagonal);
@@ -339,7 +339,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// This new matrix will be independent from the array.
         /// A new memory block will be allocated for storing the matrix.
         /// </summary>
-        public static DenseMatrixBM OfDiagonalArray(int rows, int columns, float[] diagonal)
+        public static DenseMatrixBM OfDiagonalArray(int rows, int columns, double[] diagonal)
         {
             var m = new DenseMatrixBM(rows, columns);
             m.SetDiagonal(diagonal);
@@ -349,35 +349,35 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <summary>
         /// Create a new dense matrix and initialize each value to the same provided value.
         /// </summary>
-        public static DenseMatrixBM Create(int rows, int columns, float value)
+        public static DenseMatrixBM Create(int rows, int columns, double value)
         {
-            if (value == 0f) return new DenseMatrixBM(rows, columns);
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfValue(rows, columns, value));
+            if (value == 0d) return new DenseMatrixBM(rows, columns);
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfValue(rows, columns, value));
         }
 
         /// <summary>
         /// Create a new dense matrix and initialize each value using the provided init function.
         /// </summary>
-        public static DenseMatrixBM Create(int rows, int columns, Func<int, int, float> init)
+        public static DenseMatrixBM Create(int rows, int columns, Func<int, int, double> init)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfInit(rows, columns, init));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfInit(rows, columns, init));
         }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value to the same provided value.
         /// </summary>
-        public static DenseMatrixBM CreateDiagonal(int rows, int columns, float value)
+        public static DenseMatrixBM CreateDiagonal(int rows, int columns, double value)
         {
-            if (value == 0f) return new DenseMatrixBM(rows, columns);
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfDiagonalInit(rows, columns, i => value));
+            if (value == 0d) return new DenseMatrixBM(rows, columns);
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfDiagonalInit(rows, columns, i => value));
         }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value using the provided init function.
         /// </summary>
-        public static DenseMatrixBM CreateDiagonal(int rows, int columns, Func<int, float> init)
+        public static DenseMatrixBM CreateDiagonal(int rows, int columns, Func<int, double> init)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfDiagonalInit(rows, columns, init));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfDiagonalInit(rows, columns, init));
         }
 
         /// <summary>
@@ -385,7 +385,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrixBM CreateIdentity(int order)
         {
-            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<float>.OfDiagonalInit(order, order, i => One));
+            return new DenseMatrixBM(DenseColumnMajorMatrixStorageBM<double>.OfDiagonalInit(order, order, i => One));
         }
 
         /// <summary>
@@ -393,14 +393,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrixBM CreateRandom(int rows, int columns, IContinuousDistribution distribution)
         {
-            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<float>(rows, columns, Generate.RandomSingle(rows*columns, distribution)));
+            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<double>(rows, columns, Generate.Random(rows*columns, distribution)));
         }
 
         /// <summary>
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        public DenseColumnMajorMatrixStorageBM<float> Values
+        public DenseColumnMajorMatrixStorageBM<double> Values
         {
             get { return _values; }
         }
@@ -430,7 +430,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// Negate each element of this matrix and place the results into the result matrix.
         /// </summary>
         /// <param name="result">The result of the negation.</param>
-        protected override void DoNegate(Matrix<float> result)
+        protected override void DoNegate(Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult != null)
@@ -447,7 +447,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="scalar">The scalar to add.</param>
         /// <param name="result">The matrix to store the result of the addition.</param>
-        protected override void DoAdd(float scalar, Matrix<float> result)
+        protected override void DoAdd(double scalar, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -456,7 +456,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
-            DataTableStorage.DataTableStorage_Add_Float(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, scalar);
+            DataTableStorage.DataTableStorage_Add_Double(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, scalar);
         }
 
         /// <summary>
@@ -466,11 +466,11 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The matrix to store the result of add</param>
         /// <exception cref="ArgumentNullException">If the other matrix is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">If the two matrices don't have the same dimensions.</exception>
-        protected override void DoAdd(Matrix<float> other, Matrix<float> result)
+        protected override void DoAdd(Matrix<double> other, Matrix<double> result)
         {
             // dense + dense = dense
-            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<float>;
-            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<double>;
+            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<double>;
             if (denseOther != null && denseResult != null)
             {
                 LinearAlgebraProvider.AddArrays(_values, denseOther, denseResult);
@@ -478,7 +478,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
 
             // dense + diagonal = any
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<double>;
             if (diagonalOther != null)
             {
                 Storage.CopyToUnchecked(result.Storage, ExistingData.Clear);
@@ -498,7 +498,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="scalar">The scalar to subtract.</param>
         /// <param name="result">The matrix to store the result of the subtraction.</param>
-        protected override void DoSubtract(float scalar, Matrix<float> result)
+        protected override void DoSubtract(double scalar, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -507,7 +507,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
-            DataTableStorage.DataTableStorage_Add_Float(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, -scalar);
+            DataTableStorage.DataTableStorage_Add_Double(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, -scalar);
         }
 
         /// <summary>
@@ -515,11 +515,11 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to subtract.</param>
         /// <param name="result">The matrix to store the result of the subtraction.</param>
-        protected override void DoSubtract(Matrix<float> other, Matrix<float> result)
+        protected override void DoSubtract(Matrix<double> other, Matrix<double> result)
         {
             // dense + dense = dense
-            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<float>;
-            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            var denseOther = other.Storage as DenseColumnMajorMatrixStorageBM<double>;
+            var denseResult = result.Storage as DenseColumnMajorMatrixStorageBM<double>;
             if (denseOther != null && denseResult != null)
             {
                 LinearAlgebraProvider.SubtractArrays(_values, denseOther, denseResult);
@@ -527,7 +527,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
 
             // dense + diagonal = matrix
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<double>;
             if (diagonalOther != null)
             {
                 CopyTo(result);
@@ -547,7 +547,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="scalar">The scalar to multiply the matrix with.</param>
         /// <param name="result">The matrix to store the result of the multiplication.</param>
-        protected override void DoMultiply(float scalar, Matrix<float> result)
+        protected override void DoMultiply(double scalar, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -565,7 +565,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="rightSide">The vector to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoMultiply(Vector<float> rightSide, Vector<float> result)
+        protected override void DoMultiply(Vector<double> rightSide, Vector<double> result)
         {
             var denseRight = rightSide as DenseVector;
             var denseResult = result as DenseVector;
@@ -592,7 +592,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoMultiply(Matrix<double> other, Matrix<double> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -609,7 +609,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<double>;
             if (diagonalOther != null)
             {
                 var diagonal = diagonalOther.Data;
@@ -620,7 +620,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 }
                 for (int j = 0; j < d; j++)
                 {
-                    DataTableStorage.DataTableStorage_Multiply_Float(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
+                    DataTableStorage.DataTableStorage_Multiply_Double(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
                 }
                 return;
             }
@@ -633,7 +633,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeAndMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoTransposeAndMultiply(Matrix<double> other, Matrix<double> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -642,19 +642,19 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 LinearAlgebraProvider.MatrixMultiplyWithUpdate(
                     Providers.LinearAlgebra.Transpose.DontTranspose,
                     Providers.LinearAlgebra.Transpose.Transpose,
-                    1.0f,
+                    1.0,
                     _values,
                     _rowCount,
                     _columnCount,
                     denseOther._values,
                     denseOther._rowCount,
                     denseOther._columnCount,
-                    0.0f,
+                    0.0,
                     denseResult._values);
                 return;
             }
 
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<double>;
             if (diagonalOther != null)
             {
                 var diagonal = diagonalOther.Data;
@@ -666,7 +666,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 int index = 0;
                 for (int j = 0; j < d; j++)
                 {
-                    DataTableStorage.DataTableStorage_Multiply_Float(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
+                    DataTableStorage.DataTableStorage_Multiply_Double(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
                 }
                 return;
             }
@@ -679,7 +679,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="rightSide">The vector to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeThisAndMultiply(Vector<float> rightSide, Vector<float> result)
+        protected override void DoTransposeThisAndMultiply(Vector<double> rightSide, Vector<double> result)
         {
             var denseRight = rightSide as DenseVector;
             var denseResult = result as DenseVector;
@@ -693,14 +693,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 LinearAlgebraProvider.MatrixMultiplyWithUpdate(
                     Providers.LinearAlgebra.Transpose.Transpose,
                     Providers.LinearAlgebra.Transpose.DontTranspose,
-                    1.0f,
+                    1.0,
                     _values,
                     _rowCount,
                     _columnCount,
                     denseRight.Values,
                     denseRight.Count,
                     1,
-                    0.0f,
+                    0.0,
                     denseResult.Values);
             }
         }
@@ -710,7 +710,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeThisAndMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoTransposeThisAndMultiply(Matrix<double> other, Matrix<double> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -719,19 +719,19 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 LinearAlgebraProvider.MatrixMultiplyWithUpdate(
                     Providers.LinearAlgebra.Transpose.Transpose,
                     Providers.LinearAlgebra.Transpose.DontTranspose,
-                    1.0f,
+                    1.0,
                     _values,
                     _rowCount,
                     _columnCount,
                     denseOther._values,
                     denseOther._rowCount,
                     denseOther._columnCount,
-                    0.0f,
+                    0.0,
                     denseResult._values);
                 return;
             }
 
-            var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
+            var diagonalOther = other.Storage as DiagonalMatrixStorage<double>;
             if (diagonalOther != null)
             {
                 this.Transpose(result);
@@ -747,7 +747,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="divisor">The scalar to divide the matrix with.</param>
         /// <param name="result">The matrix to store the result of the division.</param>
-        protected override void DoDivide(float divisor, Matrix<float> result)
+        protected override void DoDivide(double divisor, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -756,7 +756,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
             else
             {
-                LinearAlgebraProvider.ScaleArray(1.0f/divisor, _values, denseResult._values);
+                LinearAlgebraProvider.ScaleArray(1.0/divisor, _values, denseResult._values);
             }
         }
 
@@ -765,7 +765,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="other">The matrix to pointwise multiply with this one.</param>
         /// <param name="result">The matrix to store the result of the pointwise multiplication.</param>
-        protected override void DoPointwiseMultiply(Matrix<float> other, Matrix<float> result)
+        protected override void DoPointwiseMultiply(Matrix<double> other, Matrix<double> result)
         {
             var denseOther = other as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -785,7 +785,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="divisor">The matrix to pointwise divide this one by.</param>
         /// <param name="result">The matrix to store the result of the pointwise division.</param>
-        protected override void DoPointwiseDivide(Matrix<float> divisor, Matrix<float> result)
+        protected override void DoPointwiseDivide(Matrix<double> divisor, Matrix<double> result)
         {
             var denseOther = divisor as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -805,7 +805,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="exponent">The exponent to raise this matrix values to.</param>
         /// <param name="result">The vector to store the result of the pointwise power.</param>
-        protected override void DoPointwisePower(Matrix<float> exponent, Matrix<float> result)
+        protected override void DoPointwisePower(Matrix<double> exponent, Matrix<double> result)
         {
             var denseExponent = exponent as DenseMatrixBM;
             var denseResult = result as DenseMatrixBM;
@@ -826,7 +826,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="divisor">The scalar denominator to use.</param>
         /// <param name="result">Matrix to store the results in.</param>
-        protected override void DoModulus(float divisor, Matrix<float> result)
+        protected override void DoModulus(double divisor, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -837,15 +837,15 @@ namespace MathNet.Numerics.LinearAlgebra.Single
 
             CommonParallel.For(0, _values.ColumnCount, (a, b) =>
             {
-                var v = new float[_values.RowCount];
+                var v = new double[_values.RowCount];
                 for (int i = a; i < b; i++)
                 {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_GetRow_Double(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
                         v[i] = Euclid.Modulus(v[i], divisor);
                     }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_SetRow_Double(denseResult.Values.Data, RowCount, i, v);
                 }
             });
         }
@@ -856,7 +856,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="dividend">The scalar numerator to use.</param>
         /// <param name="result">A vector to store the results in.</param>
-        protected override void DoModulusByThis(float dividend, Matrix<float> result)
+        protected override void DoModulusByThis(double dividend, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -867,15 +867,15 @@ namespace MathNet.Numerics.LinearAlgebra.Single
 
             CommonParallel.For(0, _values.ColumnCount, 4096, (a, b) =>
             {
-                var v = new float[_values.RowCount];
+                var v = new double[_values.RowCount];
                 for (int i = a; i < b; i++)
                 {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_GetRow_Double(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
                         v[i] = Euclid.Modulus(dividend, v[i]);
                     }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_SetRow_Double(denseResult.Values.Data, RowCount, i, v);
                 }
             });
         }
@@ -886,7 +886,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="divisor">The scalar denominator to use.</param>
         /// <param name="result">Matrix to store the results in.</param>
-        protected override void DoRemainder(float divisor, Matrix<float> result)
+        protected override void DoRemainder(double divisor, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -897,15 +897,15 @@ namespace MathNet.Numerics.LinearAlgebra.Single
 
             CommonParallel.For(0, _values.ColumnCount, (a, b) =>
             {
-                var v = new float[_values.RowCount];
+                var v = new double[_values.RowCount];
                 for (int i = a; i < b; i++)
                 {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_GetRow_Double(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
                         v[i] %= divisor;
                     }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_SetRow_Double(denseResult.Values.Data, RowCount, i, v);
                 }
             });
         }
@@ -916,7 +916,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <param name="dividend">The scalar numerator to use.</param>
         /// <param name="result">A vector to store the results in.</param>
-        protected override void DoRemainderByThis(float dividend, Matrix<float> result)
+        protected override void DoRemainderByThis(double dividend, Matrix<double> result)
         {
             var denseResult = result as DenseMatrixBM;
             if (denseResult == null)
@@ -927,15 +927,15 @@ namespace MathNet.Numerics.LinearAlgebra.Single
 
             CommonParallel.For(0, _values.ColumnCount, 4096, (a, b) =>
             {
-                var v = new float[_values.RowCount];
+                var v = new double[_values.RowCount];
                 for (int i = a; i < b; i++)
                 {
-                    DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_GetRow_Double(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
                         v[i] = dividend % v[i];
                     }
-                    DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_SetRow_Double(denseResult.Values.Data, RowCount, i, v);
                 }
             });
         }
@@ -945,14 +945,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <returns>The trace of this matrix</returns>
         /// <exception cref="ArgumentException">If the matrix is not square</exception>
-        public override float Trace()
+        public override double Trace()
         {
             if (_rowCount != _columnCount)
             {
                 throw new ArgumentException(Resources.ArgumentMatrixSquare);
             }
 
-            var sum = 0.0f;
+            var sum = 0.0;
             for (var i = 0; i < _rowCount; i++)
             {
                 sum += _values.At(i, i);
@@ -1062,7 +1062,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="rightSide">The constant to multiply the matrix by.</param>
         /// <returns>The result of the multiplication.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="leftSide"/> is <see langword="null" />.</exception>
-        public static DenseMatrixBM operator *(DenseMatrixBM leftSide, float rightSide)
+        public static DenseMatrixBM operator *(DenseMatrixBM leftSide, double rightSide)
         {
             if (leftSide == null)
             {
@@ -1079,7 +1079,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="rightSide">The constant to multiply the matrix by.</param>
         /// <returns>The result of the multiplication.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="rightSide"/> is <see langword="null" />.</exception>
-        public static DenseMatrixBM operator *(float leftSide, DenseMatrixBM rightSide)
+        public static DenseMatrixBM operator *(double leftSide, DenseMatrixBM rightSide)
         {
             if (rightSide == null)
             {
@@ -1161,7 +1161,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// <param name="rightSide">The constant to multiply the matrix by.</param>
         /// <returns>The result of the multiplication.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="leftSide"/> is <see langword="null" />.</exception>
-        public static DenseMatrixBM operator %(DenseMatrixBM leftSide, float rightSide)
+        public static DenseMatrixBM operator %(DenseMatrixBM leftSide, double rightSide)
         {
             if (leftSide == null)
             {
@@ -1180,12 +1180,12 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             {
                 return false;
             }
-            var v = new float[ColumnCount];
-            var h = new float[ColumnCount];
+            var v = new double[ColumnCount];
+            var h = new double[ColumnCount];
             for (var j = 0; j < ColumnCount; j++)
             {
-                DataTableStorage.DataTableStorage_GetColumn_Float(_values.Data, ColumnCount, ColumnCount, j, v);
-                DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, ColumnCount, j, h);
+                DataTableStorage.DataTableStorage_GetColumn_Double(_values.Data, ColumnCount, ColumnCount, j, v);
+                DataTableStorage.DataTableStorage_GetRow_Double(_values.Data, ColumnCount, j, h);
                 for (var i = j; i < ColumnCount; i++)
                 {
                     if (v[i] != h[i])
@@ -1198,32 +1198,32 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             return true;
         }
 
-        public override Cholesky<float> Cholesky()
+        public override Cholesky<double> Cholesky()
         {
             return DenseCholeskyBM.Create(this);
         }
 
-        public override LU<float> LU()
+        public override LU<double> LU()
         {
             return DenseLUBM.Create(this);
         }
 
-        public override QR<float> QR(QRMethod method = QRMethod.Thin)
+        public override QR<double> QR(QRMethod method = QRMethod.Thin)
         {
             return DenseQRBM.Create(this, method);
         }
 
-        public override GramSchmidt<float> GramSchmidt()
+        public override GramSchmidt<double> GramSchmidt()
         {
             return DenseGramSchmidt.Create(this);
         }
 
-        public override Svd<float> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)
+        public override Svd<double> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)
         {
             return DenseSvdBM.Create(this, computeVectors);
         }
 
-        public override Evd<float> Evd(Symmetricity symmetricity = Symmetricity.Unknown)
+        public override Evd<double> Evd(Symmetricity symmetricity = Symmetricity.Unknown)
         {
             return DenseEvdBM.Create(this, symmetricity);
         }
