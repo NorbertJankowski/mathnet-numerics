@@ -34,6 +34,7 @@ using MathNet.Numerics.Distributions;
 using MathNet.Numerics.LinearAlgebra.Solvers;
 using MathNet.Numerics.LinearAlgebra.Storage;
 using MathNet.Numerics.Random;
+using Anemon;
 
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
@@ -71,6 +72,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public override Matrix<double> Random(int rows, int columns, IContinuousDistribution distribution)
         {
             return Dense(rows, columns, Generate.Random(rows*columns, distribution));
+        }
+        public override Matrix<double> RandomBM(int rows, int columns, IContinuousDistribution distribution)
+        {
+            var v = Generate.Random(rows * columns, distribution);
+            IntPtr p;
+            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * sizeof(double));
+            DataTableStorage.DataTableStorage_SetRow_Double(p, rows * columns, 0, v);
+            return DenseBM(rows, columns, p);
         }
 
         public override IIterationStopCriterion<double>[] IterativeSolverStopCriteria(int maxIterations = 1000)
@@ -150,6 +159,14 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         public override Matrix<float> Random(int rows, int columns, IContinuousDistribution distribution)
         {
             return Dense(rows, columns, Generate.RandomSingle(rows*columns, distribution));
+        }
+        public override Matrix<float> RandomBM(int rows, int columns, IContinuousDistribution distribution)
+        {
+            var v = Generate.RandomSingle(rows * columns, distribution);
+            IntPtr p;
+            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * sizeof(float));
+            DataTableStorage.DataTableStorage_SetRow_Float(p, rows * columns, 0, v);
+            return DenseBM(rows, columns, p);
         }
 
         public override IIterationStopCriterion<float>[] IterativeSolverStopCriteria(int maxIterations = 1000)
@@ -236,6 +253,16 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         {
             return Dense(rows, columns, Generate.RandomComplex(rows*columns, distribution));
         }
+        public override Matrix<Complex> RandomBM(int rows, int columns, IContinuousDistribution distribution)
+        {
+            var v = Generate.RandomComplex(rows * columns, distribution);
+            IntPtr p;
+            Complex x = default(Complex);
+            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * System.Runtime.InteropServices.Marshal.SizeOf(x));
+            DataTableStorage.DataTableStorage_SetRow_Complex(p, rows * columns, 0, v);
+            return DenseBM(rows, columns, p);
+        }
+
 
         public override IIterationStopCriterion<Complex>[] IterativeSolverStopCriteria(int maxIterations = 1000)
         {
@@ -315,6 +342,16 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
         {
             return Dense(rows, columns, Generate.RandomComplex32(rows*columns, distribution));
         }
+        public override Matrix<Numerics.Complex32> RandomBM(int rows, int columns, IContinuousDistribution distribution)
+        {
+            var v = Generate.RandomComplex32(rows * columns, distribution);
+            IntPtr p;
+            Numerics.Complex32 x = default(Numerics.Complex32);
+            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * System.Runtime.InteropServices.Marshal.SizeOf(x));
+            DataTableStorage.DataTableStorage_SetRow_Complex32(p, rows * columns, 0, v);
+            return DenseBM(rows, columns, p);
+        }
+
 
         public override IIterationStopCriterion<Numerics.Complex32>[] IterativeSolverStopCriteria(int maxIterations = 1000)
         {
@@ -392,6 +429,9 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             if (storage == null) throw new ArgumentNullException("storage");
 
+            var denseBM = storage as DenseColumnMajorMatrixStorageBM<T>;
+            if (denseBM != null) return DenseBM(denseBM);
+
             var dense = storage as DenseColumnMajorMatrixStorage<T>;
             if (dense != null) return Dense(dense);
 
@@ -442,6 +482,7 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             var storage1 = example.Storage;
             var storage2 = otherExample.Storage;
+            if (storage1 is DenseColumnMajorMatrixStorageBM<T> || storage2 is DenseColumnMajorMatrixStorageBM<T>) return DenseBM(rows, columns);
             if (storage1 is DenseColumnMajorMatrixStorage<T> || storage2 is DenseColumnMajorMatrixStorage<T>) return Dense(rows, columns);
             if (storage1 is DiagonalMatrixStorage<T> && storage2 is DiagonalMatrixStorage<T>) return fullyMutable ? Sparse(rows, columns) : Diagonal(rows, columns);
             if (storage1 is SparseCompressedRowMatrixStorage<T> || storage2 is SparseCompressedRowMatrixStorage<T>) return Sparse(rows, columns);
@@ -460,6 +501,7 @@ namespace MathNet.Numerics.LinearAlgebra
         /// Create a new dense matrix with values sampled from the provided random distribution.
         /// </summary>
         public abstract Matrix<T> Random(int rows, int columns, IContinuousDistribution distribution);
+        public abstract Matrix<T> RandomBM(int rows, int columns, IContinuousDistribution distribution);
 
         /// <summary>
         /// Create a new dense matrix with values sampled from the standard distribution with a system random source.
@@ -467,6 +509,10 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> Random(int rows, int columns)
         {
             return Random(rows, columns, new Normal(SystemRandomSource.Default));
+        }
+        public Matrix<T> RandomBM(int rows, int columns)
+        {
+            return RandomBM(rows, columns, new Normal(SystemRandomSource.Default));
         }
 
         /// <summary>
@@ -476,6 +522,10 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Random(rows, columns, new Normal(new SystemRandomSource(seed, true)));
         }
+        public Matrix<T> RandomBM(int rows, int columns, int seed)
+        {
+            return RandomBM(rows, columns, new Normal(new SystemRandomSource(seed, true)));
+        }
 
         /// <summary>
         /// Create a new positive definite dense matrix where each value is the product
@@ -484,6 +534,11 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> RandomPositiveDefinite(int order, IContinuousDistribution distribution)
         {
             var a = Random(order, order, distribution);
+            return a.ConjugateTransposeThisAndMultiply(a);
+        }
+        public Matrix<T> RandomPositiveDefiniteBM(int order, IContinuousDistribution distribution)
+        {
+            var a = RandomBM(order, order, distribution);
             return a.ConjugateTransposeThisAndMultiply(a);
         }
 
@@ -496,6 +551,11 @@ namespace MathNet.Numerics.LinearAlgebra
             var a = Random(order, order, new Normal(SystemRandomSource.Default));
             return a.ConjugateTransposeThisAndMultiply(a);
         }
+        public Matrix<T> RandomPositiveDefiniteBM(int order)
+        {
+            var a = RandomBM(order, order, new Normal(SystemRandomSource.Default));
+            return a.ConjugateTransposeThisAndMultiply(a);
+        }
 
         /// <summary>
         /// Create a new positive definite dense matrix where each value is the product
@@ -504,6 +564,11 @@ namespace MathNet.Numerics.LinearAlgebra
         public Matrix<T> RandomPositiveDefinite(int order, int seed)
         {
             var a = Random(order, order, new Normal(new SystemRandomSource(seed, true)));
+            return a.ConjugateTransposeThisAndMultiply(a);
+        }
+        public Matrix<T> RandomPositiveDefiniteBM(int order, int seed)
+        {
+            var a = RandomBM(order, order, new Normal(new SystemRandomSource(seed, true)));
             return a.ConjugateTransposeThisAndMultiply(a);
         }
 

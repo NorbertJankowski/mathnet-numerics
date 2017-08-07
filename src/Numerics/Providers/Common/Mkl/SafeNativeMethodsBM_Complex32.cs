@@ -139,7 +139,7 @@ namespace MathNet.Numerics.Providers.Common.Mkl
         internal static extern long c_qr_thin_factor(long m, long n, [In, Out] IntPtr q, [In, Out] Complex32[] tau, [In, Out] IntPtr r);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long c_qr_solve(long m, long n, long bn, IntPtr r, Complex32[] b, [In, Out] Complex32 x);
+        internal static extern long c_qr_solve(long m, long n, long bn, IntPtr r, Complex32[] b, [In, Out] Complex32[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern long c_qr_solve_factored(long m, long n, long bn, IntPtr r, IntPtr b, Complex32[] tau, [In, Out] IntPtr x);

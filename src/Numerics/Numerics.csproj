@@ -244,7 +244,10 @@
     <Compile Include="Providers\Common\Cuda\SafeNativeMethods.cs" />
     <Compile Include="Providers\Common\Mkl\MklProviderCapabilities.cs" />
     <Compile Include="Providers\LinearAlgebra\LinearAlgebraControl.cs" />
+    <Compile Include="Providers\LinearAlgebra\Mkl\MklLinearAlgebraProviderBM.Complex.cs" />
+    <Compile Include="Providers\LinearAlgebra\Mkl\MklLinearAlgebraProviderBM.Complex32.cs" />
     <Compile Include="Providers\LinearAlgebra\Mkl\MklLinearAlgebraProviderBM.cs" />
+    <Compile Include="Providers\LinearAlgebra\Mkl\MklLinearAlgebraProviderBM.Double.cs" />
     <Compile Include="Providers\LinearAlgebra\Mkl\MklLinearAlgebraProviderBM.Single.cs" />
     <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProvider.cs" />
     <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProvider.Complex.cs" />

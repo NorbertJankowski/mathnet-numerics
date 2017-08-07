@@ -101,6 +101,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.Random(rows, columns, distribution);
         }
+        public static Matrix<T> RandomBM<T>(int rows, int columns, IContinuousDistribution distribution)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.RandomBM(rows, columns, distribution);
+        }
 
         /// <summary>
         /// Create a new dense matrix with values sampled from the standard distribution with a system random source.
@@ -110,6 +115,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.Random(rows, columns);
         }
+        public static Matrix<T> RandomBM<T>(int rows, int columns)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.RandomBM(rows, columns);
+        }
 
         /// <summary>
         /// Create a new dense matrix with values sampled from the standard distribution with a system random source.
@@ -118,6 +128,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.Random(rows, columns, seed);
+        }
+        public static Matrix<T> RandomBM<T>(int rows, int columns, int seed)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.RandomBM(rows, columns, seed);
         }
 
         /// <summary>
@@ -129,6 +144,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.RandomPositiveDefinite(order, distribution);
         }
+        public static Matrix<T> RandomPositiveDefiniteBM<T>(int order, IContinuousDistribution distribution)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.RandomPositiveDefiniteBM(order, distribution);
+        }
 
         /// <summary>
         /// Create a new positive definite dense matrix where each value is the product
@@ -139,6 +159,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.RandomPositiveDefinite(order);
         }
+        public static Matrix<T> RandomPositiveDefiniteBM<T>(int order)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.RandomPositiveDefiniteBM(order);
+        }
 
         /// <summary>
         /// Create a new positive definite dense matrix where each value is the product
@@ -148,6 +173,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.RandomPositiveDefinite(order, seed);
+        }
+        public static Matrix<T> RandomPositiveDefiniteBM<T>(int order, int seed)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.RandomPositiveDefiniteBM(order, seed);
         }
 
         /// <summary>
@@ -161,6 +191,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.Dense(storage);
         }
+        public static Matrix<T> DenseBM<T>(DenseColumnMajorMatrixStorageBM<T> storage)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseBM(storage);
+        }
 
         /// <summary>
         /// Create a new dense matrix with the given number of rows and columns.
@@ -171,6 +206,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.Dense(rows, columns);
+        }
+        public static Matrix<T> DenseBM<T>(int rows, int columns)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseBM(rows, columns);
         }
 
         /// <summary>
@@ -184,6 +224,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.Dense(rows, columns, storage);
         }
+        public static Matrix<T> DenseBM<T>(int rows, int columns, IntPtr storage)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseBM(rows, columns, storage);
+        }
 
         /// <summary>
         /// Create a new dense matrix and initialize each value to the same provided value.
@@ -192,6 +237,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.Dense(rows, columns, value);
+        }
+        public static Matrix<T> DenseBM<T>(int rows, int columns, T value)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseBM(rows, columns, value);
         }
 
         /// <summary>
@@ -202,6 +252,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.Dense(rows, columns, init);
         }
+        public static Matrix<T> DenseBM<T>(int rows, int columns, Func<int, int, T> init)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseBM(rows, columns, init);
+        }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value to the same provided value.
@@ -210,6 +265,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseDiagonal(rows, columns, value);
+        }
+        public static Matrix<T> DenseDiagonalBM<T>(int rows, int columns, T value)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseDiagonalBM(rows, columns, value);
         }
 
         /// <summary>
@@ -220,6 +280,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseDiagonal(order, value);
         }
+        public static Matrix<T> DenseDiagonalBM<T>(int order, T value)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseDiagonalBM(order, value);
+        }
 
         /// <summary>
         /// Create a new diagonal dense matrix and initialize each diagonal value using the provided init function.
@@ -228,6 +293,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseDiagonal(rows, columns, init);
+        }
+        public static Matrix<T> DenseDiagonalBM<T>(int rows, int columns, Func<int, T> init)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseDiagonalBM(rows, columns, init);
         }
 
         /// <summary>
@@ -238,6 +308,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseIdentity(rows, columns);
         }
+        public static Matrix<T> DenseIdentityBM<T>(int rows, int columns)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseIdentityBM(rows, columns);
+        }
 
         /// <summary>
         /// Create a new diagonal dense identity matrix with a one-diagonal.
@@ -246,6 +321,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseIdentity(order);
+        }
+        public static Matrix<T> DenseIdentityBM<T>(int order)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseIdentityBM(order);
         }
 
         /// <summary>
@@ -258,6 +338,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfMatrix(matrix);
         }
+        public static Matrix<T> DenseOfMatrixBM<T>(Matrix<T> matrix)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfMatrixBM(matrix);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given two-dimensional array.
@@ -268,6 +353,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfArray(array);
+        }
+        public static Matrix<T> DenseOfArrayBM<T>(T[,] array)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfArrayBM(array);
         }
 
         /// <summary>
@@ -281,6 +371,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfIndexed(rows, columns, enumerable);
         }
+        public static Matrix<T> DenseOfIndexedBM<T>(int rows, int columns, IEnumerable<Tuple<int, int, T>> enumerable)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfIndexedBM(rows, columns, enumerable);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given enumerable.
@@ -292,6 +387,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfColumnMajor(rows, columns, columnMajor);
+        }
+        public static Matrix<T> DenseOfColumnMajorBM<T>(int rows, int columns, IEnumerable<T> columnMajor)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfColumnMajorBM(rows, columns, columnMajor);
         }
 
         /// <summary>
@@ -305,6 +405,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfColumns(data);
         }
+        public static Matrix<T> DenseOfColumnsBM<T>(IEnumerable<IEnumerable<T>> data)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfColumnsBM(data);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given enumerable of enumerable columns.
@@ -317,6 +422,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfColumns(rows, columns, data);
         }
+        public static Matrix<T> DenseOfColumnsBM<T>(int rows, int columns, IEnumerable<IEnumerable<T>> data)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfColumnsBM(rows, columns, data);
+        }
 
         /// <summary>
         /// Create a new dense matrix of T as a copy of the given column arrays.
@@ -327,6 +437,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfColumnArrays(columns);
+        }
+        public static Matrix<T> DenseOfColumnArraysBM<T>(params T[][] columns)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfColumnArraysBM(columns);
         }
 
         /// <summary>
@@ -339,6 +454,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfColumnArrays(columns);
         }
+        public static Matrix<T> DenseOfColumnArraysBM<T>(IEnumerable<T[]> columns)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfColumnArraysBM(columns);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given column vectors.
@@ -350,6 +470,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfColumnVectors(columns);
         }
+        public static Matrix<T> DenseOfColumnVectorsBM<T>(params Vector<T>[] columns)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfColumnVectorsBM(columns);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given column vectors.
@@ -360,6 +485,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfColumnVectors(columns);
+        }
+        public static Matrix<T> DenseOfColumnVectorsBM<T>(IEnumerable<Vector<T>> columns)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfColumnVectorsBM(columns);
         }
 
         /// <summary>
@@ -373,6 +503,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfRows(data);
         }
+        public static Matrix<T> DenseOfRowsBM<T>(IEnumerable<IEnumerable<T>> data)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfRowsBM(data);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given enumerable of enumerable rows.
@@ -385,6 +520,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfRows(rows, columns, data);
         }
+        public static Matrix<T> DenseOfRowsBM<T>(int rows, int columns, IEnumerable<IEnumerable<T>> data)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfRowsBM(rows, columns, data);
+        }
 
         /// <summary>
         /// Create a new dense matrix of T as a copy of the given row arrays.
@@ -395,6 +535,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfRowArrays(rows);
+        }
+        public static Matrix<T> DenseOfRowArraysBM<T>(params T[][] rows)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfRowArraysBM(rows);
         }
 
         /// <summary>
@@ -407,6 +552,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfRowArrays(rows);
         }
+        public static Matrix<T> DenseOfRowArraysBM<T>(IEnumerable<T[]> rows)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfRowArraysBM(rows);
+        }
 
         /// <summary>
         /// Create a new dense matrix as a copy of the given row vectors.
@@ -417,6 +567,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfRowVectors(rows);
+        }
+        public static Matrix<T> DenseOfRowVectorsBM<T>(params Vector<T>[] rows)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfRowVectorsBM(rows);
         }
 
         /// <summary>
@@ -429,6 +584,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfRowVectors(rows);
         }
+        public static Matrix<T> DenseOfRowVectorsBM<T>(IEnumerable<Vector<T>> rows)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfRowVectorsBM(rows);
+        }
 
         /// <summary>
         /// Create a new dense matrix with the diagonal as a copy of the given vector.
@@ -439,6 +599,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfDiagonalVector(diagonal);
+        }
+        public static Matrix<T> DenseOfDiagonalVectorBM<T>(Vector<T> diagonal)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfDiagonalVectorBM(diagonal);
         }
 
         /// <summary>
@@ -451,6 +616,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfDiagonalVector(rows, columns, diagonal);
         }
+        public static Matrix<T> DenseOfDiagonalVectorBM<T>(int rows, int columns, Vector<T> diagonal)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfDiagonalVectorBM(rows, columns, diagonal);
+        }
 
         /// <summary>
         /// Create a new dense matrix with the diagonal as a copy of the given array.
@@ -461,6 +631,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfDiagonalArray(diagonal);
+        }
+        public static Matrix<T> DenseOfDiagonalArrayBM<T>(T[] diagonal)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfDiagonalArrayBM(diagonal);
         }
 
         /// <summary>
@@ -473,6 +648,11 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Matrix<T>.Build.DenseOfDiagonalArray(rows, columns, diagonal);
         }
+        public static Matrix<T> DenseOfDiagonalArrayBM<T>(int rows, int columns, T[] diagonal)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfDiagonalArrayBM(rows, columns, diagonal);
+        }
 
         /// <summary>
         /// Create a new dense matrix from a 2D array of existing matrices.
@@ -484,6 +664,11 @@ namespace MathNet.Numerics.LinearAlgebra
             where T : struct, IEquatable<T>, IFormattable
         {
             return Matrix<T>.Build.DenseOfMatrixArray(matrices);
+        }
+        public static Matrix<T> DenseOfMatrixArrayBM<T>(Matrix<T>[,] matrices)
+            where T : struct, IEquatable<T>, IFormattable
+        {
+            return Matrix<T>.Build.DenseOfMatrixArrayBM(matrices);
         }
 
         /// <summary>

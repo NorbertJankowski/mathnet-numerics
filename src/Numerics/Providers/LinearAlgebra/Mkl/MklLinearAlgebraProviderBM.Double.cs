@@ -1,4 +1,4 @@
-ï»¿// <copyright file="MklLinearAlgebraProvider.Double.cs" company="Math.NET">
+// <copyright file="MklLinearAlgebraProvider.Double.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -35,14 +35,25 @@ using System.Security;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using MathNet.Numerics.Properties;
 using MathNet.Numerics.Providers.Common.Mkl;
+using MathNet.Numerics.LinearAlgebra.Storage;
+using Anemon;
 
 namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
 {
     /// <summary>
     /// Intel's Math Kernel Library (MKL) linear algebra provider.
     /// </summary>
-    public partial class MklLinearAlgebraProvider
+    public class MklLinearAlgebraProvider_Double : MklLinearAlgebraProviderBM, ILinearAlgebraProviderBM<double>
     {
+        public MklLinearAlgebraProvider_Double(
+            Common.Mkl.MklConsistency consistency = Common.Mkl.MklConsistency.Auto,
+            Common.Mkl.MklPrecision precision = Common.Mkl.MklPrecision.Double,
+            Common.Mkl.MklAccuracy accuracy = Common.Mkl.MklAccuracy.High)
+            : base(consistency, precision, accuracy)
+        {
+        }
+
+
         /// <summary>
         /// Computes the requested <see cref="Norm"/> of the matrix.
         /// </summary>
@@ -54,7 +65,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// The requested <see cref="Norm"/> of the matrix.
         /// </returns>
         [SecuritySafeCritical]
-        public override double MatrixNorm(Norm norm, int rows, int columns, double[] matrix)
+        public double MatrixNorm(Norm norm, int rows, int columns, IStorageBM matrix)
         {
             if (matrix == null)
             {
@@ -71,12 +82,12 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentMustBePositive, "columns");
             }
 
-            if (matrix.Length < rows * columns)
+            if (matrix.Length < (long)rows * columns)
             {
-                throw new ArgumentException(string.Format(Resources.ArrayTooSmall, rows * columns), "matrix");
+                throw new ArgumentException(string.Format(Resources.ArrayTooSmall, (long)rows * columns), "matrix");
             }
 
-            return SafeNativeMethods.d_matrix_norm((byte)norm, rows, columns, matrix);
+            return SafeNativeMethodsBM_Double.d_matrix_norm((byte)norm, rows, columns, matrix.Data);
         }
 
         /// <summary>
@@ -87,7 +98,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <returns>The dot product of x and y.</returns>
         /// <remarks>This is equivalent to the DOT BLAS routine.</remarks>
         [SecuritySafeCritical]
-        public override double DotProduct(double[] x, double[] y)
+        public double DotProduct(IStorageBM x, IStorageBM y)
         {
             if (y == null)
             {
@@ -104,7 +115,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength);
             }
 
-            return SafeNativeMethods.d_dot_product(x.Length, x, y);
+            return SafeNativeMethodsBM_Double.d_dot_product(x.Length, x.Data, y.Data);
         }
 
         /// <summary>
@@ -116,7 +127,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="result">The result of the addition.</param>
         /// <remarks>This is similar to the AXPY BLAS routine.</remarks>
         [SecuritySafeCritical]
-        public override void AddVectorToScaledVector(double[] y, double alpha, double[] x, double[] result)
+        public void AddVectorToScaledVector(IStorageBM y, double alpha, IStorageBM x, IStorageBM result)
         {
             if (y == null)
             {
@@ -135,7 +146,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
 
             if (!ReferenceEquals(y, result))
             {
-                Array.Copy(y, 0, result, 0, y.Length);
+                DataTableStorage.DataTableStorage_GetRow_Double(y.Data, y.Length, 0, result.Data);
             }
 
             if (alpha == 0.0)
@@ -143,7 +154,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 return;
             }
 
-            SafeNativeMethods.d_axpy(y.Length, alpha, x, result);
+            SafeNativeMethodsBM_Double.d_axpy(y.Length, alpha, x.Data, result.Data);
         }
 
         /// <summary>
@@ -154,7 +165,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="result">This result of the scaling.</param>
         /// <remarks>This is similar to the SCAL BLAS routine.</remarks>
         [SecuritySafeCritical]
-        public override void ScaleArray(double alpha, double[] x, double[] result)
+        public void ScaleArray(double alpha, IStorageBM x, IStorageBM result)
         {
             if (x == null)
             {
@@ -163,7 +174,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
 
             if (!ReferenceEquals(x, result))
             {
-                Array.Copy(x, 0, result, 0, x.Length);
+                DataTableStorage.DataTableStorage_GetRow_Double(x.Data, x.Length, 0, result.Data);
             }
 
             if (alpha == 1.0)
@@ -171,9 +182,28 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 return;
             }
 
-            SafeNativeMethods.d_scale(x.Length, alpha, result);
+            SafeNativeMethodsBM_Double.d_scale(x.Length, alpha, result.Data);
         }
 
+        /// <summary>
+        /// Conjugates an array. Can be used to conjugate a vector and a matrix.
+        /// </summary>
+        /// <param name="x">The values to conjugate.</param>
+        /// <param name="result">This result of the conjugation.</param>
+        public void ConjugateArray(IStorageBM x, IStorageBM result)
+        {
+            if (x == null)
+            {
+                throw new ArgumentNullException("x");
+            }
+
+            if (!ReferenceEquals(x, result))
+            {
+                DenseColumnMajorMatrixStorageBM<double> _x = x as DenseColumnMajorMatrixStorageBM<double>;
+                DenseColumnMajorMatrixStorageBM<double> _result = result as DenseColumnMajorMatrixStorageBM<double>;
+                DataTableStorage.DataTableStorage_ConjugateArray_Double(_x.Data, _result.Data, _x.Length);
+            }
+        }
         /// <summary>
         /// Multiples two matrices. <c>result = x * y</c>
         /// </summary>
@@ -186,7 +216,11 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="result">Where to store the result of the multiplication.</param>
         /// <remarks>This is a simplified version of the BLAS GEMM routine with alpha
         /// set to 1.0 and beta set to 0.0, and x and y are not transposed.</remarks>
-        public override void MatrixMultiply(double[] x, int rowsX, int columnsX, double[] y, int rowsY, int columnsY, double[] result)
+        public void MatrixMultiply(IStorageBM x, int rowsX, int columnsX, IStorageBM y, int rowsY, int columnsY, IStorageBM result)
+        {
+            MatrixMultiplyWithUpdate(Transpose.DontTranspose, Transpose.DontTranspose, 1.0f, x, rowsX, columnsX, y, rowsY, columnsY, 0.0f, result);
+        }
+        public void MatrixMultiply(IStorageBM x, int rowsX, int columnsX, double[] y, int rowsY, int columnsY, double[] result)
         {
             MatrixMultiplyWithUpdate(Transpose.DontTranspose, Transpose.DontTranspose, 1.0, x, rowsX, columnsX, y, rowsY, columnsY, 0.0, result);
         }
@@ -206,7 +240,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="beta">The value to scale the <paramref name="c"/> matrix.</param>
         /// <param name="c">The c matrix.</param>
         [SecuritySafeCritical]
-        public override void MatrixMultiplyWithUpdate(Transpose transposeA, Transpose transposeB, double alpha, double[] a, int rowsA, int columnsA, double[] b, int rowsB, int columnsB, double beta, double[] c)
+        public void MatrixMultiplyWithUpdate(Transpose transposeA, Transpose transposeB, double alpha, IStorageBM a, int rowsA, int columnsA, IStorageBM b, int rowsB, int columnsB, double beta, IStorageBM c)
         {
             if (a == null)
             {
@@ -228,7 +262,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
             var k = transposeA == Transpose.DontTranspose ? columnsA : rowsA;
             var l = transposeB == Transpose.DontTranspose ? rowsB : columnsB;
 
-            if (c.Length != m*n)
+            if (c.Length != (long)m *n)
             {
                 throw new ArgumentException(Resources.ArgumentMatrixDimensions);
             }
@@ -238,7 +272,41 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentMatrixDimensions);
             }
 
-            SafeNativeMethods.d_matrix_multiply(transposeA, transposeB, m, n, k, alpha, a, b, beta, c);
+            SafeNativeMethodsBM_Double.d_matrix_multiply(transposeA, transposeB, m, n, k, alpha, a.Data, b.Data, beta, c.Data);
+        }
+        public void MatrixMultiplyWithUpdate(Transpose transposeA, Transpose transposeB, double alpha, IStorageBM a, int rowsA, int columnsA, double[] b, int rowsB, int columnsB, double beta, double[] c)
+        {
+            if (a == null)
+            {
+                throw new ArgumentNullException("a");
+            }
+
+            if (b == null)
+            {
+                throw new ArgumentNullException("b");
+            }
+
+            if (c == null)
+            {
+                throw new ArgumentNullException("c");
+            }
+
+            var m = transposeA == Transpose.DontTranspose ? rowsA : columnsA;
+            var n = transposeB == Transpose.DontTranspose ? columnsB : rowsB;
+            var k = transposeA == Transpose.DontTranspose ? columnsA : rowsA;
+            var l = transposeB == Transpose.DontTranspose ? rowsB : columnsB;
+
+            if (c.Length != (long)m * n)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixDimensions);
+            }
+
+            if (k != l)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixDimensions);
+            }
+
+            SafeNativeMethodsBM_Double.d_matrix_multiply(transposeA, transposeB, m, n, k, alpha, a.Data, b, beta, c);
         }
 
         /// <summary>
@@ -251,7 +319,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="ipiv">On exit, it contains the pivot indices. The size of the array must be <paramref name="order"/>.</param>
         /// <remarks>This is equivalent to the GETRF LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUFactor(double[] data, int order, int[] ipiv)
+        public void LUFactor(IStorageBM data, int order, int[] ipiv)
         {
             if (data == null)
             {
@@ -263,7 +331,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("ipiv");
             }
 
-            if (data.Length != order*order)
+            if (data.Length != (long)order *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "data");
             }
@@ -273,7 +341,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "ipiv");
             }
 
-            var info = SafeNativeMethods.d_lu_factor(order, data, ipiv);
+            var info = SafeNativeMethodsBM_Double.d_lu_factor(order, data.Data, ipiv);
 
             if (info < 0)
             {
@@ -288,19 +356,19 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="order">The order of the square matrix <paramref name="a"/>.</param>
         /// <remarks>This is equivalent to the GETRF and GETRI LAPACK routines.</remarks>
         [SecuritySafeCritical]
-        public override void LUInverse(double[] a, int order)
+        public void LUInverse(IStorageBM a, int order)
         {
             if (a == null)
             {
                 throw new ArgumentNullException("a");
             }
 
-            if (a.Length != order*order)
+            if (a.Length != (long)order *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
             }
 
-            var info = SafeNativeMethods.d_lu_inverse(order, a);
+            var info = SafeNativeMethodsBM_Double.d_lu_inverse(order, a.Data);
 
             if (info == (int)MklError.MemoryAllocation)
             {
@@ -326,7 +394,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <remarks>This is equivalent to the GETRI LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUInverseFactored(double[] a, int order, int[] ipiv)
+        public void LUInverseFactored(IStorageBM a, int order, int[] ipiv)
         {
             if (a == null)
             {
@@ -338,7 +406,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("ipiv");
             }
 
-            if (a.Length != order*order)
+            if (a.Length != (long)order *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
             }
@@ -348,7 +416,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "ipiv");
             }
 
-            var info = SafeNativeMethods.d_lu_inverse_factored(order, a, ipiv);
+            var info = SafeNativeMethodsBM_Double.d_lu_inverse_factored(order, a.Data, ipiv);
 
             if (info < 0)
             {
@@ -370,19 +438,19 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
         /// <remarks>This is equivalent to the GETRF and GETRS LAPACK routines.</remarks>
         [SecuritySafeCritical]
-        public override void LUSolve(int columnsOfB, double[] a, int order, double[] b)
+        public void LUSolve(int columnsOfB, IStorageBM a, int order, IStorageBM b)
         {
             if (a == null)
             {
                 throw new ArgumentNullException("a");
             }
 
-            if (a.Length != order*order)
+            if (a.Length != (long)order *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
             }
 
-            if (b.Length != columnsOfB*order)
+            if (b.Length != (long)columnsOfB *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
             }
@@ -392,7 +460,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentReferenceDifferent);
             }
 
-            var info = SafeNativeMethods.d_lu_solve(order, columnsOfB, a, b);
+            var info = SafeNativeMethodsBM_Double.d_lu_solve(order, columnsOfB, a.Data, b.Data);
 
             if (info == (int)MklError.MemoryAllocation)
             {
@@ -415,7 +483,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
         /// <remarks>This is equivalent to the GETRS LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUSolveFactored(int columnsOfB, double[] a, int order, int[] ipiv, double[] b)
+        public void LUSolveFactored(int columnsOfB, IStorageBM a, int order, int[] ipiv, IStorageBM b)
         {
             if (a == null)
             {
@@ -427,7 +495,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("ipiv");
             }
 
-            if (a.Length != order*order)
+            if (a.Length != (long)order *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
             }
@@ -437,7 +505,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "ipiv");
             }
 
-            if (b.Length != columnsOfB*order)
+            if (b.Length != (long)columnsOfB *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
             }
@@ -447,7 +515,46 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentReferenceDifferent);
             }
 
-            var info = SafeNativeMethods.d_lu_solve_factored(order, columnsOfB, a, ipiv, b);
+            var info = SafeNativeMethodsBM_Double.d_lu_solve_factored(order, columnsOfB, a.Data, ipiv, b.Data);
+
+            if (info < 0)
+            {
+                throw new InvalidParameterException(Math.Abs(info));
+            }
+        }
+        public void LUSolveFactored(int columnsOfB, IStorageBM a, int order, int[] ipiv, double[] b)
+        {
+            if (a == null)
+            {
+                throw new ArgumentNullException("a");
+            }
+
+            if (ipiv == null)
+            {
+                throw new ArgumentNullException("ipiv");
+            }
+
+            if (a.Length != (long)order * order)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
+            }
+
+            if (ipiv.Length != order)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "ipiv");
+            }
+
+            if (b.Length != (long)columnsOfB * order)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
+            }
+
+            if (ReferenceEquals(a, b))
+            {
+                throw new ArgumentException(Resources.ArgumentReferenceDifferent);
+            }
+
+            var info = SafeNativeMethodsBM_Double.d_lu_solve_factored(order, columnsOfB, a.Data, ipiv, b);
 
             if (info < 0)
             {
@@ -463,7 +570,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="order">The number of rows or columns in the matrix.</param>
         /// <remarks>This is equivalent to the POTRF LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void CholeskyFactor(double[] a, int order)
+        public void CholeskyFactor(IStorageBM a, int order)
         {
             if (a == null)
             {
@@ -475,17 +582,12 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentMustBePositive, "order");
             }
 
-            if (a.Length != order*order)
+            if (a.Length != (long)order *order)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
             }
 
-            var info = SafeNativeMethods.d_cholesky_factor(order, a);
-
-            if (info == (int)MklError.MemoryAllocation)
-            {
-                throw new MemoryAllocationException();
-            }
+            var info = SafeNativeMethodsBM_Double.d_cholesky_factor(order, a.Data);
 
             if (info < 0)
             {
@@ -508,7 +610,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <remarks>This is equivalent to the POTRF add POTRS LAPACK routines.
         /// </remarks>
         [SecuritySafeCritical]
-        public override void CholeskySolve(double[] a, int orderA, double[] b, int columnsB)
+        public void CholeskySolve(IStorageBM a, int orderA, IStorageBM b, int columnsB)
         {
             if (a == null)
             {
@@ -520,7 +622,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("b");
             }
 
-            if (b.Length != orderA*columnsB)
+            if (b.Length != (long)orderA *columnsB)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
             }
@@ -530,7 +632,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentReferenceDifferent);
             }
 
-            var info = SafeNativeMethods.d_cholesky_solve(orderA, columnsB, a, b);
+            var info = SafeNativeMethodsBM_Double.d_cholesky_solve(orderA, columnsB, a.Data, b.Data);
 
             if (info == (int)MklError.MemoryAllocation)
             {
@@ -552,7 +654,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="columnsB">The number of columns in the B matrix.</param>
         /// <remarks>This is equivalent to the POTRS LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void CholeskySolveFactored(double[] a, int orderA, double[] b, int columnsB)
+        public void CholeskySolveFactored(IStorageBM a, int orderA, IStorageBM b, int columnsB)
         {
             if (a == null)
             {
@@ -564,7 +666,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("b");
             }
 
-            if (b.Length != orderA*columnsB)
+            if (b.Length != (long)orderA *columnsB)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
             }
@@ -574,7 +676,36 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentReferenceDifferent);
             }
 
-            var info = SafeNativeMethods.d_cholesky_solve_factored(orderA, columnsB, a, b);
+            var info = SafeNativeMethodsBM_Double.d_cholesky_solve_factored(orderA, columnsB, a.Data, b.Data);
+
+            if (info < 0)
+            {
+                throw new InvalidParameterException(Math.Abs(info));
+            }
+        }
+        public void CholeskySolveFactored(IStorageBM a, int orderA, double[] b, int columnsB)
+        {
+            if (a == null)
+            {
+                throw new ArgumentNullException("a");
+            }
+
+            if (b == null)
+            {
+                throw new ArgumentNullException("b");
+            }
+
+            if (b.Length != (long)orderA * columnsB)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
+            }
+
+            if (ReferenceEquals(a, b))
+            {
+                throw new ArgumentException(Resources.ArgumentReferenceDifferent);
+            }
+
+            var info = SafeNativeMethodsBM_Double.d_cholesky_solve_factored(orderA, columnsB, a.Data, b);
 
             if (info < 0)
             {
@@ -595,7 +726,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// to be used by the QR solve routine.</param>
         /// <remarks>This is similar to the GEQRF and ORGQR LAPACK routines.</remarks>
         [SecuritySafeCritical]
-        public override void QRFactor(double[] r, int rowsR, int columnsR, double[] q, double[] tau)
+        public void QRFactor(IStorageBM r, int rowsR, int columnsR, IStorageBM q, double[] tau)
         {
             if (r == null)
             {
@@ -607,7 +738,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("q");
             }
 
-            if (r.Length != rowsR*columnsR)
+            if (r.Length != (long)rowsR *columnsR)
             {
                 throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, "rowsR * columnsR"), "r");
             }
@@ -617,12 +748,12 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(string.Format(Resources.ArrayTooSmall, "min(m,n)"), "tau");
             }
 
-            if (q.Length != rowsR*rowsR)
+            if (q.Length != (long)rowsR *rowsR)
             {
                 throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, "rowsR * rowsR"), "q");
             }
 
-            var info = SafeNativeMethods.d_qr_factor(rowsR, columnsR, r, tau, q);
+            var info = SafeNativeMethodsBM_Double.d_qr_factor(rowsR, columnsR, r.Data, tau, q.Data);
 
             if (info < 0)
             {
@@ -643,7 +774,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// to be used by the QR solve routine.</param>
         /// <remarks>This is similar to the GEQRF and ORGQR LAPACK routines.</remarks>
         [SecuritySafeCritical]
-        public override void ThinQRFactor(double[] q, int rowsA, int columnsA, double[] r, double[] tau)
+        public void ThinQRFactor(IStorageBM q, int rowsA, int columnsA, IStorageBM r, double[] tau)
         {
             if (r == null)
             {
@@ -655,7 +786,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("q");
             }
 
-            if (q.Length != rowsA*columnsA)
+            if (q.Length != (long)rowsA * columnsA)
             {
                 throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, "rowsR * columnsR"), "q");
             }
@@ -665,12 +796,12 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(string.Format(Resources.ArrayTooSmall, "min(m,n)"), "tau");
             }
 
-            if (r.Length != columnsA*columnsA)
+            if (r.Length != (long)columnsA * columnsA)
             {
                 throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, "columnsA * columnsA"), "r");
             }
 
-            var info = SafeNativeMethods.d_qr_thin_factor(rowsA, columnsA, q, tau, r);
+            var info = SafeNativeMethodsBM_Double.d_qr_thin_factor(rowsA, columnsA, q.Data, tau, r.Data);
 
             if (info < 0)
             {
@@ -690,7 +821,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="method">The type of QR factorization to perform. <seealso cref="QRMethod"/></param>
         /// <remarks>Rows must be greater or equal to columns.</remarks>
         [SecuritySafeCritical]
-        public override void QRSolve(double[] a, int rows, int columns, double[] b, int columnsB, double[] x, QRMethod method = QRMethod.Full)
+        public void QRSolve(IStorageBM a, int rows, int columns, double[] b, int columnsB, double[] x, QRMethod method = QRMethod.Full)
         {
             if (a == null)
             {
@@ -707,17 +838,17 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("x");
             }
 
-            if (a.Length != rows * columns)
+            if (a.Length != (long)rows * columns)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
             }
 
-            if (b.Length != rows * columnsB)
+            if (b.Length != (long)rows * columnsB)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
             }
 
-            if (x.Length != columns * columnsB)
+            if (x.Length != (long)columns * columnsB)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "x");
             }
@@ -727,7 +858,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.RowsLessThanColumns);
             }
 
-            var info = SafeNativeMethods.d_qr_solve(rows, columns, columnsB, a, b, x);
+            var info = SafeNativeMethodsBM_Double.d_qr_solve(rows, columns, columnsB, a.Data, b, x);
 
             if (info == (int)MklError.MemoryAllocation)
             {
@@ -748,8 +879,8 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <summary>
         /// Solves A*X=B for X using a previously QR factored matrix.
         /// </summary>
-        /// <param name="q">The Q matrix obtained by calling <see cref="QRFactor(double[],int,int,double[],double[])"/>.</param>
-        /// <param name="r">The R matrix obtained by calling <see cref="QRFactor(double[],int,int,double[],double[])"/>. </param>
+        /// <param name="q">The Q matrix obtained by calling <see cref="QRFactor(IStorageBM,int,int,IStorageBM,IStorageBM)"/>.</param>
+        /// <param name="r">The R matrix obtained by calling <see cref="QRFactor(IStorageBM,int,int,IStorageBM,IStorageBM)"/>. </param>
         /// <param name="rowsA">The number of rows in the A matrix.</param>
         /// <param name="columnsA">The number of columns in the A matrix.</param>
         /// <param name="tau">Contains additional information on Q. Only used for the native solver
@@ -760,7 +891,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="method">The type of QR factorization to perform. <seealso cref="QRMethod"/></param>
         /// <remarks>Rows must be greater or equal to columns.</remarks>
         [SecuritySafeCritical]
-        public override void QRSolveFactored(double[] q, double[] r, int rowsA, int columnsA, double[] tau, double[] b, int columnsB, double[] x, QRMethod method = QRMethod.Full)
+        public void QRSolveFactored(IStorageBM q, IStorageBM r, int rowsA, int columnsA, double[] tau, IStorageBM b, int columnsB, IStorageBM x, QRMethod method = QRMethod.Full)
         {
             if (r == null)
             {
@@ -794,29 +925,105 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 columnsQ = rowsR = columnsR = columnsA;
             }
 
-            if (r.Length != rowsR * columnsR)
+            if (r.Length != (long)rowsR * columnsR)
             {
-                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, rowsR * columnsR), "r");
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)rowsR * columnsR), "r");
             }
 
-            if (q.Length != rowsQ * columnsQ)
+            if (q.Length != (long)rowsQ * columnsQ)
             {
-                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, rowsQ * columnsQ), "q");
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)rowsQ * columnsQ), "q");
             }
 
-            if (b.Length != rowsA * columnsB)
+            if (b.Length != (long)rowsA * columnsB)
             {
-                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, rowsA * columnsB), "b");
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)rowsA * columnsB), "b");
             }
 
-            if (x.Length != columnsA * columnsB)
+            if (x.Length != (long)columnsA * columnsB)
             {
-                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, columnsA * columnsB), "x");
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)columnsA * columnsB), "x");
             }
 
             if (method == QRMethod.Full)
             {
-                var info = SafeNativeMethods.d_qr_solve_factored(rowsA, columnsA, columnsB, r, b, tau, x);
+                var info = SafeNativeMethodsBM_Double.d_qr_solve_factored(rowsA, columnsA, columnsB, r.Data, b.Data, tau, x.Data);
+                
+                if (info == (int)MklError.MemoryAllocation)
+                {
+                    throw new MemoryAllocationException();
+                }
+
+                if (info < 0)
+                {
+                    throw new InvalidParameterException(Math.Abs(info));
+                }
+            }
+            else
+            {
+                // we don't have access to the raw Q matrix any more(it is stored in R in the full QR), need to think about this.
+                // let just call the managed version in the meantime. The heavy lifting has already been done. -marcus
+                //base.QRSolveFactored(q, r, rowsA, columnsA, tau, b, columnsB, x, QRMethod.Thin);
+                new Exception("There is no thin QRSolveFactored in MKL");
+            }
+        }
+        public void QRSolveFactored(IStorageBM q, IStorageBM r, int rowsA, int columnsA, double[] tau, double[] b, int columnsB, double[] x, QRMethod method = QRMethod.Full)
+        {
+            if (r == null)
+            {
+                throw new ArgumentNullException("r");
+            }
+
+            if (q == null)
+            {
+                throw new ArgumentNullException("q");
+            }
+
+            if (b == null)
+            {
+                throw new ArgumentNullException("q");
+            }
+
+            if (x == null)
+            {
+                throw new ArgumentNullException("q");
+            }
+
+            int rowsQ, columnsQ, rowsR, columnsR;
+            if (method == QRMethod.Full)
+            {
+                rowsQ = columnsQ = rowsR = rowsA;
+                columnsR = columnsA;
+            }
+            else
+            {
+                rowsQ = rowsA;
+                columnsQ = rowsR = columnsR = columnsA;
+            }
+
+            if (r.Length != (long)rowsR * columnsR)
+            {
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)rowsR * columnsR), "r");
+            }
+
+            if (q.Length != (long)rowsQ * columnsQ)
+            {
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)rowsQ * columnsQ), "q");
+            }
+
+            if (b.Length != (long)rowsA * columnsB)
+            {
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)rowsA * columnsB), "b");
+            }
+
+            if (x.Length != (long)columnsA * columnsB)
+            {
+                throw new ArgumentException(string.Format(Resources.ArgumentArrayWrongLength, (long)columnsA * columnsB), "x");
+            }
+
+            if (method == QRMethod.Full)
+            {
+                var info = SafeNativeMethodsBM_Double.d_qr_solve_factored(rowsA, columnsA, columnsB, r.Data, b, tau, x);
 
                 if (info == (int)MklError.MemoryAllocation)
                 {
@@ -832,7 +1039,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
             {
                 // we don't have access to the raw Q matrix any more(it is stored in R in the full QR), need to think about this.
                 // let just call the managed version in the meantime. The heavy lifting has already been done. -marcus
-                base.QRSolveFactored(q, r, rowsA, columnsA, tau, b, columnsB, x, QRMethod.Thin);
+                QRSolveFactored(q, r, rowsA, columnsA, tau, b, columnsB, x, QRMethod.Thin);
             }
         }
 
@@ -845,7 +1052,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="b">The B matrix.</param>
         /// <param name="columnsB">The number of columns of B.</param>
         /// <param name="x">On exit, the solution matrix.</param>
-        public override void SvdSolve(double[] a, int rowsA, int columnsA, double[] b, int columnsB, double[] x)
+        public void SvdSolve(IStorageBM a, int rowsA, int columnsA, double[] b, int columnsB, double[] x)
         {
             if (a == null)
             {
@@ -862,22 +1069,22 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("x");
             }
 
-            if (b.Length != rowsA*columnsB)
+            if (b.Length != (long)rowsA *columnsB)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
             }
 
-            if (x.Length != columnsA*columnsB)
+            if (x.Length != (long)columnsA *columnsB)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
             }
 
             var s = new double[Math.Min(rowsA, columnsA)];
-            var u = new double[rowsA*rowsA];
-            var vt = new double[columnsA*columnsA];
+            var u = new DenseColumnMajorMatrixStorageBM<double>(rowsA, rowsA);
+            var vt = new DenseColumnMajorMatrixStorageBM<double>(columnsA, columnsA);
 
-            var clone = new double[a.Length];
-            a.Copy(clone);
+            var clone = new DenseColumnMajorMatrixStorageBM<double>(rowsA, columnsA);
+            DataTableStorage.DataTableStorage_GetRow_Double(a.Data, a.Length, 0, clone.Data);
             SingularValueDecomposition(SVDVectorsComputation.VectorComputation, clone, rowsA, columnsA, s, u, vt);
             SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
         }
@@ -896,7 +1103,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// right singular vectors.</param>
         /// <remarks>This is equivalent to the GESVD LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void SingularValueDecomposition(SVDVectorsComputation computeVectors, double[] a, int rowsA, int columnsA, double[] s, double[] u, double[] vt)
+        public void SingularValueDecomposition(SVDVectorsComputation computeVectors, IStorageBM a, int rowsA, int columnsA, double[] s, IStorageBM u, IStorageBM vt)
         {
             if (a == null)
             {
@@ -920,17 +1127,17 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
 
             int nm = Math.Min(rowsA, columnsA);
             if ((computeVectors != SVDVectorsComputation.SimplifiedVectorComputation) &&
-                    (u.Length != rowsA * rowsA) ||
+                    (u.Length != (long)rowsA * rowsA) ||
                 (computeVectors == SVDVectorsComputation.SimplifiedVectorComputation) &&
-                    (u.Length != rowsA * nm))
+                    (u.Length != (long)rowsA * nm))
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "u");
             }
 
-            if ((computeVectors != SVDVectorsComputation.SimplifiedVectorComputation) && 
-                (vt.Length != columnsA * columnsA) ||
-                    (computeVectors == SVDVectorsComputation.SimplifiedVectorComputation) &&
-                    (vt.Length != columnsA * nm))
+            if ((computeVectors != SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (vt.Length != (long)columnsA * columnsA) ||
+                (computeVectors == SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (vt.Length != (long)columnsA * nm))
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "vt");
             }
@@ -940,7 +1147,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "s");
             }
 
-            var info = SafeNativeMethods.d_svd_factor((char)computeVectors, rowsA, columnsA, a, s, u, vt);
+            var info = SafeNativeMethodsBM_Double.d_svd_factor((char)computeVectors, rowsA, columnsA, a.Data, s, u.Data, vt.Data);
 
             if (info == (int)MklError.MemoryAllocation)
             {
@@ -968,7 +1175,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <remarks>There is no equivalent BLAS routine, but many libraries
         /// provide optimized (parallel and/or vectorized) versions of this
         /// routine.</remarks>
-        public override void AddArrays(double[] x, double[] y, double[] result)
+        public void AddArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
             if (y == null)
             {
@@ -990,7 +1197,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength);
             }
 
-            SafeNativeMethods.d_vector_add(x.Length, x, y, result);
+            SafeNativeMethodsBM_Double.d_vector_add(x.Length, x.Data, y.Data, result.Data);
         }
 
         /// <summary>
@@ -1003,7 +1210,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <remarks>There is no equivalent BLAS routine, but many libraries
         /// provide optimized (parallel and/or vectorized) versions of this
         /// routine.</remarks>
-        public override void SubtractArrays(double[] x, double[] y, double[] result)
+        public void SubtractArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
             if (y == null)
             {
@@ -1025,7 +1232,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength);
             }
 
-            SafeNativeMethods.d_vector_subtract(x.Length, x, y, result);
+            SafeNativeMethodsBM_Double.d_vector_subtract(x.Length, x.Data, y.Data, result.Data);
         }
 
         /// <summary>
@@ -1038,7 +1245,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <remarks>There is no equivalent BLAS routine, but many libraries
         /// provide optimized (parallel and/or vectorized) versions of this
         /// routine.</remarks>
-        public override void PointWiseMultiplyArrays(double[] x, double[] y, double[] result)
+        public void PointWiseMultiplyArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
             if (y == null)
             {
@@ -1060,7 +1267,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength);
             }
 
-            SafeNativeMethods.d_vector_multiply(x.Length, x, y, result);
+            SafeNativeMethodsBM_Double.d_vector_multiply(x.Length, x.Data, y.Data, result.Data);
         }
 
         /// <summary>
@@ -1073,7 +1280,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <remarks>There is no equivalent BLAS routine, but many libraries
         /// provide optimized (parallel and/or vectorized) versions of this
         /// routine.</remarks>
-        public override void PointWiseDivideArrays(double[] x, double[] y, double[] result)
+        public void PointWiseDivideArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
             if (y == null)
             {
@@ -1095,7 +1302,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength);
             }
 
-            SafeNativeMethods.d_vector_divide(x.Length, x, y, result);
+            SafeNativeMethodsBM_Double.d_vector_divide(x.Length, x.Data, y.Data, result.Data);
         }
 
         /// <summary>
@@ -1108,11 +1315,25 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <remarks>There is no equivalent BLAS routine, but many libraries
         /// provide optimized (parallel and/or vectorized) versions of this
         /// routine.</remarks>
-        public override void PointWisePowerArrays(double[] x, double[] y, double[] result)
+        public void PointWisePowerArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
             if (_vectorFunctionsMajor != 0 || _vectorFunctionsMinor < 1)
             {
-                base.PointWisePowerArrays(x, y, result);
+                DenseColumnMajorMatrixStorageBM<double> _x = x as DenseColumnMajorMatrixStorageBM<double>;
+                DenseColumnMajorMatrixStorageBM<double> _y = y as DenseColumnMajorMatrixStorageBM<double>;
+                DenseColumnMajorMatrixStorageBM<double> _result = result as DenseColumnMajorMatrixStorageBM<double>;
+                var vx = new double[_x.RowCount];
+                var vy = new double[_x.RowCount];
+                for (int i = 0; i < _x.ColumnCount; i++)
+                {
+                    DataTableStorage.DataTableStorage_GetRow_Double(_x.Data, i, _x.RowCount, vx);
+                    DataTableStorage.DataTableStorage_GetRow_Double(_y.Data, i, _y.RowCount, vy);
+                    for (int j = 0; j < _x.RowCount; j++)
+                    {
+                        vx[j] = Math.Pow(vx[j], vy[j]);
+                    }
+                    DataTableStorage.DataTableStorage_SetRow_Double(_result.Data, i, _x.RowCount, vx);
+                }
             }
 
             if (y == null)
@@ -1135,7 +1356,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentException(Resources.ArgumentArraysSameLength);
             }
 
-            SafeNativeMethods.d_vector_power(x.Length, x, y, result);
+            SafeNativeMethodsBM_Double.d_vector_power(x.Length, x.Data, y.Data, result.Data);
         }
 
         /// <summary>
@@ -1145,18 +1366,18 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
         /// <param name="order">The order of the matrix.</param>
         /// <param name="matrix">The matrix to decompose. The lenth of the array must be order * order.</param>
         /// <param name="matrixEv">On output, the matrix contains the eigen vectors. The lenth of the array must be order * order.</param>
-        /// <param name="vectorEv">On output, the eigen values (Î») of matrix in ascending value. The length of the arry must <paramref name="order"/>.</param>
+        /// <param name="vectorEv">On output, the eigen values (¦Ë) of matrix in ascending value. The length of the arry must <paramref name="order"/>.</param>
         /// <param name="matrixD">On output, the block diagonal eigenvalue matrix. The lenth of the array must be order * order.</param>
-        public override void EigenDecomp(bool isSymmetric, int order, double[] matrix, double[] matrixEv, Complex[] vectorEv, double[] matrixD)
+        public void EigenDecomp(bool isSymmetric, int order, IStorageBM matrix, IStorageBM matrixEv, Complex[] vectorEv, IStorageBM matrixD)
         {
             if (matrix == null)
             {
                 throw new ArgumentNullException("matrix");
             }
 
-            if (matrix.Length != order*order)
+            if (matrix.Length != (long)order *order)
             {
-                throw new ArgumentException(String.Format(Resources.ArgumentArrayWrongLength, order*order), "matrix");
+                throw new ArgumentException(String.Format(Resources.ArgumentArrayWrongLength, (long)order *order), "matrix");
             }
 
             if (matrixEv == null)
@@ -1164,9 +1385,9 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("matrixEv");
             }
 
-            if (matrixEv.Length != order*order)
+            if (matrixEv.Length != (long)order *order)
             {
-                throw new ArgumentException(String.Format(Resources.ArgumentArrayWrongLength, order*order), "matrixEv");
+                throw new ArgumentException(String.Format(Resources.ArgumentArrayWrongLength, (long)order *order), "matrixEv");
             }
 
             if (vectorEv == null)
@@ -1184,12 +1405,12 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new ArgumentNullException("matrixD");
             }
 
-            if (matrixD.Length != order*order)
+            if (matrixD.Length != (long)order *order)
             {
-                throw new ArgumentException(String.Format(Resources.ArgumentArrayWrongLength, order*order), "matrixD");
+                throw new ArgumentException(String.Format(Resources.ArgumentArrayWrongLength, (long)order *order), "matrixD");
             }
 
-            var info = SafeNativeMethods.d_eigen(isSymmetric, order, matrix, matrixEv, vectorEv, matrixD);
+            var info = SafeNativeMethodsBM_Double.d_eigen(isSymmetric, order, matrix.Data, matrixEv.Data, vectorEv, matrixD.Data);
 
             if (info == (int)MklError.MemoryAllocation)
             {
@@ -1206,6 +1427,74 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new NonConvergenceException();
             }
         }
+
+        /// <summary>
+        /// Solves A*X=B for X using a previously SVD decomposed matrix.
+        /// </summary>
+        /// <param name="rowsA">The number of rows in the A matrix.</param>
+        /// <param name="columnsA">The number of columns in the A matrix.</param>
+        /// <param name="s">The s values returned by <see cref="SingularValueDecomposition(bool,float[],int,int,float[],float[],float[])"/>.</param>
+        /// <param name="u">The left singular vectors returned by  <see cref="SingularValueDecomposition(bool,float[],int,int,float[],float[],float[])"/>.</param>
+        /// <param name="vt">The right singular  vectors returned by  <see cref="SingularValueDecomposition(bool,float[],int,int,float[],float[],float[])"/>.</param>
+        /// <param name="b">The B matrix.</param>
+        /// <param name="columnsB">The number of columns of B.</param>
+        /// <param name="x">On exit, the solution matrix.</param>
+        public void SvdSolveFactored(int rowsA, int columnsA, double[] s, IStorageBM u, IStorageBM vt, double[] b, int columnsB, double[] x)
+        {
+            if (s == null)
+            {
+                throw new ArgumentNullException("s");
+            }
+
+            if (u == null)
+            {
+                throw new ArgumentNullException("u");
+            }
+
+            if (vt == null)
+            {
+                throw new ArgumentNullException("vt");
+            }
+
+            if (b == null)
+            {
+                throw new ArgumentNullException("b");
+            }
+
+            if (x == null)
+            {
+                throw new ArgumentNullException("x");
+            }
+
+            if (u.Length != (long)rowsA * rowsA)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "u");
+            }
+
+            if (vt.Length != (long)columnsA * columnsA)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "vt");
+            }
+
+            if (s.Length != Math.Min(rowsA, columnsA))
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "s");
+            }
+
+            if (b.Length != (long)rowsA * columnsB)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
+            }
+
+            if (x.Length != (long)columnsA * columnsB)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
+            }
+
+            DataTableStorage.DataTableStorage_SvdSolveFactored_Double(rowsA, columnsA, s, u.Data, vt.Data, b, columnsB, x);
+        }
+
+
     }
 }
 

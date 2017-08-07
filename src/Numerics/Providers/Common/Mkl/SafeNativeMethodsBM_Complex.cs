@@ -95,7 +95,7 @@ namespace MathNet.Numerics.Providers.Common.Mkl
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void z_matrix_multiply(Transpose transA, Transpose transB, long m, long n, long k, Complex alpha, IntPtr x, IntPtr y, Complex beta, [In, Out] IntPtr c);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_matrix_multiply(Transpose transA, Transpose transB, long m, long n, long k, Complex alpha, IntPtr x, Complex y, Complex beta, [In, Out] Complex c);
+        internal static extern void z_matrix_multiply(Transpose transA, Transpose transB, long m, long n, long k, Complex alpha, IntPtr x, Complex[] y, Complex beta, [In, Out] Complex[] c);
 
         #endregion BLAS
 
@@ -147,7 +147,7 @@ namespace MathNet.Numerics.Providers.Common.Mkl
         internal static extern long z_qr_solve_factored(long m, long n, long bn, IntPtr r, Complex[] b, Complex[] tau, [In, Out] Complex[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long z_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, long m, long n, [In, Out] IntPtr a, [In, Out] Complex32[] s, [In, Out] IntPtr u, [In, Out] IntPtr v);
+        internal static extern long z_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, long m, long n, [In, Out] IntPtr a, [In, Out] Complex[] s, [In, Out] IntPtr u, [In, Out] IntPtr v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern long z_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, long n, [In] IntPtr a, [In, Out] IntPtr vectors, [In, Out] Complex[] values, [In, Out] IntPtr d);
