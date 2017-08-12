@@ -28,12 +28,15 @@
 // </copyright>
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using MathNet.Numerics.Properties;
 using MathNet.Numerics.Threading;
 using Anemon;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace MathNet.Numerics.LinearAlgebra.Storage
 {
@@ -45,6 +48,8 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
     [Serializable]
     [DataContract(Namespace = "urn:MathNet/Numerics/LinearAlgebra")]
+    [DebuggerDisplay("Count = {Length}")]
+    [DebuggerTypeProxy(typeof(DenseStorageViewer))]
     public class DenseColumnMajorMatrixStorageBM<T> : MatrixStorage<T>, IStorageBM, IDisposable
         where T : struct, IEquatable<T>, IFormattable
     {
@@ -59,10 +64,10 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             : base(rows, columns)
         {
             T t = default(T);
+            Length = (long)rows * (long)columns;
             Data = dataTableStorage.DataTableStorage_AllocByte(
                     //RowCount * ColumnCount * sizeof(t);
-                    RowCount* ColumnCount *System.Runtime.InteropServices.Marshal.SizeOf(t));
-            Length = (long)rows * (long)columns;
+                    Length *System.Runtime.InteropServices.Marshal.SizeOf(t));
         }
         internal DenseColumnMajorMatrixStorageBM(int rows, int columns, IntPtr data)
             : base(rows, columns)
@@ -148,7 +153,9 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
         /// </summary>
         public override T At(int row, int column)
         {
-            return dataTableStorage.DataTableStorage_GetElementAt(Data, RowCount, column, row);
+            T t;
+            dataTableStorage.DataTableStorage_GetElementAt(Data, RowCount, column, row, out t);
+            return t;
         }
         /// <summary>
         /// Sets the element without range checking.
@@ -487,10 +494,6 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
         void CopyToUnchecked(DenseColumnMajorMatrixStorageBM<T> target)
         {
-            for (int i = 0; i < ColumnCount; i++)
-            {
-                dataTableStorage.DataTableStorage_SetRow(target.Data, RowCount, i, Data);
-            }
             dataTableStorage.DataTableStorage_SetRow(target.Data, (long)RowCount * ColumnCount, 0, Data);
         }
 
@@ -1022,8 +1025,6 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
         }
 
 
-
-
         // FUNCTIONAL COMBINATORS: FOLD
 
         internal override void FoldByRowUnchecked<TU>(TU[] target, Func<TU, T, TU> f, Func<TU, int, TU> finalize, TU[] state, Zeros zeros)
@@ -1116,6 +1117,54 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             return Fold2Unchecked(other, f, state, zeros);
         }
 
+    }
 
+
+    internal class DenseStorageViewer
+    {
+        object storage;
+
+        public DenseStorageViewer(object _storage)
+        {
+            storage = _storage;
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        public IEnumerable Values
+        {
+            get
+            {
+                DenseColumnMajorMatrixStorageBM<float> storageF = 
+                    storage as DenseColumnMajorMatrixStorageBM<float>;
+                if (storageF != null)
+                    return GetValues(storageF);
+                DenseColumnMajorMatrixStorageBM<double> storageD = 
+                    storage as DenseColumnMajorMatrixStorageBM<double>;
+                if (storageD != null)
+                    return GetValues(storageD);
+                DenseColumnMajorMatrixStorageBM<System.Numerics.Complex> storageC = 
+                    storage as DenseColumnMajorMatrixStorageBM<System.Numerics.Complex>;
+                if (storageC != null)
+                    return GetValues(storageC);
+                DenseColumnMajorMatrixStorageBM<MathNet.Numerics.Complex32> storageC32 = 
+                    storage as DenseColumnMajorMatrixStorageBM<MathNet.Numerics.Complex32>;
+                if (storageC32 != null)
+                    return GetValues(storageC32);
+
+                return null;
+            }
+        }
+
+        IEnumerable GetValues<T>(DenseColumnMajorMatrixStorageBM<T> storage) where T : struct, IEquatable<T>, IFormattable
+        {
+            for (int i = 0; i < storage.ColumnCount; i++)
+            {
+                for (int j = 0; j < storage.RowCount; j++)
+                {
+                    yield return new Tuple<int, int, T>(j, i, storage.At(j, i));
+                    //yield return storage.At(j, i);
+                }
+            }
+        }
     }
 }

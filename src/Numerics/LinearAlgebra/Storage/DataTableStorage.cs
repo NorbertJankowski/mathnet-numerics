@@ -55,7 +55,7 @@ namespace Anemon
         abstract public void DataTableStorage_GetSubColumn(IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, T[] column);
         abstract public void DataTableStorage_SetSubColumn(IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, T[] column);
 
-        abstract public T DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId);
+        abstract public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out T value);
         abstract public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, T value);
         abstract public void DataTableStorage_GetRowSkip(IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, T[] row);
         abstract public void DataTableStorage_SetRowSkip(IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, T[] row);
@@ -118,8 +118,8 @@ namespace Anemon
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, float[] column);
 
         [DllImport("DataTableStorage.dll")]
-        public static extern float DataTableStorage_GetElementAt_Float(
-            IntPtr storage, long columnCount, long rowId, long columnId);
+        public static extern void DataTableStorage_GetElementAt_Float(
+            IntPtr storage, long columnCount, long rowId, long columnId, out float value);
         [DllImport("DataTableStorage.dll")]
         public static extern void DataTableStorage_SetElementAt_Float(
             IntPtr storage, long columnCount, long rowId, long columnId, float value);
@@ -239,8 +239,10 @@ namespace Anemon
         {
             get
             {
-                return DataTableStorage.DataTableStorage_GetElementAt_Float(
-                  storage, ColumnCount, rowId, columnId);
+                float v;
+                DataTableStorage.DataTableStorage_GetElementAt_Float(
+                  storage, ColumnCount, rowId, columnId, out v);
+                return v;
             }
             set
             {
@@ -307,9 +309,9 @@ namespace Anemon
             DataTableStorage.DataTableStorage_SetSubColumn_Float(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
         }
 
-        override public float DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId)
+        override public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out float value)
         {
-            return DataTableStorage.DataTableStorage_GetElementAt_Float(storage, columnCount, rowId, columnId);
+            DataTableStorage.DataTableStorage_GetElementAt_Float(storage, columnCount, rowId, columnId, out value);
         }
         override public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, float value)
         {
@@ -412,8 +414,8 @@ namespace Anemon
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, double[] column);
 
         [DllImport("DataTableStorage.dll")]
-        public static extern double DataTableStorage_GetElementAt_Double(
-            IntPtr storage, long columnCount, long rowId, long columnId);
+        public static extern void DataTableStorage_GetElementAt_Double(
+            IntPtr storage, long columnCount, long rowId, long columnId, out double value);
         [DllImport("DataTableStorage.dll")]
         public static extern void DataTableStorage_SetElementAt_Double(
             IntPtr storage, long columnCount, long rowId, long columnId, double value);
@@ -533,8 +535,10 @@ namespace Anemon
         {
             get
             {
-                return DataTableStorage.DataTableStorage_GetElementAt_Double(
-                  storage, ColumnCount, rowId, columnId);
+                double v;
+                DataTableStorage.DataTableStorage_GetElementAt_Double(
+                  storage, ColumnCount, rowId, columnId, out v);
+                return v;
             }
             set
             {
@@ -601,9 +605,9 @@ namespace Anemon
             DataTableStorage.DataTableStorage_SetSubColumn_Double(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
         }
 
-        override public double DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId)
+        override public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out double value)
         {
-            return DataTableStorage.DataTableStorage_GetElementAt_Double(storage, columnCount, rowId, columnId);
+            DataTableStorage.DataTableStorage_GetElementAt_Double(storage, columnCount, rowId, columnId, out value);
         }
         override public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, double value)
         {
@@ -706,8 +710,8 @@ namespace Anemon
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, byte[] column);
 
         [DllImport("DataTableStorage.dll")]
-        public static extern byte DataTableStorage_GetElementAt_Byte(
-            IntPtr storage, long columnCount, long rowId, long columnId);
+        public static extern void DataTableStorage_GetElementAt_Byte(
+            IntPtr storage, long columnCount, long rowId, long columnId, out byte value);
         [DllImport("DataTableStorage.dll")]
         public static extern void DataTableStorage_SetElementAt_Byte(
             IntPtr storage, long columnCount, long rowId, long columnId, byte value);
@@ -827,8 +831,10 @@ namespace Anemon
         {
             get
             {
-                return DataTableStorage.DataTableStorage_GetElementAt_Byte(
-                  storage, ColumnCount, rowId, columnId);
+                byte v;
+                DataTableStorage.DataTableStorage_GetElementAt_Byte(
+                  storage, ColumnCount, rowId, columnId, out v);
+                return v;
             }
             set
             {
@@ -895,9 +901,9 @@ namespace Anemon
             DataTableStorage.DataTableStorage_SetSubColumn_Byte(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
         }
 
-        override public byte DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId)
+        override public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out byte value)
         {
-            return DataTableStorage.DataTableStorage_GetElementAt_Byte(storage, columnCount, rowId, columnId);
+            DataTableStorage.DataTableStorage_GetElementAt_Byte(storage, columnCount, rowId, columnId, out value);
         }
         override public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, byte value)
         {
@@ -1000,8 +1006,8 @@ namespace Anemon
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, bool[] column);
 
         [DllImport("DataTableStorage.dll")]
-        public static extern bool DataTableStorage_GetElementAt_Bool(
-            IntPtr storage, long columnCount, long rowId, long columnId);
+        public static extern void DataTableStorage_GetElementAt_Bool(
+            IntPtr storage, long columnCount, long rowId, long columnId, out bool value);
         [DllImport("DataTableStorage.dll")]
         public static extern void DataTableStorage_SetElementAt_Bool(
             IntPtr storage, long columnCount, long rowId, long columnId, bool value);
@@ -1121,8 +1127,10 @@ namespace Anemon
         {
             get
             {
-                return DataTableStorage.DataTableStorage_GetElementAt_Bool(
-                  storage, ColumnCount, rowId, columnId);
+                bool v;
+                DataTableStorage.DataTableStorage_GetElementAt_Bool(
+                  storage, ColumnCount, rowId, columnId, out v);
+                return v;
             }
             set
             {
@@ -1189,9 +1197,9 @@ namespace Anemon
             DataTableStorage.DataTableStorage_SetSubColumn_Bool(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
         }
 
-        override public bool DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId)
+        override public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out bool value)
         {
-            return DataTableStorage.DataTableStorage_GetElementAt_Bool(storage, columnCount, rowId, columnId);
+            DataTableStorage.DataTableStorage_GetElementAt_Bool(storage, columnCount, rowId, columnId, out value);
         }
         override public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, bool value)
         {
@@ -1294,8 +1302,8 @@ namespace Anemon
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex[] column);
 
         [DllImport("DataTableStorage.dll")]
-        public static extern Complex DataTableStorage_GetElementAt_Complex(
-            IntPtr storage, long columnCount, long rowId, long columnId);
+        public static extern void DataTableStorage_GetElementAt_Complex(
+            IntPtr storage, long columnCount, long rowId, long columnId, out Complex value);
         [DllImport("DataTableStorage.dll")]
         public static extern void DataTableStorage_SetElementAt_Complex(
             IntPtr storage, long columnCount, long rowId, long columnId, Complex value);
@@ -1415,8 +1423,10 @@ namespace Anemon
         {
             get
             {
-                return DataTableStorage.DataTableStorage_GetElementAt_Complex(
-                  storage, ColumnCount, rowId, columnId);
+                Complex v;
+                DataTableStorage.DataTableStorage_GetElementAt_Complex(
+                  storage, ColumnCount, rowId, columnId, out v);
+                return v;
             }
             set
             {
@@ -1483,9 +1493,9 @@ namespace Anemon
             DataTableStorage.DataTableStorage_SetSubColumn_Complex(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
         }
 
-        override public Complex DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId)
+        override public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out Complex value)
         {
-            return DataTableStorage.DataTableStorage_GetElementAt_Complex(storage, columnCount, rowId, columnId);
+            DataTableStorage.DataTableStorage_GetElementAt_Complex(storage, columnCount, rowId, columnId, out value);
         }
         override public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, Complex value)
         {
@@ -1588,8 +1598,8 @@ namespace Anemon
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex32[] column);
 
         [DllImport("DataTableStorage.dll")]
-        public static extern Complex32 DataTableStorage_GetElementAt_Complex32(
-            IntPtr storage, long columnCount, long rowId, long columnId);
+        public static extern void DataTableStorage_GetElementAt_Complex32(
+            IntPtr storage, long columnCount, long rowId, long columnId, out Complex32 value);
         [DllImport("DataTableStorage.dll")]
         public static extern void DataTableStorage_SetElementAt_Complex32(
             IntPtr storage, long columnCount, long rowId, long columnId, Complex32 value);
@@ -1709,8 +1719,10 @@ namespace Anemon
         {
             get
             {
-                return DataTableStorage.DataTableStorage_GetElementAt_Complex32(
-                  storage, ColumnCount, rowId, columnId);
+                Complex32 v;
+                DataTableStorage.DataTableStorage_GetElementAt_Complex32(
+                  storage, ColumnCount, rowId, columnId, out v);
+                return v;
             }
             set
             {
@@ -1777,9 +1789,9 @@ namespace Anemon
             DataTableStorage.DataTableStorage_SetSubColumn_Complex32(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
         }
 
-        override public Complex32 DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId)
+        override public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out Complex32 value)
         {
-            return DataTableStorage.DataTableStorage_GetElementAt_Complex32(storage, columnCount, rowId, columnId);
+            DataTableStorage.DataTableStorage_GetElementAt_Complex32(storage, columnCount, rowId, columnId, out value);
         }
         override public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, Complex32 value)
         {

@@ -43,8 +43,8 @@ namespace Anemon
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, float[] column);
 
         [DllImport("DataTableStorage.dll")]
-        public static extern float DataTableStorage_GetElementAt_Float(
-            IntPtr storage, long columnCount, long rowId, long columnId);
+        public static extern void DataTableStorage_GetElementAt_Float(
+            IntPtr storage, long columnCount, long rowId, long columnId, out float value);
         [DllImport("DataTableStorage.dll")]
         public static extern void DataTableStorage_SetElementAt_Float(
             IntPtr storage, long columnCount, long rowId, long columnId, float value);
@@ -164,8 +164,10 @@ namespace Anemon
         {
             get
             {
-                return DataTableStorage.DataTableStorage_GetElementAt_Float(
-                  storage, ColumnCount, rowId, columnId);
+                float v;
+                DataTableStorage.DataTableStorage_GetElementAt_Float(
+                  storage, ColumnCount, rowId, columnId, out v);
+                return v;
             }
             set
             {
@@ -232,9 +234,9 @@ namespace Anemon
             DataTableStorage.DataTableStorage_SetSubColumn_Float(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
         }
 
-        override public float DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId)
+        override public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out float value)
         {
-            return DataTableStorage.DataTableStorage_GetElementAt_Float(storage, columnCount, rowId, columnId);
+            DataTableStorage.DataTableStorage_GetElementAt_Float(storage, columnCount, rowId, columnId, out value);
         }
         override public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, float value)
         {

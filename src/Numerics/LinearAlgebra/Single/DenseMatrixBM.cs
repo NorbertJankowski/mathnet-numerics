@@ -74,7 +74,19 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         {
             linearAlgebraProvider = provider;
         }
-        public ILinearAlgebraProviderBM<float> LinearAlgebraProvider { get { return linearAlgebraProvider; } }
+        public ILinearAlgebraProviderBM<float> LinearAlgebraProvider
+        {
+            get
+            {
+                if (linearAlgebraProvider == null)
+                {
+                    var p = Control.LinearAlgebraProvider;
+                    if (p == null)
+                        throw new Exception("No appropriate linear algebra provider");
+                }
+                return linearAlgebraProvider;
+            }
+        }
         /// <summary>
         /// Create a new dense matrix straight from an initialized matrix storage instance.
         /// The storage is used directly without copying.

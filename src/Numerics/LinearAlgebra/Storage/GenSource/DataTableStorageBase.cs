@@ -55,7 +55,7 @@ namespace Anemon
         abstract public void DataTableStorage_GetSubColumn(IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, T[] column);
         abstract public void DataTableStorage_SetSubColumn(IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, T[] column);
 
-        abstract public T DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId);
+        abstract public void DataTableStorage_GetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, out T value);
         abstract public void DataTableStorage_SetElementAt(IntPtr storage, long columnCount, long rowId, long columnId, T value);
         abstract public void DataTableStorage_GetRowSkip(IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, T[] row);
         abstract public void DataTableStorage_SetRowSkip(IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, T[] row);

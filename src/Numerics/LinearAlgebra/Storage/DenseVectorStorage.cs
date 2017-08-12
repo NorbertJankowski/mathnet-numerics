@@ -33,6 +33,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using MathNet.Numerics.Properties;
 using MathNet.Numerics.Threading;
+using Anemon;
 
 namespace MathNet.Numerics.LinearAlgebra.Storage
 {
@@ -232,6 +233,13 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
         internal override void CopyToRowUnchecked(MatrixStorage<T> target, int rowIndex, ExistingData existingData)
         {
+            var denseTargetBM = target as DenseColumnMajorMatrixStorageBM<T>;
+            if (denseTargetBM != null)
+            {
+                denseTargetBM.dataTableStorage.DataTableStorage_SetColumn(denseTargetBM.Data,
+                    denseTargetBM.RowCount, denseTargetBM.ColumnCount, rowIndex, Data);
+                return;
+            }
             var denseTarget = target as DenseColumnMajorMatrixStorage<T>;
             if (denseTarget != null)
             {
@@ -254,6 +262,13 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
         internal override void CopyToColumnUnchecked(MatrixStorage<T> target, int columnIndex, ExistingData existingData)
         {
+            var denseTargetBM = target as DenseColumnMajorMatrixStorageBM<T>;
+            if (denseTargetBM != null)
+            {
+                denseTargetBM.dataTableStorage.DataTableStorage_SetRow(denseTargetBM.Data,
+                    denseTargetBM.RowCount, columnIndex, Data);
+                return;
+            }
             var denseTarget = target as DenseColumnMajorMatrixStorage<T>;
             if (denseTarget != null)
             {
