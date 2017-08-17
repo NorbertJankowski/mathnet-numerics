@@ -84,11 +84,23 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         public static void UseNativeOpenBLAS()
         {
             Control.LinearAlgebraProvider = new OpenBlas.OpenBlasLinearAlgebraProvider();
+            Numerics.LinearAlgebra.Single.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Float());
+            Numerics.LinearAlgebra.Double.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Double());
+            Numerics.LinearAlgebra.Complex.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Complex());
+            Numerics.LinearAlgebra.Complex32.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Complex32());
         }
 
         public static bool TryUseNativeOpenBLAS()
         {
-            return TryUse(new OpenBlas.OpenBlasLinearAlgebraProvider());
+            bool ok = TryUse(new OpenBlas.OpenBlasLinearAlgebraProvider());
+            if (ok)
+            {
+                Numerics.LinearAlgebra.Single.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Float());
+                Numerics.LinearAlgebra.Double.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Double());
+                Numerics.LinearAlgebra.Complex.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Complex());
+                Numerics.LinearAlgebra.Complex32.DenseMatrixBM.SetLinearAlgebraProvider(new OpenBlas.OpenBlasLinearAlgebraProvider_Complex32());
+            }
+            return ok;
         }
 
         /// <summary>

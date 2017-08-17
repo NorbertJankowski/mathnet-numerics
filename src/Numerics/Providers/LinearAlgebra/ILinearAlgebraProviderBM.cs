@@ -60,17 +60,6 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
     public interface ILinearAlgebraProviderBM<T> : ILinearAlgebraProviderBM
         where T : struct
     {
-        /// <summary>
-        /// Try to find out whether the provider is available, at least in principle.
-        /// Verification may still fail if available, but it will certainly fail if unavailable.
-        /// </summary>
-        bool IsAvailable();
-
-        /// <summary>
-        /// Initialize and verify that the provided is indeed available. If not, fall back to alternatives like the managed provider
-        /// </summary>
-        void InitializeVerify();
-
         /*/// <summary>
         /// Queries the provider for the optimal, workspace block size
         /// for the given routine.
@@ -115,65 +104,6 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <remarks>This is equivalent to the DOT BLAS routine.</remarks>
         T DotProduct(IStorageBM x, IStorageBM y);
 
-        /// <summary>
-        /// Does a point wise add of two arrays <c>z = x + y</c>. This can be used
-        /// to add vectors or matrices.
-        /// </summary>
-        /// <param name="x">The array x.</param>
-        /// <param name="y">The array y.</param>
-        /// <param name="result">The result of the addition.</param>
-        /// <remarks>There is no equivalent BLAS routine, but many libraries
-        /// provide optimized (parallel and/or vectorized) versions of this
-        /// routine.</remarks>
-        void AddArrays(IStorageBM x, IStorageBM y, IStorageBM result);
-
-        /// <summary>
-        /// Does a point wise subtraction of two arrays <c>z = x - y</c>. This can be used
-        /// to subtract vectors or matrices.
-        /// </summary>
-        /// <param name="x">The array x.</param>
-        /// <param name="y">The array y.</param>
-        /// <param name="result">The result of the subtraction.</param>
-        /// <remarks>There is no equivalent BLAS routine, but many libraries
-        /// provide optimized (parallel and/or vectorized) versions of this
-        /// routine.</remarks>
-        void SubtractArrays(IStorageBM x, IStorageBM y, IStorageBM result);
-
-        /// <summary>
-        /// Does a point wise multiplication of two arrays <c>z = x * y</c>. This can be used
-        /// to multiply elements of vectors or matrices.
-        /// </summary>
-        /// <param name="x">The array x.</param>
-        /// <param name="y">The array y.</param>
-        /// <param name="result">The result of the point wise multiplication.</param>
-        /// <remarks>There is no equivalent BLAS routine, but many libraries
-        /// provide optimized (parallel and/or vectorized) versions of this
-        /// routine.</remarks>
-        void PointWiseMultiplyArrays(IStorageBM x, IStorageBM y, IStorageBM result);
-
-        /// <summary>
-        /// Does a point wise division of two arrays <c>z = x / y</c>. This can be used
-        /// to divide elements of vectors or matrices.
-        /// </summary>
-        /// <param name="x">The array x.</param>
-        /// <param name="y">The array y.</param>
-        /// <param name="result">The result of the point wise division.</param>
-        /// <remarks>There is no equivalent BLAS routine, but many libraries
-        /// provide optimized (parallel and/or vectorized) versions of this
-        /// routine.</remarks>
-        void PointWiseDivideArrays(IStorageBM x, IStorageBM y, IStorageBM result);
-
-        /// <summary>
-        /// Does a point wise power of two arrays <c>z = x ^ y</c>. This can be used
-        /// to raise elements of vectors or matrices to the powers of another vector or matrix.
-        /// </summary>
-        /// <param name="x">The array x.</param>
-        /// <param name="y">The array y.</param>
-        /// <param name="result">The result of the point wise power.</param>
-        /// <remarks>There is no equivalent BLAS routine, but many libraries
-        /// provide optimized (parallel and/or vectorized) versions of this
-        /// routine.</remarks>
-        void PointWisePowerArrays(IStorageBM x, IStorageBM y, IStorageBM result);
 
         /// <summary>
         /// Computes the requested <see cref="Norm"/> of the matrix.
@@ -407,5 +337,66 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="vectorEv">On output, the eigen values (λ) of matrix in ascending value. The length of the arry must <paramref name="order"/>.</param>
         /// <param name="matrixD">On output, the block diagonal eigenvalue matrix. The lenth of the array must be order * order.</param>
         void EigenDecomp(bool isSymmetric, int order, IStorageBM matrix, IStorageBM matrixEv, Complex[] vectorEv, IStorageBM matrixD);
+
+
+        /// <summary>
+        /// Does a point wise add of two arrays <c>z = x + y</c>. This can be used
+        /// to add vectors or matrices.
+        /// </summary>
+        /// <param name="x">The array x.</param>
+        /// <param name="y">The array y.</param>
+        /// <param name="result">The result of the addition.</param>
+        /// <remarks>There is no equivalent BLAS routine, but many libraries
+        /// provide optimized (parallel and/or vectorized) versions of this
+        /// routine.</remarks>
+        void AddArrays(IStorageBM x, IStorageBM y, IStorageBM result);
+
+        /// <summary>
+        /// Does a point wise subtraction of two arrays <c>z = x - y</c>. This can be used
+        /// to subtract vectors or matrices.
+        /// </summary>
+        /// <param name="x">The array x.</param>
+        /// <param name="y">The array y.</param>
+        /// <param name="result">The result of the subtraction.</param>
+        /// <remarks>There is no equivalent BLAS routine, but many libraries
+        /// provide optimized (parallel and/or vectorized) versions of this
+        /// routine.</remarks>
+        void SubtractArrays(IStorageBM x, IStorageBM y, IStorageBM result);
+
+        /// <summary>
+        /// Does a point wise multiplication of two arrays <c>z = x * y</c>. This can be used
+        /// to multiply elements of vectors or matrices.
+        /// </summary>
+        /// <param name="x">The array x.</param>
+        /// <param name="y">The array y.</param>
+        /// <param name="result">The result of the point wise multiplication.</param>
+        /// <remarks>There is no equivalent BLAS routine, but many libraries
+        /// provide optimized (parallel and/or vectorized) versions of this
+        /// routine.</remarks>
+        void PointWiseMultiplyArrays(IStorageBM x, IStorageBM y, IStorageBM result);
+
+        /// <summary>
+        /// Does a point wise division of two arrays <c>z = x / y</c>. This can be used
+        /// to divide elements of vectors or matrices.
+        /// </summary>
+        /// <param name="x">The array x.</param>
+        /// <param name="y">The array y.</param>
+        /// <param name="result">The result of the point wise division.</param>
+        /// <remarks>There is no equivalent BLAS routine, but many libraries
+        /// provide optimized (parallel and/or vectorized) versions of this
+        /// routine.</remarks>
+        void PointWiseDivideArrays(IStorageBM x, IStorageBM y, IStorageBM result);
+
+        /// <summary>
+        /// Does a point wise power of two arrays <c>z = x ^ y</c>. This can be used
+        /// to raise elements of vectors or matrices to the powers of another vector or matrix.
+        /// </summary>
+        /// <param name="x">The array x.</param>
+        /// <param name="y">The array y.</param>
+        /// <param name="result">The result of the point wise power.</param>
+        /// <remarks>There is no equivalent BLAS routine, but many libraries
+        /// provide optimized (parallel and/or vectorized) versions of this
+        /// routine.</remarks>
+        void PointWisePowerArrays(IStorageBM x, IStorageBM y, IStorageBM result);
     }
 }

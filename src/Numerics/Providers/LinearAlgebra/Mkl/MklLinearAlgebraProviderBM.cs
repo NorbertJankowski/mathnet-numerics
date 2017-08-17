@@ -38,7 +38,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
     /// <summary>
     /// Intel's Math Kernel Library (MKL) linear algebra provider.
     /// </summary>
-    abstract public class MklLinearAlgebraProviderBM : ILinearAlgebraProviderBM
+    public class MklLinearAlgebraProviderBM : ILinearAlgebraProviderBM
     {
         readonly Common.Mkl.MklConsistency _consistency;
         readonly Common.Mkl.MklPrecision _precision;

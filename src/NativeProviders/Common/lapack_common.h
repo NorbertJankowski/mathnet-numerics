@@ -10,14 +10,14 @@ const int INSUFFICIENT_MEMORY = -999999;
 template <typename T> using array_ptr = std::unique_ptr<T[]>;
 
 template<typename T>
-inline array_ptr<T> array_new(const int size)
+inline array_ptr<T> array_new(const size_t size)
 {
 	return array_ptr<T>(new T[size]);
 }
 #endif
 
 template<typename T>
-inline array_ptr<T> array_clone(const long long size, const T* array)
+inline array_ptr<T> array_clone(const size_t size, const T* array)
 {
 	auto clone = array_new<T>(size);
 	memcpy(clone.get(), array, size * sizeof(T));

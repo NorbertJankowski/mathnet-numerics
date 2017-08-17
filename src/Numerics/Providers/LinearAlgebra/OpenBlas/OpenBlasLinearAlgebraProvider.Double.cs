@@ -918,12 +918,19 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
                 throw new ArgumentNullException("vt");
             }
 
-            if (u.Length != rowsA * rowsA)
+            int nm = Math.Min(rowsA, columnsA);
+            if ((computeVectors != SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (u.Length != rowsA * rowsA) ||
+                (computeVectors == SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (u.Length != rowsA * nm))
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "u");
             }
 
-            if (vt.Length != columnsA * columnsA)
+            if ((computeVectors != SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (vt.Length != columnsA * columnsA) ||
+                (computeVectors == SVDVectorsComputation.SimplifiedVectorComputation) &&
+                    (vt.Length != columnsA * nm))
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "vt");
             }

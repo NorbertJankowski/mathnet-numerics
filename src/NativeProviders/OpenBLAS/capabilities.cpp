@@ -55,7 +55,7 @@ extern "C" {
 
 	DLLEXPORT void set_max_threads(const blasint num_threads)
 	{
-		openblas_set_num_threads(num_threads);
+		openblas_set_num_threads((int)num_threads);
 	}
 
 	DLLEXPORT char* get_build_config()

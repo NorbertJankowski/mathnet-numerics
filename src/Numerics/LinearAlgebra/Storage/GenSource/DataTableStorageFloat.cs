@@ -90,6 +90,15 @@ namespace Anemon
             long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, 
             float[] b, long columnsB, float[] x);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseMultiply_Float(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseDivide_Float(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWisePower_Float(
+            IntPtr x, IntPtr y, IntPtr result, long length);
     }
 
     public class DataTableStorage_Float : IDisposable

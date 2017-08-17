@@ -165,6 +165,15 @@ namespace Anemon
             long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, 
             float[] b, long columnsB, float[] x);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseMultiply_Float(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseDivide_Float(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWisePower_Float(
+            IntPtr x, IntPtr y, IntPtr result, long length);
     }
 
     public class DataTableStorage_Float : IDisposable
@@ -461,6 +470,15 @@ namespace Anemon
             long rowsA, long columnsA, double[] s, IntPtr u, IntPtr vt, 
             double[] b, long columnsB, double[] x);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseMultiply_Double(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseDivide_Double(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWisePower_Double(
+            IntPtr x, IntPtr y, IntPtr result, long length);
     }
 
     public class DataTableStorage_Double : IDisposable
@@ -757,6 +775,15 @@ namespace Anemon
             long rowsA, long columnsA, byte[] s, IntPtr u, IntPtr vt, 
             byte[] b, long columnsB, byte[] x);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseMultiply_Byte(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseDivide_Byte(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWisePower_Byte(
+            IntPtr x, IntPtr y, IntPtr result, long length);
     }
 
     public class DataTableStorage_Byte : IDisposable
@@ -1053,6 +1080,15 @@ namespace Anemon
             long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt, 
             bool[] b, long columnsB, bool[] x);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseMultiply_Bool(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseDivide_Bool(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWisePower_Bool(
+            IntPtr x, IntPtr y, IntPtr result, long length);
     }
 
     public class DataTableStorage_Bool : IDisposable
@@ -1349,6 +1385,15 @@ namespace Anemon
             long rowsA, long columnsA, Complex[] s, IntPtr u, IntPtr vt, 
             Complex[] b, long columnsB, Complex[] x);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseMultiply_Complex(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseDivide_Complex(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWisePower_Complex(
+            IntPtr x, IntPtr y, IntPtr result, long length);
     }
 
     public class DataTableStorage_Complex : IDisposable
@@ -1645,6 +1690,15 @@ namespace Anemon
             long rowsA, long columnsA, Complex32[] s, IntPtr u, IntPtr vt, 
             Complex32[] b, long columnsB, Complex32[] x);
 
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseMultiply_Complex32(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWiseDivide_Complex32(
+            IntPtr x, IntPtr y, IntPtr result, long length);
+        [DllImport("DataTableStorage.dll")]
+        public static extern void DataTableStorage_PointWisePower_Complex32(
+            IntPtr x, IntPtr y, IntPtr result, long length);
     }
 
     public class DataTableStorage_Complex32 : IDisposable

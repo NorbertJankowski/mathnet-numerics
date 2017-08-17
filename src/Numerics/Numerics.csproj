@@ -225,6 +225,10 @@
     <Compile Include="Providers\Common\Mkl\SafeNativeMethodsBM_Double.cs" />
     <Compile Include="Providers\Common\Mkl\SafeNativeMethodsBM_Float.cs" />
     <Compile Include="Providers\Common\OpenBlas\OpenBlasProvider.cs" />
+    <Compile Include="Providers\Common\OpenBlas\SafeNativeMethodsBM_Complex.cs" />
+    <Compile Include="Providers\Common\OpenBlas\SafeNativeMethodsBM_Complex32.cs" />
+    <Compile Include="Providers\Common\OpenBlas\SafeNativeMethodsBM_Double.cs" />
+    <Compile Include="Providers\Common\OpenBlas\SafeNativeMethodsBM_Float.cs" />
     <Compile Include="Providers\FourierTransform\IFourierTransformProvider.cs" />
     <Compile Include="Providers\FourierTransform\FourierTransformControl.cs" />
     <Compile Include="Providers\FourierTransform\ManagedFourierTransformProvider.cs" />
@@ -286,6 +290,11 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Providers\Common\OpenBlas\OpenBlasProviderCapabilities.cs" />
     <Compile Include="Providers\Common\NativeProviderLoader.cs" />
+    <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProviderBM.Complex.cs" />
+    <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProviderBM.Complex32.cs" />
+    <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProviderBM.cs" />
+    <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProviderBM.Double.cs" />
+    <Compile Include="Providers\LinearAlgebra\OpenBlas\OpenBlasLinearAlgebraProviderBM.Single.cs" />
     <Compile Include="Random\SystemRandomSource.cs" />
     <Compile Include="Random\RandomSeed.cs" />
     <Compile Include="Optimization\BfgsSolver.cs" />

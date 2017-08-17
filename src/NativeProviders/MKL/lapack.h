@@ -19,7 +19,7 @@ struct array_free
 template <typename T> using array_ptr = std::unique_ptr<T[], array_free>;
 
 template<typename T>
-inline array_ptr<T> array_new(const long long size)
+inline array_ptr<T> array_new(const size_t size)
 {
 	auto ret = static_cast<T*>(mkl_malloc(size * sizeof(T), ALIGNMENT));
 
