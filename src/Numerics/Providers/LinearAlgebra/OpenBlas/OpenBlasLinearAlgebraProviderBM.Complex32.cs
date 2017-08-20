@@ -1189,7 +1189,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// routine.</remarks>
         public void SubtractArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
-            AddVectorToScaledVector(y, -1.0f, x, result);
+            AddVectorToScaledVector(x, -1.0f, y, result);
         }
 
         /// <summary>
