@@ -214,6 +214,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <LargeAddressAware>
+      </LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(INTEL_DEV_REDIST)redist\intel64\compiler\libiomp5md.dll" $(OutputPath)</Command>
@@ -243,6 +245,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <LargeAddressAware>
+      </LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(INTEL_DEV_REDIST)redist\intel64\compiler\libiomp5md.dll" $(OutputPath)</Command>
@@ -300,6 +304,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <LargeAddressAware>
+      </LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(INTEL_DEV_REDIST)redist\intel64\compiler\libiomp5md.dll" $(OutputPath)</Command>

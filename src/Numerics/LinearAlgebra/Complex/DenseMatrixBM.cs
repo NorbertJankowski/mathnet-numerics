@@ -54,8 +54,20 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
     /// </summary>
     [Serializable]
     [DebuggerDisplay("DenseMatrixBM {RowCount}x{ColumnCount}-Complex")]
-    public class DenseMatrixBM : Matrix
+    public class DenseMatrixBM : Matrix, IDisposable
     {
+        public Complex keepAlive1 = default(Complex), keepAlive2 = default(Complex);
+        public void KeepAlive(DenseMatrixBM a, DenseMatrixBM b = null)
+        {
+            keepAlive1 = a[0, 0];
+            if (b != null)
+                keepAlive2 = b[0, 0];
+        }
+        public void KeepAlive(Complex c)
+        {
+            keepAlive2 = c;
+        }
+
         /// <summary>
         /// Number of rows.
         /// </summary>
@@ -455,6 +467,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             if (denseResult != null)
             {
                 LinearAlgebraProvider.ScaleArray(-1, _values, denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this);
                 return;
             }
 
@@ -471,6 +484,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             if (denseResult != null)
             {
                 LinearAlgebraProvider.ConjugateArray(_values, denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this);
                 return;
             }
 
@@ -492,6 +506,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
 
             DataTableStorage.DataTableStorage_Add_Complex(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, scalar);
+            (result as DenseMatrixBM).KeepAlive(this);
         }
 
         /// <summary>
@@ -509,6 +524,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             if (denseOther != null && denseResult != null)
             {
                 LinearAlgebraProvider.AddArrays(_values, denseOther, denseResult);
+                (result as DenseMatrixBM).KeepAlive(this, other as DenseMatrixBM);
                 return;
             }
 
@@ -543,6 +559,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
 
             DataTableStorage.DataTableStorage_Add_Complex(_values.Data, denseResult.Values.Data, RowCount, ColumnCount, -scalar);
+            (result as DenseMatrixBM).KeepAlive(this);
         }
 
         /// <summary>
@@ -558,6 +575,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             if (denseOther != null && denseResult != null)
             {
                 LinearAlgebraProvider.SubtractArrays(_values, denseOther, denseResult);
+                (result as DenseMatrixBM).KeepAlive(this, other as DenseMatrixBM);
                 return;
             }
 
@@ -592,6 +610,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             else
             {
                 LinearAlgebraProvider.ScaleArray(scalar, _values, denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this);
             }
         }
 
@@ -619,6 +638,8 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     denseRight.Count,
                     1,
                     denseResult.Values);
+                KeepAlive(rightSide[0]);
+
             }
         }
 
@@ -641,6 +662,8 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     denseOther._rowCount,
                     denseOther._columnCount,
                     denseResult._values);
+                denseResult.KeepAlive(this, denseOther);
+                Console.WriteLine("T*");
                 return;
             }
 
@@ -686,6 +709,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     denseOther._columnCount,
                     0.0,
                     denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this, other as DenseMatrixBM);
                 return;
             }
 
@@ -731,6 +755,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     denseOther._columnCount,
                     0.0,
                     denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this, other as DenseMatrixBM);
                 return;
             }
 
@@ -749,7 +774,6 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 {
                     result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
                 }
-                int index = 0;
                 for (int j = 0; j < d; j++)
                 {
                     DataTableStorage.DataTableStorage_Multiply_Complex(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, conjugateDiagonal[j]);
@@ -788,6 +812,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     1,
                     0.0,
                     denseResult.Values);
+                KeepAlive(rightSide[0]);
             }
         }
 
@@ -814,6 +839,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     1,
                     0.0,
                     denseResult.Values);
+                KeepAlive(rightSide[0]);
                 return;
             }
 
@@ -843,6 +869,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     denseOther._columnCount,
                     0.0,
                     denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this, other as DenseMatrixBM);
                 return;
             }
 
@@ -880,6 +907,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     denseOther._columnCount,
                     0.0,
                     denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this, other as DenseMatrixBM);
                 return;
             }
 
@@ -909,6 +937,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             else
             {
                 LinearAlgebraProvider.ScaleArray(1.0/divisor, _values, denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this);
             }
         }
 
@@ -929,6 +958,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             else
             {
                 LinearAlgebraProvider.PointWiseMultiplyArrays(_values, denseOther._values, denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this, other as DenseMatrixBM);
             }
         }
 
@@ -949,6 +979,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             else
             {
                 LinearAlgebraProvider.PointWiseDivideArrays(_values, denseOther._values, denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this, denseOther as DenseMatrixBM);
             }
         }
 
@@ -969,6 +1000,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             else
             {
                 LinearAlgebraProvider.PointWisePowerArrays(_values, denseExponent._values, denseResult._values);
+                (result as DenseMatrixBM).KeepAlive(this, denseExponent as DenseMatrixBM);
             }
         }
 
@@ -1292,6 +1324,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 
         public void Dispose()
         {
+            Console.WriteLine("Dispose of DenseMatrxBM");
             if (_values != null)
                 _values.Dispose();
             _values = null;
@@ -1300,5 +1333,6 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         {
             Dispose();
         }
+        
     }
 }

@@ -75,8 +75,11 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
             var u = new DenseMatrixBM(matrix.RowCount, sU);
             var vt = new DenseMatrixBM(sVt, matrix.ColumnCount);
 
-            matrix.LinearAlgebraProvider.SingularValueDecomposition(computeVectors, ((DenseMatrixBM) matrix.Clone()).Values, matrix.RowCount, matrix.ColumnCount, s.Values, u.Values, vt.Values);
-
+            using (DenseMatrixBM m = matrix.Clone() as DenseMatrixBM)
+            {
+                matrix.LinearAlgebraProvider.SingularValueDecomposition(computeVectors,
+                    ((DenseMatrixBM)m).Values, matrix.RowCount, matrix.ColumnCount, s.Values, u.Values, vt.Values);
+            }
             return new DenseSvdBM(s, u, vt, computeVectors);
         }
 

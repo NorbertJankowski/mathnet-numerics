@@ -48,8 +48,8 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
     [Serializable]
     [DataContract(Namespace = "urn:MathNet/Numerics/LinearAlgebra")]
-    [DebuggerDisplay("Count = {Length}")]
-    [DebuggerTypeProxy(typeof(DenseStorageViewer))]
+//    [DebuggerDisplay("Count = {Length}")]
+//    [DebuggerTypeProxy(typeof(DenseStorageViewer))]
     public class DenseColumnMajorMatrixStorageBM<T> : MatrixStorage<T>, IStorageBM, IDisposable
         where T : struct, IEquatable<T>, IFormattable
     {
@@ -60,14 +60,17 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
         internal DataTableStorage<T> dataTableStorage = DataTableStorage<T>.CreateDataTableStorage();
         public long Length { get; private set; }
 
-        internal DenseColumnMajorMatrixStorageBM(int rows, int columns)
+        public DenseColumnMajorMatrixStorageBM(int rows, int columns)
             : base(rows, columns)
         {
             T t = default(T);
+            int sizeOfT = System.Runtime.InteropServices.Marshal.SizeOf(t);
             Length = (long)rows * (long)columns;
             Data = dataTableStorage.DataTableStorage_AllocByte(
                     //RowCount * ColumnCount * sizeof(t);
-                    Length *System.Runtime.InteropServices.Marshal.SizeOf(t));
+                    Length * sizeOfT);
+            if (Data == IntPtr.Zero)
+                throw new Exception("Out ofmemory in DenseColumnMajorMatrixStorageBM");
         }
         internal DenseColumnMajorMatrixStorageBM(int rows, int columns, IntPtr data)
             : base(rows, columns)
@@ -1122,11 +1125,11 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
     internal class DenseStorageViewer
     {
-        object storage;
+        object storageForView;
 
         public DenseStorageViewer(object _storage)
         {
-            storage = _storage;
+            storageForView = _storage;
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
@@ -1135,19 +1138,19 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             get
             {
                 DenseColumnMajorMatrixStorageBM<float> storageF = 
-                    storage as DenseColumnMajorMatrixStorageBM<float>;
+                    storageForView as DenseColumnMajorMatrixStorageBM<float>;
                 if (storageF != null)
                     return GetValues(storageF);
                 DenseColumnMajorMatrixStorageBM<double> storageD = 
-                    storage as DenseColumnMajorMatrixStorageBM<double>;
+                    storageForView as DenseColumnMajorMatrixStorageBM<double>;
                 if (storageD != null)
                     return GetValues(storageD);
                 DenseColumnMajorMatrixStorageBM<System.Numerics.Complex> storageC = 
-                    storage as DenseColumnMajorMatrixStorageBM<System.Numerics.Complex>;
+                    storageForView as DenseColumnMajorMatrixStorageBM<System.Numerics.Complex>;
                 if (storageC != null)
                     return GetValues(storageC);
                 DenseColumnMajorMatrixStorageBM<MathNet.Numerics.Complex32> storageC32 = 
-                    storage as DenseColumnMajorMatrixStorageBM<MathNet.Numerics.Complex32>;
+                    storageForView as DenseColumnMajorMatrixStorageBM<MathNet.Numerics.Complex32>;
                 if (storageC32 != null)
                     return GetValues(storageC32);
 
@@ -1161,8 +1164,8 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < storage.RowCount; j++)
                 {
-                    yield return new Tuple<int, int, T>(j, i, storage.At(j, i));
-                    //yield return storage.At(j, i);
+                    //yield return new Tuple<int, int, T>(j, i, storage.At(j, i));
+                    yield return storage.At(j, i);
                 }
             }
         }

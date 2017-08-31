@@ -91,7 +91,7 @@ extern "C" {
 
 	DLLEXPORT void set_consistency_mode(const MKL_INT mode)
 	{
-		mkl_cbwr_set(mode);
+		mkl_cbwr_set((int)mode);
 	}
 
 	DLLEXPORT void set_vml_mode(const MKL_UINT mode)
@@ -101,7 +101,7 @@ extern "C" {
 
 	DLLEXPORT void set_max_threads(const MKL_INT num_threads)
 	{
-		mkl_set_num_threads(num_threads);
+		mkl_set_num_threads((int)num_threads);
 	}
 
 	/* Obsolete, will be dropped in the next revision */

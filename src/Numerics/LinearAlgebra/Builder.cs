@@ -77,8 +77,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             var v = Generate.Random(rows * columns, distribution);
             IntPtr p;
-            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * sizeof(double));
-            DataTableStorage.DataTableStorage_SetRow_Double(p, rows * columns, 0, v);
+            DataTableStorage.DataTableStorage_AllocByte((long)rows * columns * sizeof(double), out p);
+            if (p == IntPtr.Zero)
+                throw new Exception("Out ofmemory in DataTableStorage_AllocByte");
+            DataTableStorage.DataTableStorage_SetRow_Double(p, (long)rows * columns, 0, v);
             return DenseBM(rows, columns, p);
         }
 
@@ -164,8 +166,10 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         {
             var v = Generate.RandomSingle(rows * columns, distribution);
             IntPtr p;
-            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * sizeof(float));
-            DataTableStorage.DataTableStorage_SetRow_Float(p, rows * columns, 0, v);
+            DataTableStorage.DataTableStorage_AllocByte((long)rows * columns * sizeof(float), out p);
+            if (p == IntPtr.Zero)
+                throw new Exception("Out ofmemory in DataTableStorage_AllocByte");
+            DataTableStorage.DataTableStorage_SetRow_Float(p, (long)rows * columns, 0, v);
             return DenseBM(rows, columns, p);
         }
 
@@ -258,8 +262,10 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             var v = Generate.RandomComplex(rows * columns, distribution);
             IntPtr p;
             Complex x = default(Complex);
-            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * System.Runtime.InteropServices.Marshal.SizeOf(x));
-            DataTableStorage.DataTableStorage_SetRow_Complex(p, rows * columns, 0, v);
+            DataTableStorage.DataTableStorage_AllocByte((long)rows * columns * System.Runtime.InteropServices.Marshal.SizeOf(x), out p);
+            if (p == IntPtr.Zero)
+                throw new Exception("Out ofmemory in DataTableStorage_AllocByte");
+            DataTableStorage.DataTableStorage_SetRow_Complex(p, (long)rows * columns, 0, v);
             return DenseBM(rows, columns, p);
         }
 
@@ -347,8 +353,10 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
             var v = Generate.RandomComplex32(rows * columns, distribution);
             IntPtr p;
             Numerics.Complex32 x = default(Numerics.Complex32);
-            p = DataTableStorage.DataTableStorage_AllocByte(rows * columns * System.Runtime.InteropServices.Marshal.SizeOf(x));
-            DataTableStorage.DataTableStorage_SetRow_Complex32(p, rows * columns, 0, v);
+            DataTableStorage.DataTableStorage_AllocByte((long)rows * columns * System.Runtime.InteropServices.Marshal.SizeOf(x), out p);
+            if (p == IntPtr.Zero)
+                throw new Exception("Out ofmemory in DataTableStorage_AllocByte");
+            DataTableStorage.DataTableStorage_SetRow_Complex32(p, (long)rows * columns, 0, v);
             return DenseBM(rows, columns, p);
         }
 

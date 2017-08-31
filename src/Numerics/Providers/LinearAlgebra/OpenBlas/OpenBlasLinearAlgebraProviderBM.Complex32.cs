@@ -1204,7 +1204,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// routine.</remarks>
         public void PointWiseMultiplyArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
-            DataTableStorage.DataTableStorage_PointWiseMultiply_Float(x.Data, y.Data, result.Data, x.Length);
+            DataTableStorage.DataTableStorage_PointWiseMultiply_Complex32(x.Data, y.Data, result.Data, x.Length);
         }
 
         /// <summary>
@@ -1234,7 +1234,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// routine.</remarks>
         public void PointWiseDivideArrays(IStorageBM x, IStorageBM y, IStorageBM result)
         {
-            DataTableStorage.DataTableStorage_PointWiseDivide_Float(x.Data, y.Data, result.Data, x.Length);
+            DataTableStorage.DataTableStorage_PointWiseDivide_Complex32(x.Data, y.Data, result.Data, x.Length);
         }
 
         /// <summary>

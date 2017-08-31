@@ -243,12 +243,18 @@ extern "C" {
 extern "C" {
 	DLLEXPORT void DataTableStorage_Free(void* p)
 	{
-		free(p);
+        printf("................-%p\n", p);
+        free(p);
 	}
-	DLLEXPORT void * DataTableStorage_AllocByte(LL size)
-	{
-		return calloc(size,1);
-	}
+    DLLEXPORT void DataTableStorage_AllocByte(LL size, void* &p)
+    {
+        p = calloc(size, 1);
+        printf("................+%p     %lld\n", p, size);
+    }
+    /*DLLEXPORT void * DataTableStorage_AllocByte(LL size)
+    {
+        return calloc(size, 1);
+    }*/
 }
 
 template<typename T> inline void DataTableStorage_SvdSolveFactored(
@@ -288,7 +294,8 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 		}
 	}
 	delete[] tmp;
-}extern "C" {					// float
+}
+extern "C" {					// float
 
 	// [get | set] row
 	DLLEXPORT void DataTableStorage_GetRow_Float(

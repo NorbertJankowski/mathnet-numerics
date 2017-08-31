@@ -7,10 +7,11 @@ namespace Anemon
 {
     public partial class DataTableStorage
     {
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Free(IntPtr storage);
-        [DllImport("DataTableStorage.dll")]
-        public static extern IntPtr DataTableStorage_AllocByte(long size);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DataTableStorage_AllocByte(long size, [Out] out IntPtr p);
+        //public static extern IntPtr DataTableStorage_AllocByte(long size);
     }
 
     public abstract class DataTableStorage<T>
@@ -21,7 +22,10 @@ namespace Anemon
         }
         public IntPtr DataTableStorage_AllocByte(long size)
         {
-            return DataTableStorage.DataTableStorage_AllocByte(size);
+            IntPtr p;
+            DataTableStorage.DataTableStorage_AllocByte(size, out p);
+            return p;
+            //return DataTableStorage.DataTableStorage_AllocByte(size);
         }
         static public DataTableStorage<T> CreateDataTableStorage()
         {

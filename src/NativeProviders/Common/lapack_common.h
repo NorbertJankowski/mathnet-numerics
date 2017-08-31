@@ -42,13 +42,14 @@ inline void shift_ipiv_up(INT m, INT ipiv[])
 	}
 }
 
-template<typename T> 
+/*template<typename T>                        //  NJ commented because not in use
 inline T* Clone(const long long m, const long long n, const T* a)
 {
 	auto clone = new T[m*n];
 	memcpy(clone, a, m*n*sizeof(T));
 	return clone;
 }
+*/
 
 template<typename T> 
 inline void copyBtoX (long long m, long long n, long long bn, T b[], T x[])

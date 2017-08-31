@@ -245,10 +245,15 @@ extern "C" {
 	{
 		free(p);
 	}
-	DLLEXPORT void * DataTableStorage_AllocByte(LL size)
-	{
-		return calloc(size,1);
-	}
+    DLLEXPORT void DataTableStorage_AllocByte(LL size, void* &p)
+    {
+        p = calloc(size, 1);
+        printf("%p\n", p);
+    }
+    /*DLLEXPORT void * DataTableStorage_AllocByte(LL size)
+    {
+        return calloc(size, 1);
+    }*/
 }
 
 template<typename T> inline void DataTableStorage_SvdSolveFactored(
