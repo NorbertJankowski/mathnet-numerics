@@ -1324,7 +1324,6 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 
         public void Dispose()
         {
-            Console.WriteLine("Dispose of DenseMatrxBM");
             if (_values != null)
                 _values.Dispose();
             _values = null;

@@ -116,11 +116,11 @@ namespace MathNet.Numerics.LinearAlgebra
         /// <exception cref="ArgumentNullException">If <paramref name="leftSide"/> or <paramref name="rightSide"/> is <see langword="null" />.</exception>
         public static Matrix<T> operator -(Matrix<T> leftSide, Matrix<T> rightSide)
         {
-            Console.WriteLine("-T {0:X}-{1:X}",
+            /*Console.WriteLine("-T {0:X}-{1:X}",
                 ((Numerics.LinearAlgebra.Storage.DenseColumnMajorMatrixStorageBM<T>)
                     leftSide.Storage).Data.ToInt64(),
                 ((Numerics.LinearAlgebra.Storage.DenseColumnMajorMatrixStorageBM<T>)
-                    rightSide.Storage).Data.ToInt64());
+                    rightSide.Storage).Data.ToInt64());*/
             return leftSide.Subtract(rightSide);
         }
 
@@ -191,11 +191,11 @@ namespace MathNet.Numerics.LinearAlgebra
         /// <exception cref="ArgumentException">If the dimensions of <paramref name="leftSide"/> or <paramref name="rightSide"/> don't conform.</exception>
         public static Matrix<T> operator *(Matrix<T> leftSide, Matrix<T> rightSide)
         {
-            Console.WriteLine("*T {0:X}-{1:X}",
+            /*Console.WriteLine("*T {0:X}-{1:X}",
                 ((Numerics.LinearAlgebra.Storage.DenseColumnMajorMatrixStorageBM<T>)
                     leftSide.Storage).Data.ToInt64(),
                 ((Numerics.LinearAlgebra.Storage.DenseColumnMajorMatrixStorageBM<T>)
-                    rightSide.Storage).Data.ToInt64());
+                    rightSide.Storage).Data.ToInt64());*/
             return leftSide.Multiply(rightSide);
         }
 

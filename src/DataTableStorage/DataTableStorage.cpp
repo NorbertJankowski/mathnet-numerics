@@ -243,13 +243,11 @@ extern "C" {
 extern "C" {
 	DLLEXPORT void DataTableStorage_Free(void* p)
 	{
-        printf("................-%p\n", p);
-        free(p);
+		free(p);
 	}
     DLLEXPORT void DataTableStorage_AllocByte(LL size, void* &p)
     {
         p = calloc(size, 1);
-        printf("................+%p     %lld\n", p, size);
     }
     /*DLLEXPORT void * DataTableStorage_AllocByte(LL size)
     {
