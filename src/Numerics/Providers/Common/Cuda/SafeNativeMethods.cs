@@ -163,16 +163,16 @@ namespace MathNet.Numerics.Providers.Common.Cuda
         internal static extern int z_cholesky_factor(IntPtr solverHandle, int n, [In, Out] Complex[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_factor(IntPtr solverHandle, int n, [In, Out] float[] a, [In, Out] int[] ipiv);
+        internal static extern int s_lu_factor(IntPtr solverHandle, int n, [In, Out] float[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_factor(IntPtr solverHandle, int n, [In, Out] double[] a, [In, Out] int[] ipiv);
+        internal static extern int d_lu_factor(IntPtr solverHandle, int n, [In, Out] double[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_factor(IntPtr solverHandle, int n, [In, Out] Complex32[] a, [In, Out] int[] ipiv);
+        internal static extern int c_lu_factor(IntPtr solverHandle, int n, [In, Out] Complex32[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_factor(IntPtr solverHandle, int n, [In, Out] Complex[] a, [In, Out] int[] ipiv);
+        internal static extern int z_lu_factor(IntPtr solverHandle, int n, [In, Out] Complex[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int s_lu_inverse(IntPtr solverHandle, IntPtr blasHandle, int n, [In, Out] float[] a);
@@ -187,28 +187,28 @@ namespace MathNet.Numerics.Providers.Common.Cuda
         internal static extern int z_lu_inverse(IntPtr solverHandle, IntPtr blasHandle, int n, [In, Out] Complex[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] float[] a, [In, Out] int[] ipiv);
+        internal static extern int s_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] float[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] double[] a, [In, Out] int[] ipiv);
+        internal static extern int d_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] double[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] Complex32[] a, [In, Out] int[] ipiv);
+        internal static extern int c_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] Complex32[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] Complex[] a, [In, Out] int[] ipiv);
+        internal static extern int z_lu_inverse_factored(IntPtr blasHandle, int n, [In, Out] Complex[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, float[] a, [In, Out] int[] ipiv, [In, Out] float[] b);
+        internal static extern int s_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, float[] a, [In, Out] long[] ipiv, [In, Out] float[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, double[] a, [In, Out] int[] ipiv, [In, Out] double[] b);
+        internal static extern int d_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, double[] a, [In, Out] long[] ipiv, [In, Out] double[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, Complex32[] a, [In, Out] int[] ipiv, [In, Out] Complex32[] b);
+        internal static extern int c_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, Complex32[] a, [In, Out] long[] ipiv, [In, Out] Complex32[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, Complex[] a, [In, Out] int[] ipiv, [In, Out] Complex[] b);
+        internal static extern int z_lu_solve_factored(IntPtr solverHandle, int n, int nrhs, Complex[] a, [In, Out] long[] ipiv, [In, Out] Complex[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int s_lu_solve(IntPtr solverHandle, int n, int nrhs, float[] a, [In, Out] float[] b);

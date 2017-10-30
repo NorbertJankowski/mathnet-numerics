@@ -1078,7 +1078,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="order">The order of the square matrix <paramref name="data"/>.</param>
         /// <param name="ipiv">On exit, it contains the pivot indices. The size of the array must be <paramref name="order"/>.</param>
         /// <remarks>This is equivalent to the GETRF LAPACK routine.</remarks>
-        public virtual void LUFactor(Complex[] data, int order, int[] ipiv)
+        public virtual void LUFactor(Complex[] data, int order, long[] ipiv)
         {
             if (data == null)
             {
@@ -1188,7 +1188,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "a");
             }
 
-            var ipiv = new int[order];
+            var ipiv = new long[order];
             LUFactor(a, order, ipiv);
             LUInverseFactored(a, order, ipiv);
         }
@@ -1200,7 +1200,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="order">The order of the square matrix <paramref name="a"/>.</param>
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <remarks>This is equivalent to the GETRI LAPACK routine.</remarks>
-        public virtual void LUInverseFactored(Complex[] a, int order, int[] ipiv)
+        public virtual void LUInverseFactored(Complex[] a, int order, long[] ipiv)
         {
             if (a == null)
             {
@@ -1267,7 +1267,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentReferenceDifferent);
             }
 
-            var ipiv = new int[order];
+            var ipiv = new long[order];
             var clone = new Complex[a.Length];
             a.Copy(clone);
             LUFactor(clone, order, ipiv);
@@ -1283,7 +1283,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
         /// <remarks>This is equivalent to the GETRS LAPACK routine.</remarks>
-        public virtual void LUSolveFactored(int columnsOfB, Complex[] a, int order, int[] ipiv, Complex[] b)
+        public virtual void LUSolveFactored(int columnsOfB, Complex[] a, int order, long[] ipiv, Complex[] b)
         {
             if (a == null)
             {

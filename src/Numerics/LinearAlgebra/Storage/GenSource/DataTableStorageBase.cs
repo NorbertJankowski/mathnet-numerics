@@ -7,11 +7,15 @@ namespace Anemon
 {
     public partial class DataTableStorage
     {
+        const string _DllName = "DataTableStorage.dll";
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Free(IntPtr storage);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_AllocByte(long size, [Out] out IntPtr p);
         //public static extern IntPtr DataTableStorage_AllocByte(long size);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DataTableStorage_SetRowDF(IntPtr storage, long columnCount, long rowId, float[] row);
     }
 
     public abstract class DataTableStorage<T>

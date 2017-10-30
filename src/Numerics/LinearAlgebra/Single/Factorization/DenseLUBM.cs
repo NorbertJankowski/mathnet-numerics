@@ -62,7 +62,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
             }
 
             // Create an array for the pivot indices.
-            var pivots = new int[matrix.RowCount];
+            var pivots = new long[matrix.RowCount];
 
             // Create a new matrix for the LU factors, then perform factorization (while overwriting).
             var factors = (DenseMatrixBM) matrix.Clone();
@@ -71,7 +71,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
             return new DenseLUBM(factors, pivots);
         }
 
-        DenseLUBM(Matrix<float> factors, int[] pivots)
+        DenseLUBM(Matrix<float> factors, long[] pivots)
             : base(factors, pivots)
         {
         }

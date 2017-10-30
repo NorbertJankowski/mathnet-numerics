@@ -50,7 +50,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
     /// </remarks>
     internal abstract class LU : LU<Complex>
     {
-        protected LU(Matrix<Complex> factors, int[] pivots)
+        protected LU(Matrix<Complex> factors, long[] pivots)
             : base(factors, pivots)
         {
         }

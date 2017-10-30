@@ -92,18 +92,18 @@ namespace MathNet.Numerics.Providers.Common.OpenBlas
         internal static extern long c_cholesky_factor(long n, [In, Out] IntPtr a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long c_lu_factor(long n, [In, Out] IntPtr a, [In, Out] int[] ipiv);
+        internal static extern long c_lu_factor(long n, [In, Out] IntPtr a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern long c_lu_inverse(long n, [In, Out] IntPtr a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long c_lu_inverse_factored(long n, [In, Out] IntPtr a, [In, Out] int[] ipiv);
+        internal static extern long c_lu_inverse_factored(long n, [In, Out] IntPtr a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long c_lu_solve_factored(long n, long nrhs, IntPtr a, [In, Out] int[] ipiv, [In, Out] IntPtr b);
+        internal static extern long c_lu_solve_factored(long n, long nrhs, IntPtr a, [In, Out] long[] ipiv, [In, Out] IntPtr b);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long c_lu_solve_factored(long n, long nrhs, IntPtr a, [In, Out] int[] ipiv, [In, Out] Complex32[] b);
+        internal static extern long c_lu_solve_factored(long n, long nrhs, IntPtr a, [In, Out] long[] ipiv, [In, Out] Complex32[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern long c_lu_solve(long n, long nrhs, IntPtr a, [In, Out] IntPtr b);

@@ -310,7 +310,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// <param name="ipiv">On exit, it contains the pivot indices. The size of the array must be <paramref name="order"/>.</param>
         /// <remarks>This is equivalent to the GETRF LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public void LUFactor(IStorageBM data, int order, int[] ipiv)
+        public void LUFactor(IStorageBM data, int order, long[] ipiv)
         {
             if (data == null)
             {
@@ -385,7 +385,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <remarks>This is equivalent to the GETRI LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public void LUInverseFactored(IStorageBM a, int order, int[] ipiv)
+        public void LUInverseFactored(IStorageBM a, int order, long[] ipiv)
         {
             if (a == null)
             {
@@ -474,7 +474,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
         /// <remarks>This is equivalent to the GETRS LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public void LUSolveFactored(int columnsOfB, IStorageBM a, int order, int[] ipiv, IStorageBM b)
+        public void LUSolveFactored(int columnsOfB, IStorageBM a, int order, long[] ipiv, IStorageBM b)
         {
             if (a == null)
             {
@@ -513,7 +513,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
                 throw new InvalidParameterException(Math.Abs(info));
             }
         }
-        public void LUSolveFactored(int columnsOfB, IStorageBM a, int order, int[] ipiv, float[] b)
+        public void LUSolveFactored(int columnsOfB, IStorageBM a, int order, long[] ipiv, float[] b)
         {
             if (a == null)
             {
