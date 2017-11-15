@@ -75,3 +75,6 @@ docs/content/Contributing.md
 docs/content/Contributors.md
 docs/content/ReleaseNotes.md
 docs/content/ReleaseNotes-*.md
+/Debug
+/src/DataTableStorage/Debug
+/src/DataTableStorage/x64/Debug

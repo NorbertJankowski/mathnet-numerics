@@ -142,6 +142,18 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         {
         }
 
+
+        /// <summary>
+        /// Create a new dense matrix with the given number of rows and columns directly binding to a raw array.
+        /// The array is assumed to be in column-major order (column by column) and is used directly without copying.
+        /// Very efficient, but changes to the array and the matrix will affect each other.
+        /// </summary>
+        /// <seealso href="http://en.wikipedia.org/wiki/Row-major_order"/>
+        public DenseMatrixBM(int rows, int columns, Complex[] storage)
+            : this(new DenseColumnMajorMatrixStorageBM<Complex>(rows, columns, storage))
+        {
+        }
+
         /// <summary>
         /// Create a new dense matrix with the given number of rows and columns directly binding to a raw array.
         /// The array is assumed to be in column-major order (column by column) and is used directly without copying.
