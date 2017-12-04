@@ -48,7 +48,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [Test]
         public void ConstructorWideMatrixThrowsInvalidMatrixOperationException()
         {
-            Assert.That(() => UserQR.Create(Matrix<double>.Build.Dense(3, 4)), Throws.ArgumentException);
+            Assert.That(() => UserQR.Create(Matrix<double>.Build.DenseBM(3, 4)), Throws.ArgumentException);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanFactorizeIdentity(int order)
         {
-            var matrixI = Matrix<double>.Build.DenseIdentity(order);
+            var matrixI = Matrix<double>.Build.DenseIdentityBM(order);
             var factorQR = matrixI.QR(QRMethod.Full);
             var r = factorQR.R;
 
@@ -92,7 +92,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanFactorizeIdentityUsingThinQR(int order)
         {
-            var matrixI = Matrix<double>.Build.DenseIdentity(order);
+            var matrixI = Matrix<double>.Build.DenseIdentityBM(order);
             var factorQR = matrixI.QR(QRMethod.Thin);
             var r = factorQR.R;
 
@@ -124,7 +124,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void IdentityDeterminantIsOne(int order)
         {
-            var matrixI = Matrix<double>.Build.DenseIdentity(order);
+            var matrixI = Matrix<double>.Build.DenseIdentityBM(order);
             var factorQR = matrixI.QR();
             Assert.AreEqual(1.0, factorQR.Determinant);
         }
@@ -142,7 +142,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100, 98)]
         public void CanFactorizeRandomMatrix(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var factorQR = matrixA.QR(QRMethod.Full);
             var q = factorQR.Q;
             var r = factorQR.R;
@@ -201,7 +201,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100, 98)]
         public void CanFactorizeRandomMatrixUsingThinQR(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var factorQR = matrixA.QR(QRMethod.Thin);
             var q = factorQR.Q;
             var r = factorQR.R;
@@ -259,7 +259,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
 
@@ -298,11 +298,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrix(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
 
-            var matrixB = Matrix<double>.Build.Random(order, order, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixX = factorQR.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -344,7 +344,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
             var vectorb = Vector<double>.Build.Random(order, 1);
@@ -390,14 +390,14 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
 
-            var matrixB = Matrix<double>.Build.Random(order, order, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixBCopy = matrixB.Clone();
 
-            var matrixX = Matrix<double>.Build.Dense(order, order);
+            var matrixX = Matrix<double>.Build.DenseBM(order, order);
             factorQR.Solve(matrixB, matrixX);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -448,7 +448,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorUsingThinQR(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
 
@@ -487,11 +487,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixUsingThinQR(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
 
-            var matrixB = Matrix<double>.Build.Random(order, order, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixX = factorQR.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -533,7 +533,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGivenUsingThinQR(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
             var vectorb = Vector<double>.Build.Random(order, 1);
@@ -579,14 +579,14 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGivenUsingThinQR(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
 
-            var matrixB = Matrix<double>.Build.Random(order, order, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixBCopy = matrixB.Clone();
 
-            var matrixX = Matrix<double>.Build.Dense(order, order);
+            var matrixX = Matrix<double>.Build.DenseBM(order, order);
             factorQR.Solve(matrixB, matrixX);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -633,11 +633,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(QRMethod.Thin)]
         public void CanSolveForMatrixWithTallRandomMatrix(QRMethod method)
         {
-            var matrixA = Matrix<double>.Build.Random(20, 10, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(20, 10, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(method);
 
-            var matrixB = Matrix<double>.Build.Random(20, 5, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(20, 5, 1);
             var matrixX = factorQR.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -674,7 +674,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(QRMethod.Thin)]
         public void CanSolveForVectorWithTallRandomMatrix(QRMethod method)
         {
-            var matrixA = Matrix<double>.Build.Random(20, 10, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(20, 10, 1);
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(method);
 

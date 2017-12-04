@@ -340,6 +340,7 @@ Target "ApplyVersion" (fun _ ->
     patchVersionInAssemblyInfo "src/Numerics" numericsRelease
     patchVersionInAssemblyInfo "src/FSharp" numericsRelease
     patchVersionInAssemblyInfo "src/UnitTests" numericsRelease
+    patchVersionInAssemblyInfo "src/UnitTestsBigMemory" numericsRelease
     patchVersionInAssemblyInfo "src/FSharpUnitTests" numericsRelease
     patchVersionInAssemblyInfo "src/Data" dataRelease
     patchVersionInAssemblyInfo "src/DataUnitTests" dataRelease

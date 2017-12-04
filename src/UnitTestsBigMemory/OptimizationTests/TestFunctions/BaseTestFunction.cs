@@ -51,7 +51,7 @@ namespace MathNet.Numerics.UnitTests.OptimizationTests.TestFunctions
 
         public virtual Matrix<double> ItemHessian(Vector<double> x, int itemIndex)
         {
-            var output = new LinearAlgebra.Double.DenseMatrix(this.ParameterDimension, this.ParameterDimension);
+            var output = new LinearAlgebra.Double.DenseMatrixBM(this.ParameterDimension, this.ParameterDimension);
             this.ItemHessianByRef(x, itemIndex, output);
             return output;
         }
@@ -68,7 +68,7 @@ namespace MathNet.Numerics.UnitTests.OptimizationTests.TestFunctions
 
         public virtual Matrix<double> Jacobian(Vector<double> x)
         {
-            var output = new LinearAlgebra.Double.DenseMatrix(this.ItemDimension, this.ParameterDimension);
+            var output = new LinearAlgebra.Double.DenseMatrixBM(this.ItemDimension, this.ParameterDimension);
             this.JacobianbyRef(x, output);
             return output;
         }
@@ -109,7 +109,7 @@ namespace MathNet.Numerics.UnitTests.OptimizationTests.TestFunctions
                     output[ii,jj] = 0.0;
 
             var tmp_grad = new LinearAlgebra.Double.DenseVector(this.ParameterDimension);
-            var tmp_hess = new LinearAlgebra.Double.DenseMatrix(this.ParameterDimension, this.ParameterDimension);
+            var tmp_hess = new LinearAlgebra.Double.DenseMatrixBM(this.ParameterDimension, this.ParameterDimension);
             double tmp_value = 0.0;
 
             for (int ii = 0; ii < this.ItemDimension; ++ii)
@@ -130,7 +130,7 @@ namespace MathNet.Numerics.UnitTests.OptimizationTests.TestFunctions
 
         public virtual Matrix<double> SsqHessian(Vector<double> x)
         {
-            var output = new LinearAlgebra.Double.DenseMatrix(this.ParameterDimension, this.ParameterDimension);
+            var output = new LinearAlgebra.Double.DenseMatrixBM(this.ParameterDimension, this.ParameterDimension);
             this.SsqHessianByRef(x, output);
             return output;
         }

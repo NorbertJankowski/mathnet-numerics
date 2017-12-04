@@ -85,7 +85,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomMatrix(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var factorEvd = matrixA.Evd();
             var eigenVectors = factorEvd.EigenVectors;
             var d = factorEvd.D;
@@ -117,7 +117,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test, Ignore("")]
         public void CanFactorizeRandomSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             var factorEvd = matrixA.Evd(Symmetricity.Hermitian);
             var eigenVectors = factorEvd.EigenVectors;
             var d = factorEvd.D;
@@ -150,7 +150,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanCheckRankSquare(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var factorEvd = matrixA.Evd();
 
             Assert.AreEqual(factorEvd.Rank, order);
@@ -203,7 +203,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test]
         public void CanSolveForRandomVectorAndSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceHermitian(A);
             var ACopy = A.Clone();
             var evd = A.Evd(Symmetricity.Hermitian);
@@ -230,12 +230,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test]
         public void CanSolveForRandomMatrixAndSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceHermitian(A);
             var ACopy = A.Clone();
             var evd = A.Evd(Symmetricity.Hermitian);
 
-            var B = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var B = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var BCopy = B.Clone();
 
             var X = evd.Solve(B);
@@ -263,7 +263,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test]
         public void CanSolveForRandomVectorAndSymmetricMatrixWhenResultVectorGiven([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceHermitian(A);
             var ACopy = A.Clone();
             var evd = A.Evd(Symmetricity.Hermitian);
@@ -291,12 +291,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test]
         public void CanSolveForRandomMatrixAndSymmetricMatrixWhenResultMatrixGiven([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceHermitian(A);
             var ACopy = A.Clone();
             var evd = A.Evd(Symmetricity.Hermitian);
 
-            var B = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var B = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var BCopy = B.Clone();
 
             var X = new UserDefinedMatrix(order, order);

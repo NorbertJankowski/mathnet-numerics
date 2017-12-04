@@ -111,7 +111,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomMatrix(int order)
         {
-            var matrixX = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixX = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var factorLU = matrixX.LU();
             var matrixL = factorLU.L;
             var matrixU = factorLU.U;
@@ -166,7 +166,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 
@@ -205,11 +205,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrix(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 
-            var matrixB = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var matrixX = factorLU.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -251,7 +251,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
             var vectorb = new UserDefinedVector(Vector<double>.Build.Random(order, 1).ToArray());
@@ -297,11 +297,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 
-            var matrixB = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var matrixBCopy = matrixB.Clone();
 
             var matrixX = new UserDefinedMatrix(order, order);
@@ -355,7 +355,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanInverse(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 

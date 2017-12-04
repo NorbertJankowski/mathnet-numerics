@@ -57,7 +57,6 @@ namespace MathNet.Numerics.UnitTests
 
             return (from item in array select converter(item)).ToArray();
 #else
-            return null;
             return Array.ConvertAll(array, converter);
 #endif
         }

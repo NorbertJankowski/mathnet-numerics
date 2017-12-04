@@ -48,7 +48,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanFactorizeIdentityMatrix([Values(1, 10, 100)] int order)
         {
-            var matrix = Matrix<float>.Build.DenseIdentity(order);
+            var matrix = Matrix<float>.Build.DenseIdentityBM(order);
             var factorEvd = matrix.Evd();
             var eigenValues = factorEvd.EigenValues;
             var eigenVectors = factorEvd.EigenVectors;
@@ -68,7 +68,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanFactorizeRandomSquareMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = Matrix<float>.Build.Random(order, order, 1);
+            var A = Matrix<float>.Build.RandomBM(order, order, 1);
             var factorEvd = A.Evd();
             var V = factorEvd.EigenVectors;
             var λ = factorEvd.D;
@@ -87,7 +87,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanFactorizeRandomSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var A = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             MatrixHelpers.ForceSymmetric(A);
             var factorEvd = A.Evd();
             var V = factorEvd.EigenVectors;
@@ -107,14 +107,14 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanCheckRankSquare([Values(10, 50, 100)] int order)
         {
-            var A = Matrix<float>.Build.Random(order, order, 1);
+            var A = Matrix<float>.Build.RandomBM(order, order, 1);
             Assert.AreEqual(A.Evd().Rank, order);
         }
 
         [Test]
         public void CanCheckRankOfSquareSingular([Values(10, 50, 100)] int order)
         {
-            var A = new DenseMatrix(order, order);
+            var A = new DenseMatrixBM(order, order);
             A[0, 0] = 1;
             A[order - 1, order - 1] = 1;
             for (var i = 1; i < order - 1; i++)
@@ -133,7 +133,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void IdentityDeterminantIsOne([Values(1, 10, 100)] int order)
         {
-            var matrixI = DenseMatrix.CreateIdentity(order);
+            var matrixI = DenseMatrixBM.CreateIdentity(order);
             var factorEvd = matrixI.Evd();
             Assert.AreEqual(1.0, factorEvd.Determinant);
         }
@@ -145,7 +145,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanSolveForRandomVectorAndSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var A = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
@@ -172,12 +172,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanSolveForRandomMatrixAndSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var A = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
 
-            var B = Matrix<float>.Build.Random(order, order, 2);
+            var B = Matrix<float>.Build.RandomBM(order, order, 2);
             var BCopy = B.Clone();
 
             var X = evd.Solve(B);
@@ -205,7 +205,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanSolveForRandomVectorAndSymmetricMatrixWhenResultVectorGiven([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var A = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
@@ -233,15 +233,15 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CanSolveForRandomMatrixAndSymmetricMatrixWhenResultMatrixGiven([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var A = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
 
-            var B = Matrix<float>.Build.Random(order, order, 2);
+            var B = Matrix<float>.Build.RandomBM(order, order, 2);
             var BCopy = B.Clone();
 
-            var X = new DenseMatrix(order, order);
+            var X = new DenseMatrixBM(order, order);
             evd.Solve(B, X);
 
             // The solution X row dimension is equal to the column dimension of A

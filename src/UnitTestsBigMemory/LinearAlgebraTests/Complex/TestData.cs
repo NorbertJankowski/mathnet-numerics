@@ -47,13 +47,13 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         {
             switch (matrix)
             {
-                case TestMatrix.DenseSquare3x3: return M.DenseOfArray(new[,] { { 1d, new Complex(1.1d, -4d), 2d }, { 1d, 1d, 2d }, { 1d, new Complex(1d, 2d), 2d } });
-                case TestMatrix.DenseSquare3x3b: return M.DenseOfArray(new[,] { { -1.1d, -2.2d, -3.3d }, { 0d, 1.1d, new Complex(2.2d, -1.2d) }, { -4.4d, 5.5d, 6.6d } });
-                case TestMatrix.DenseSquare3x3c: return M.DenseOfArray(new[,] { { 1d, 2d, 3d }, { 2d, new Complex(2d, 2d), 0d }, { 3d, Complex.Zero, 3d } });
-                case TestMatrix.DenseSquare4x4: return M.DenseOfArray(new[,] { { new Complex(-1.1d, -2d), -2.2d, -3.3d, -4.4d }, { 0d, 1.1d, 2.2d, 3.3d }, { 1d, 2.1d, 6.2d, 4.3d }, { -4.4d, 5.5d, 6.6d, -7.7d } });
-                case TestMatrix.DenseSquare4x4b: return M.DenseOfArray(new[,] { { -1.1d, new Complex(-2.2d, 3.4d), -3.3d, -4.4d }, { -1.1d, -2.2d, -3.3d, -4.4d }, { -1.1d, -2.2d, -3.3d, -4.4d }, { -1.1d, -2.2d, -3.3d, -4.4d } });
-                case TestMatrix.DenseTall3x2: return M.DenseOfArray(new[,] { { -1.1d, -2.2d }, { Complex.Zero, 1.1d }, { -4.4d, 5.5d } });
-                case TestMatrix.DenseWide2x3: return M.DenseOfArray(new[,] { { -1.1d, -2.2d, -3.3d }, { 0d, new Complex(1.1d, 0.1d), 2.2d } });
+                case TestMatrix.DenseSquare3x3: return M.DenseOfArrayBM(new[,] { { 1d, new Complex(1.1d, -4d), 2d }, { 1d, 1d, 2d }, { 1d, new Complex(1d, 2d), 2d } });
+                case TestMatrix.DenseSquare3x3b: return M.DenseOfArrayBM(new[,] { { -1.1d, -2.2d, -3.3d }, { 0d, 1.1d, new Complex(2.2d, -1.2d) }, { -4.4d, 5.5d, 6.6d } });
+                case TestMatrix.DenseSquare3x3c: return M.DenseOfArrayBM(new[,] { { 1d, 2d, 3d }, { 2d, new Complex(2d, 2d), 0d }, { 3d, Complex.Zero, 3d } });
+                case TestMatrix.DenseSquare4x4: return M.DenseOfArrayBM(new[,] { { new Complex(-1.1d, -2d), -2.2d, -3.3d, -4.4d }, { 0d, 1.1d, 2.2d, 3.3d }, { 1d, 2.1d, 6.2d, 4.3d }, { -4.4d, 5.5d, 6.6d, -7.7d } });
+                case TestMatrix.DenseSquare4x4b: return M.DenseOfArrayBM(new[,] { { -1.1d, new Complex(-2.2d, 3.4d), -3.3d, -4.4d }, { -1.1d, -2.2d, -3.3d, -4.4d }, { -1.1d, -2.2d, -3.3d, -4.4d }, { -1.1d, -2.2d, -3.3d, -4.4d } });
+                case TestMatrix.DenseTall3x2: return M.DenseOfArrayBM(new[,] { { -1.1d, -2.2d }, { Complex.Zero, 1.1d }, { -4.4d, 5.5d } });
+                case TestMatrix.DenseWide2x3: return M.DenseOfArrayBM(new[,] { { -1.1d, -2.2d, -3.3d }, { 0d, new Complex(1.1d, 0.1d), 2.2d } });
 
                 case TestMatrix.SparseSquare3x3: return M.SparseOfArray(new[,]  { { 7d, 1d, 2d }, { 1d, 1d, 2d }, { 1d, 1d + Complex.ImaginaryOne, 2d } });
                 case TestMatrix.SparseSquare3x3b: return M.SparseOfArray(new[,] { { 7d, 1d, 2d }, { new Complex(1d, 2d), 0d, Complex.Zero }, { -2d, 0d, 0d } });

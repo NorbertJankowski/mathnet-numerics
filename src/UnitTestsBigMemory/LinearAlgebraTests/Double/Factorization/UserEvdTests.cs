@@ -83,7 +83,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomMatrix(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var factorEvd = matrixA.Evd();
             var eigenVectors = factorEvd.EigenVectors;
             var d = factorEvd.D;
@@ -119,7 +119,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomSymmetricMatrix(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             var factorEvd = matrixA.Evd();
             var eigenVectors = factorEvd.EigenVectors;
             var d = factorEvd.D;
@@ -151,7 +151,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanCheckRankSquare(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var factorEvd = matrixA.Evd();
 
             Assert.AreEqual(factorEvd.Rank, order);
@@ -204,7 +204,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [Test]
         public void CanSolveForRandomVectorAndSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
@@ -231,12 +231,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [Test]
         public void CanSolveForRandomMatrixAndSymmetricMatrix([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
 
-            var B = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var B = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var BCopy = B.Clone();
 
             var X = evd.Solve(B);
@@ -264,7 +264,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [Test]
         public void CanSolveForRandomVectorAndSymmetricMatrixWhenResultVectorGiven([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
@@ -292,12 +292,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [Test]
         public void CanSolveForRandomMatrixAndSymmetricMatrixWhenResultMatrixGiven([Values(1, 2, 5, 10, 50, 100)] int order)
         {
-            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var A = new UserDefinedMatrix(Matrix<double>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             MatrixHelpers.ForceSymmetric(A);
             var ACopy = A.Clone();
             var evd = A.Evd();
 
-            var B = new UserDefinedMatrix(Matrix<double>.Build.Random(order, order, 1).ToArray());
+            var B = new UserDefinedMatrix(Matrix<double>.Build.RandomBM(order, order, 1).ToArray());
             var BCopy = B.Clone();
 
             var X = new UserDefinedMatrix(order, order);

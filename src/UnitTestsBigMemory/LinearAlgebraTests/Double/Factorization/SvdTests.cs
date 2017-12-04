@@ -49,7 +49,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanFactorizeIdentity(int order)
         {
-            var matrixI = Matrix<double>.Build.DenseIdentity(order);
+            var matrixI = Matrix<double>.Build.DenseIdentityBM(order);
             var factorSvd = matrixI.Svd();
             var u = factorSvd.U;
             var vt = factorSvd.VT;
@@ -86,7 +86,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100, 98)]
         public void CanFactorizeRandomMatrix(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var factorSvd = matrixA.Svd();
             var u = factorSvd.U;
             var vt = factorSvd.VT;
@@ -125,7 +125,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100, 93)]
         public void CanCheckRankOfNonSquare(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var factorSvd = matrixA.Svd();
 
             var mn = Math.Min(row, column);
@@ -144,7 +144,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(90)]
         public void CanCheckRankSquare(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var factorSvd = matrixA.Svd();
 
             if (factorSvd.Determinant != 0)
@@ -166,7 +166,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(100)]
         public void CanCheckRankOfSquareSingular(int order)
         {
-            var matrixA = Matrix<double>.Build.Dense(order, order);
+            var matrixA = Matrix<double>.Build.DenseBM(order, order);
             matrixA[0, 0] = 1;
             matrixA[order - 1, order - 1] = 1;
             for (var i = 1; i < order - 1; i++)
@@ -187,7 +187,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         public void RankAcceptance()
         {
             // https://discuss.mathdotnet.com/t/wrong-compute-of-the-matrix-rank/120
-            Matrix<double> m = DenseMatrix.OfArray(new double[,] {
+            Matrix<double> m = DenseMatrixBM.OfArray(new double[,] {
                 { 4, 4, 1, 3 },
                 { 1,-2, 1, 0 },
                 { 4, 0, 2, 2 },
@@ -203,10 +203,10 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [Test]
         public void SolveMatrixIfVectorsNotComputedThrowsInvalidOperationException()
         {
-            var matrixA = Matrix<double>.Build.Random(10, 10, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(10, 10, 1);
             var factorSvd = matrixA.Svd(false);
 
-            var matrixB = Matrix<double>.Build.Random(10, 10, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(10, 10, 1);
             Assert.That(() => factorSvd.Solve(matrixB), Throws.InvalidOperationException);
         }
 
@@ -216,7 +216,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [Test]
         public void SolveVectorIfVectorsNotComputedThrowsInvalidOperationException()
         {
-            var matrixA = Matrix<double>.Build.Random(10, 10, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(10, 10, 1);
             var factorSvd = matrixA.Svd(false);
 
             var vectorb = Vector<double>.Build.Random(10, 1);
@@ -236,7 +236,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(90, 100)]
         public void CanSolveForRandomVector(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var matrixACopy = matrixA.Clone();
             var factorSvd = matrixA.Svd();
 
@@ -276,11 +276,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(80, 100)]
         public void CanSolveForRandomMatrix(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var matrixACopy = matrixA.Clone();
             var factorSvd = matrixA.Svd();
 
-            var matrixB = Matrix<double>.Build.Random(row, column, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(row, column, 1);
             var matrixX = factorSvd.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -323,7 +323,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(90, 100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var matrixACopy = matrixA.Clone();
             var factorSvd = matrixA.Svd();
             var vectorb = Vector<double>.Build.Random(row, 1);
@@ -368,14 +368,14 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Factorization
         [TestCase(80, 100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int row, int column)
         {
-            var matrixA = Matrix<double>.Build.Random(row, column, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(row, column, 1);
             var matrixACopy = matrixA.Clone();
             var factorSvd = matrixA.Svd();
 
-            var matrixB = Matrix<double>.Build.Random(row, column, 1);
+            var matrixB = Matrix<double>.Build.RandomBM(row, column, 1);
             var matrixBCopy = matrixB.Clone();
 
-            var matrixX = Matrix<double>.Build.Dense(column, column);
+            var matrixX = Matrix<double>.Build.DenseBM(column, column);
             factorSvd.Solve(matrixB, matrixX);
 
             // The solution X row dimension is equal to the column dimension of A

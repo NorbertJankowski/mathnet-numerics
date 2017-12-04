@@ -142,7 +142,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100, 98)]
         public void CanFactorizeRandomMatrix(int row, int column)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(row, column, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(row, column, 1).ToArray());
             var factorQR = matrixA.QR(QRMethod.Full);
             var q = factorQR.Q;
             var r = factorQR.R;
@@ -211,7 +211,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100, 98)]
         public void CanFactorizeRandomMatrixUsingThinQR(int row, int column)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(row, column, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(row, column, 1).ToArray());
             var factorQR = matrixA.QR(QRMethod.Thin);
             var q = factorQR.Q;
             var r = factorQR.R;
@@ -260,7 +260,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
 
@@ -300,11 +300,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrix(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
 
-            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixX = factorQR.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -347,7 +347,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
             var vectorb = new UserDefinedVector(Vector<Complex32>.Build.Random(order, 1).ToArray());
@@ -394,11 +394,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR();
 
-            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixBCopy = matrixB.Clone();
 
             var matrixX = new UserDefinedMatrix(order, order);
@@ -453,7 +453,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorUsingThinQR(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
 
@@ -493,11 +493,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixUsingThinQR(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
 
-            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixX = factorQR.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -540,7 +540,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGivenUsingThinQR(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
             var vectorb = new UserDefinedVector(Vector<Complex32>.Build.Random(order, 1).ToArray());
@@ -587,11 +587,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGivenUsingThinQR(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var factorQR = matrixA.QR(QRMethod.Thin);
 
-            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.Random(order, order, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<Complex32>.Build.RandomBM(order, order, 1).ToArray());
             var matrixBCopy = matrixB.Clone();
 
             var matrixX = new UserDefinedMatrix(order, order);

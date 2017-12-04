@@ -14,7 +14,7 @@ namespace Anemon
         //public static extern IntPtr DataTableStorage_AllocByte(long size);
     }
 
-    public abstract class DataTableStorage<T>
+    public abstract class DataTableStorage<T> 
     {
         public void DataTableStorage_Free(IntPtr storage)
         {

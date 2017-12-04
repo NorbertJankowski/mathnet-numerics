@@ -47,16 +47,16 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
     {
         static readonly Type[] KnownTypes =
         {
-            typeof(DenseColumnMajorMatrixStorage<double>), typeof(SparseCompressedRowMatrixStorage<double>), typeof(DiagonalMatrixStorage<double>),
-            typeof(DenseColumnMajorMatrixStorage<float>), typeof(SparseCompressedRowMatrixStorage<float>), typeof(DiagonalMatrixStorage<float>),
-            typeof(DenseColumnMajorMatrixStorage<Numerics.Complex32>), typeof(SparseCompressedRowMatrixStorage<Numerics.Complex32>), typeof(DiagonalMatrixStorage<Numerics.Complex32>),
-            typeof(DenseColumnMajorMatrixStorage<Complex64>), typeof(SparseCompressedRowMatrixStorage<Complex64>), typeof(DiagonalMatrixStorage<Complex64>)
+            typeof(DenseColumnMajorMatrixStorageBM<double>), typeof(SparseCompressedRowMatrixStorage<double>), typeof(DiagonalMatrixStorage<double>),
+            typeof(DenseColumnMajorMatrixStorageBM<float>), typeof(SparseCompressedRowMatrixStorage<float>), typeof(DiagonalMatrixStorage<float>),
+            typeof(DenseColumnMajorMatrixStorageBM<Numerics.Complex32>), typeof(SparseCompressedRowMatrixStorage<Numerics.Complex32>), typeof(DiagonalMatrixStorage<Numerics.Complex32>),
+            typeof(DenseColumnMajorMatrixStorageBM<Complex64>), typeof(SparseCompressedRowMatrixStorage<Complex64>), typeof(DiagonalMatrixStorage<Complex64>)
         };
 
         [Test]
         public void DenseColumnMajorMatrixStorageOfDoubleDataContractSerializationTest()
         {
-            MatrixStorage<double> expected = Matrix<double>.Build.Dense(2, 2, new[] { 1.0d, 2.0d, 0.0d, 3.0d }).Storage;
+            MatrixStorage<double> expected = Matrix<double>.Build.DenseBM(2, 2, new[] { 1.0d, 2.0d, 0.0d, 3.0d }).Storage;
 
             var serializer = new DataContractSerializer(typeof(MatrixStorage<double>), KnownTypes);
             var stream = new MemoryStream();
@@ -67,7 +67,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
 
             Assert.That(actual.RowCount, Is.EqualTo(expected.RowCount));
             Assert.That(actual.ColumnCount, Is.EqualTo(expected.ColumnCount));
-            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorage<double>)));
+            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorageBM<double>)));
             Assert.That(actual, Is.EqualTo(expected));
             Assert.That(actual, Is.Not.SameAs(expected));
         }
@@ -75,7 +75,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         [Test]
         public void DenseColumnMajorMatrixStorageOfSingleDataContractSerializationTest()
         {
-            MatrixStorage<float> expected = Matrix<float>.Build.Dense(2, 2, new[] { 1.0f, 2.0f, 0.0f, 3.0f }).Storage;
+            MatrixStorage<float> expected = Matrix<float>.Build.DenseBM(2, 2, new[] { 1.0f, 2.0f, 0.0f, 3.0f }).Storage;
 
             var serializer = new DataContractSerializer(typeof(MatrixStorage<float>), KnownTypes);
             var stream = new MemoryStream();
@@ -86,7 +86,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
 
             Assert.That(actual.RowCount, Is.EqualTo(expected.RowCount));
             Assert.That(actual.ColumnCount, Is.EqualTo(expected.ColumnCount));
-            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorage<float>)));
+            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorageBM<float>)));
             Assert.That(actual, Is.EqualTo(expected));
             Assert.That(actual, Is.Not.SameAs(expected));
         }
@@ -94,7 +94,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         [Test]
         public void DenseColumnMajorMatrixStorageOfComplex64DataContractSerializationTest()
         {
-            MatrixStorage<Complex64> expected = Matrix<Complex64>.Build.Dense(2, 2, new[] { new Complex64(1.0, -1.0), 2.0, 0.0, 3.0 }).Storage;
+            MatrixStorage<Complex64> expected = Matrix<Complex64>.Build.DenseBM(2, 2, new[] { new Complex64(1.0, -1.0), 2.0, 0.0, 3.0 }).Storage;
 
             var serializer = new DataContractSerializer(typeof(MatrixStorage<Complex64>), KnownTypes);
             var stream = new MemoryStream();
@@ -105,7 +105,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
 
             Assert.That(actual.RowCount, Is.EqualTo(expected.RowCount));
             Assert.That(actual.ColumnCount, Is.EqualTo(expected.ColumnCount));
-            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorage<Complex64>)));
+            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorageBM<Complex64>)));
             Assert.That(actual, Is.EqualTo(expected));
             Assert.That(actual, Is.Not.SameAs(expected));
         }
@@ -113,7 +113,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         [Test]
         public void DenseColumnMajorMatrixStorageOfComplex32DataContractSerializationTest()
         {
-            MatrixStorage<Numerics.Complex32> expected = Matrix<Numerics.Complex32>.Build.Dense(2, 2, new[] { new Numerics.Complex32(1.0f, -1.0f), 2.0f, 0.0f, 3.0f }).Storage;
+            MatrixStorage<Numerics.Complex32> expected = Matrix<Numerics.Complex32>.Build.DenseBM(2, 2, new[] { new Numerics.Complex32(1.0f, -1.0f), 2.0f, 0.0f, 3.0f }).Storage;
 
             var serializer = new DataContractSerializer(typeof(MatrixStorage<Numerics.Complex32>), KnownTypes);
             var stream = new MemoryStream();
@@ -124,7 +124,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
 
             Assert.That(actual.RowCount, Is.EqualTo(expected.RowCount));
             Assert.That(actual.ColumnCount, Is.EqualTo(expected.ColumnCount));
-            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorage<Numerics.Complex32>)));
+            Assert.That(actual, Is.TypeOf(typeof(DenseColumnMajorMatrixStorageBM<Numerics.Complex32>)));
             Assert.That(actual, Is.EqualTo(expected));
             Assert.That(actual, Is.Not.SameAs(expected));
         }

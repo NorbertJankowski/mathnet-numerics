@@ -49,7 +49,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var a = TestData.MatrixStorage(aType, new[,] { {1.0, 2.0}, {0.0, 4.0} });
             var result = TestData.MatrixStorage<double>(resultType, 2, 2);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {-1.0, -2.0}, {0.0, -4.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {-1.0, -2.0}, {0.0, -4.0} });
             a.MapTo(result, u => -u, Zeros.AllowSkip);
             Assert.That(result.Equals(expected));
         }
@@ -59,7 +59,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var a = TestData.MatrixStorage(aType, new[,] { {1.0, 2.0}, {0.0, 4.0} });
             var result = TestData.MatrixStorage<double>(resultType, 2, 2);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
             a.MapTo(result, u => -u + 1.0, Zeros.Include);
             Assert.That(result.Equals(expected));
         }
@@ -69,7 +69,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var a = TestData.MatrixStorage(aType, new[,] { { 1.0, 2.0 }, { 0.0, 4.0 } });
             var result = TestData.MatrixStorage<double>(resultType, 2, 2);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
             a.MapTo(result, u => -u + 1.0, Zeros.AllowSkip);
             Assert.That(result.Equals(expected));
         }
@@ -79,7 +79,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var a = TestData.MatrixStorage(aType, new[,] { { 1.0, 2.0 }, { 0.0, 4.0 } });
             var result = TestData.MatrixStorage<double>(resultType, 2, 2);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {-1.0, -2.0}, {0.0, -4.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {-1.0, -2.0}, {0.0, -4.0} });
             int badValueCount = 0; // one time is OK for zero-check
             a.MapIndexedTo(result, (i, j, u) => { if (a.At(i, j) != u) Interlocked.Increment(ref badValueCount); return -u; }, Zeros.AllowSkip);
             Assert.That(badValueCount, Is.LessThanOrEqualTo(1));
@@ -91,7 +91,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var a = TestData.MatrixStorage(aType, new[,] { { 1.0, 2.0 }, { 0.0, 4.0 } });
             var result = TestData.MatrixStorage<double>(resultType, 2, 2);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
             int badValueCount = 0; // one time is OK for zero-check
             a.MapIndexedTo(result, (i, j, u) => { if (a.At(i, j) != u) Interlocked.Increment(ref badValueCount); return -u + 1.0; }, Zeros.Include);
             Assert.That(badValueCount, Is.LessThanOrEqualTo(1));
@@ -103,7 +103,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var a = TestData.MatrixStorage(aType, new[,] { { 1.0, 2.0 }, { 0.0, 4.0 } });
             var result = TestData.MatrixStorage<double>(resultType, 2, 2);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {0.0, -1.0}, {1.0, -3.0} });
             int badValueCount = 0; // one time is OK for zero-check
             a.MapIndexedTo(result, (i, j, u) => { if (a.At(i, j) != u) Interlocked.Increment(ref badValueCount); return -u + 1.0; }, Zeros.AllowSkip);
             Assert.That(badValueCount, Is.LessThanOrEqualTo(1));
@@ -116,7 +116,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
             var a = TestData.MatrixStorage(aType, new[,] { {1.0, 2.0, 0.0}, {4.0, 0.0, 6.0} });
             var b = TestData.MatrixStorage(bType, new[,] { {11.0, 12.0, 13.0}, {0.0, 0.0, 16.0} });
             var result = TestData.MatrixStorage<double>(resultType, 2, 3);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {12.0, 14.0, 13.0}, {4.0, 0.0, 22.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {12.0, 14.0, 13.0}, {4.0, 0.0, 22.0} });
             a.Map2To(result, b, (u, v) => u + v, Zeros.AllowSkip, ExistingData.AssumeZeros);
             Assert.That(result.Equals(expected));
         }
@@ -127,7 +127,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
             var a = TestData.MatrixStorage(aType, new[,] { {1.0, 2.0, 0.0}, {4.0, 0.0, 6.0} });
             var b = TestData.MatrixStorage(bType, new[,] { {11.0, 12.0, 13.0}, {0.0, 0.0, 16.0} });
             var result = TestData.MatrixStorage<double>(resultType, 2, 3);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {13.0, 15.0, 14.0}, {5.0, 1.0, 23.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {13.0, 15.0, 14.0}, {5.0, 1.0, 23.0} });
             a.Map2To(result, b, (u, v) => u + v + 1.0, Zeros.Include, ExistingData.AssumeZeros);
             Assert.That(result.Equals(expected));
         }
@@ -138,7 +138,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
             var a = TestData.MatrixStorage(aType, new[,] { {1.0, 2.0, 0.0}, {4.0, 0.0, 6.0} });
             var b = TestData.MatrixStorage(bType, new[,] { {11.0, 12.0, 13.0}, {0.0, 0.0, 16.0} });
             var result = TestData.MatrixStorage<double>(resultType, 2, 3);
-            var expected = DenseColumnMajorMatrixStorage<double>.OfArray(new[,] { {13.0, 15.0, 14.0}, {5.0, 1.0, 23.0} });
+            var expected = DenseColumnMajorMatrixStorageBM<double>.OfArray(new[,] { {13.0, 15.0, 14.0}, {5.0, 1.0, 23.0} });
             a.Map2To(result, b, (u, v) => u + v + 1.0, Zeros.AllowSkip, ExistingData.AssumeZeros);
             Assert.That(result.Equals(expected));
         }

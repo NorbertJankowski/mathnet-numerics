@@ -50,7 +50,7 @@ namespace MathNet.Numerics.UnitTests.OptimizationTests.TestFunctions
 
         public static Matrix<double> Hessian(Vector<double> input)
         {
-            Matrix<double> output = new DenseMatrix(2, 2);
+            Matrix<double> output = new DenseMatrixBM(2, 2);
             output[0, 0] = 2 - 400 * input[1] + 1200 * input[0] * input[0];
             output[1, 1] = 200;
             output[0, 1] = -400 * input[0];

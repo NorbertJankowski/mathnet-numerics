@@ -110,7 +110,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomMatrix(int order)
         {
-            var matrixX = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var matrixX = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             var chol = matrixX.Cholesky();
             var factorC = chol.Factor;
 
@@ -138,7 +138,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
             }
 
             // Check update
-            var matrixC = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var matrixC = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             var cholC = matrixC.Cholesky();
             chol.Factorize(matrixC);
             for (var i = 0; i < matrixC.RowCount; i++)
@@ -150,7 +150,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
             }
 
             // Check size mismatch
-            var matrixD = Matrix<float>.Build.DenseIdentity(order + 1);
+            var matrixD = Matrix<float>.Build.DenseIdentityBM(order + 1);
             Assert.That(() => chol.Factorize(matrixD), Throws.ArgumentException);
         }
 
@@ -166,7 +166,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
             var b = new UserDefinedVector(Vector<float>.Build.Random(order, 1).ToArray());
@@ -205,10 +205,10 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100, 100)]
         public void CanSolveForRandomMatrix(int row, int col)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefinite(row, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefiniteBM(row, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
-            var matrixB = new UserDefinedMatrix(Matrix<float>.Build.Random(row, col, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<float>.Build.RandomBM(row, col, 1).ToArray());
             var matrixX = chol.Solve(matrixB);
 
             Assert.AreEqual(matrixB.RowCount, matrixX.RowCount);
@@ -247,7 +247,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int order)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefinite(order, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
             var b = new UserDefinedVector(Vector<float>.Build.Random(order, 1).ToArray());
@@ -294,10 +294,10 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100, 100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int row, int col)
         {
-            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefinite(row, 1).ToArray());
+            var matrixA = new UserDefinedMatrix(Matrix<float>.Build.RandomPositiveDefiniteBM(row, 1).ToArray());
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
-            var matrixB = new UserDefinedMatrix(Matrix<float>.Build.Random(row, col, 1).ToArray());
+            var matrixB = new UserDefinedMatrix(Matrix<float>.Build.RandomBM(row, col, 1).ToArray());
             var matrixBCopy = matrixB.Clone();
             var matrixX = new UserDefinedMatrix(row, col);
             chol.Solve(matrixB, matrixX);

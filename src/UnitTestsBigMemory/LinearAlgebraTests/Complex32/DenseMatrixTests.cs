@@ -50,7 +50,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         /// <returns>A matrix with the given dimensions.</returns>
         protected override Matrix<Complex32> CreateMatrix(int rows, int columns)
         {
-            return new DenseMatrix(rows, columns);
+            return new DenseMatrixBM(rows, columns);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         /// <returns>A matrix with the given values.</returns>
         protected override Matrix<Complex32> CreateMatrix(Complex32[,] data)
         {
-            return DenseMatrix.OfArray(data);
+            return DenseMatrixBM.OfArray(data);
         }
 
         /// <summary>
@@ -71,11 +71,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         {
             var testData = new Dictionary<string, Matrix<Complex32>>
                 {
-                    {"Singular3x3", new DenseMatrix(3, 3, new[] {new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(2.0f, 1), new Complex32(2.0f, 1), new Complex32(2.0f, 1)})},
-                    {"Square3x3", new DenseMatrix(3, 3, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(-4.4f, 1), new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(5.5f, 1), new Complex32(-3.3f, 1), new Complex32(2.2f, 1), new Complex32(6.6f, 1)})},
-                    {"Square4x4", new DenseMatrix(4, 4, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(1.0f, 1), new Complex32(-4.4f, 1), new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(2.1f, 1), new Complex32(5.5f, 1), new Complex32(-3.3f, 1), new Complex32(2.2f, 1), new Complex32(6.2f, 1), new Complex32(6.6f, 1), new Complex32(-4.4f, 1), new Complex32(3.3f, 1), new Complex32(4.3f, 1), new Complex32(-7.7f, 1)})},
-                    {"Tall3x2", new DenseMatrix(3, 2, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(-4.4f, 1), new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(5.5f, 1)})},
-                    {"Wide2x3", new DenseMatrix(2, 3, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(-3.3f, 1), new Complex32(2.2f, 1)})}
+                    {"Singular3x3", new DenseMatrixBM(3, 3, new[] {new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(2.0f, 1), new Complex32(2.0f, 1), new Complex32(2.0f, 1)})},
+                    {"Square3x3", new DenseMatrixBM(3, 3, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(-4.4f, 1), new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(5.5f, 1), new Complex32(-3.3f, 1), new Complex32(2.2f, 1), new Complex32(6.6f, 1)})},
+                    {"Square4x4", new DenseMatrixBM(4, 4, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(1.0f, 1), new Complex32(-4.4f, 1), new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(2.1f, 1), new Complex32(5.5f, 1), new Complex32(-3.3f, 1), new Complex32(2.2f, 1), new Complex32(6.2f, 1), new Complex32(6.6f, 1), new Complex32(-4.4f, 1), new Complex32(3.3f, 1), new Complex32(4.3f, 1), new Complex32(-7.7f, 1)})},
+                    {"Tall3x2", new DenseMatrixBM(3, 2, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(-4.4f, 1), new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(5.5f, 1)})},
+                    {"Wide2x3", new DenseMatrixBM(2, 3, new[] {new Complex32(-1.1f, 1), Complex32.Zero, new Complex32(-2.2f, 1), new Complex32(1.1f, 1), new Complex32(-3.3f, 1), new Complex32(2.2f, 1)})}
                 };
 
             foreach (var name in testData.Keys)
@@ -91,7 +91,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         public void MatrixFrom1DArrayIsReference()
         {
             var data = new[] {new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(1.0f, 1), new Complex32(2.0f, 1), new Complex32(2.0f, 1), new Complex32(2.0f, 1)};
-            var matrix = new DenseMatrix(3, 3, data);
+            var matrix = new DenseMatrixBM(3, 3, data);
             matrix[0, 0] = new Complex32(10.0f, 1);
             Assert.AreEqual(new Complex32(10.0f, 1), data[0]);
         }
@@ -102,7 +102,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         [Test]
         public void MatrixFrom2DArrayIsCopy()
         {
-            var matrix = DenseMatrix.OfArray(TestData2D["Singular3x3"]);
+            var matrix = DenseMatrixBM.OfArray(TestData2D["Singular3x3"]);
             matrix[0, 0] = 10.0f;
             Assert.AreEqual(new Complex32(1.0f, 1), TestData2D["Singular3x3"][0, 0]);
         }
@@ -119,7 +119,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         [TestCase("Wide2x3")]
         public void CanCreateMatrixFrom2DArray(string name)
         {
-            var matrix = DenseMatrix.OfArray(TestData2D[name]);
+            var matrix = DenseMatrixBM.OfArray(TestData2D[name]);
             for (var i = 0; i < TestData2D[name].GetLength(0); i++)
             {
                 for (var j = 0; j < TestData2D[name].GetLength(1); j++)
@@ -135,7 +135,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         [Test]
         public void CanCreateMatrixWithUniformValues()
         {
-            var matrix = DenseMatrix.Create(10, 10, new Complex32(10.0f, 1));
+            var matrix = DenseMatrixBM.Create(10, 10, new Complex32(10.0f, 1));
             for (var i = 0; i < matrix.RowCount; i++)
             {
                 for (var j = 0; j < matrix.ColumnCount; j++)
@@ -151,7 +151,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         [Test]
         public void CanCreateIdentity()
         {
-            var matrix = DenseMatrix.CreateIdentity(5);
+            var matrix = DenseMatrixBM.CreateIdentity(5);
             for (var i = 0; i < matrix.RowCount; i++)
             {
                 for (var j = 0; j < matrix.ColumnCount; j++)
@@ -169,7 +169,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         [TestCase(-1)]
         public void IdentityWithWrongOrderThrowsArgumentOutOfRangeException(int order)
         {
-            Assert.That(() => DenseMatrix.CreateIdentity(order), Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => DenseMatrixBM.CreateIdentity(order), Throws.TypeOf<ArgumentOutOfRangeException>());
         }
     }
 }

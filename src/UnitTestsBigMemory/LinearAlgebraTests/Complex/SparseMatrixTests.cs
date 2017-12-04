@@ -217,15 +217,15 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
             sparseResult.Add(sparseResult, sparseResult);
             Assert.IsTrue(sparseResult.Equals(2*sum1));
 
-            var denseResult = new DenseMatrix(1, 3);
+            var denseResult = new DenseMatrixBM(1, 3);
             denseResult.Add(m2, denseResult);
             Assert.IsTrue(denseResult.Equals(sum1));
 
-            denseResult = DenseMatrix.OfArray(new Complex[,] {{0, 1, 1}});
+            denseResult = DenseMatrixBM.OfArray(new Complex[,] {{0, 1, 1}});
             denseResult.Add(m1, denseResult);
             Assert.IsTrue(denseResult.Equals(sum1));
 
-            var m3 = DenseMatrix.OfArray(new Complex[,] {{0, 1, 1}});
+            var m3 = DenseMatrixBM.OfArray(new Complex[,] {{0, 1, 1}});
             var sum3 = m1 + m3;
             var sum4 = m3 + m1;
             Assert.IsTrue(sum3.Equals(m3));
@@ -261,15 +261,15 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
             sparseResult.Subtract(sparseResult, sparseResult);
             Assert.IsTrue(sparseResult.Equals(0*diff1));
 
-            var denseResult = new DenseMatrix(1, 3);
+            var denseResult = new DenseMatrixBM(1, 3);
             denseResult.Subtract(m2, denseResult);
             Assert.IsTrue(denseResult.Equals(diff1));
 
-            denseResult = DenseMatrix.OfArray(new Complex[,] {{0, 1, 1}});
+            denseResult = DenseMatrixBM.OfArray(new Complex[,] {{0, 1, 1}});
             denseResult.Subtract(m1, denseResult);
             Assert.IsTrue(denseResult.Equals(diff2));
 
-            var m3 = DenseMatrix.OfArray(new Complex[,] {{0, 1, 1}});
+            var m3 = DenseMatrixBM.OfArray(new Complex[,] {{0, 1, 1}});
             var diff3 = m1 - m3;
             var diff4 = m3 - m1;
             Assert.IsTrue(diff3.Equals(m3.Negate()));

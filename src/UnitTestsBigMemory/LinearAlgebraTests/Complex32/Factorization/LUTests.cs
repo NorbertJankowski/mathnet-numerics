@@ -50,7 +50,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanFactorizeIdentity(int order)
         {
-            var matrixI = DenseMatrix.CreateIdentity(order);
+            var matrixI = DenseMatrixBM.CreateIdentity(order);
             var factorLU = matrixI.LU();
 
             // Check lower triangular part.
@@ -84,7 +84,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test]
         public void LUFailsWithNonSquareMatrix()
         {
-            var matrix = new DenseMatrix(3, 1);
+            var matrix = new DenseMatrixBM(3, 1);
             Assert.That(() => matrix.LU(), Throws.ArgumentException);
         }
 
@@ -97,7 +97,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void IdentityDeterminantIsOne(int order)
         {
-            var matrixI = DenseMatrix.CreateIdentity(order);
+            var matrixI = DenseMatrixBM.CreateIdentity(order);
             var lu = matrixI.LU();
             Assert.AreEqual(Complex32.One, lu.Determinant);
         }
@@ -114,7 +114,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomMatrix(int order)
         {
-            var matrixX = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixX = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var factorLU = matrixX.LU();
             var matrixL = factorLU.L;
             var matrixU = factorLU.U;
@@ -170,7 +170,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 
@@ -210,11 +210,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrix(int order)
         {
-            var matrixA = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 
-            var matrixB = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixB = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var matrixX = factorLU.Solve(matrixB);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -257,7 +257,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int order)
         {
-            var matrixA = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
             var vectorb = Vector<Complex32>.Build.Random(order, 1);
@@ -304,14 +304,14 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int order)
         {
-            var matrixA = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 
-            var matrixB = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixB = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var matrixBCopy = matrixB.Clone();
 
-            var matrixX = new DenseMatrix(order, order);
+            var matrixX = new DenseMatrixBM(order, order);
             factorLU.Solve(matrixB, matrixX);
 
             // The solution X row dimension is equal to the column dimension of A
@@ -363,7 +363,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanInverse(int order)
         {
-            var matrixA = Matrix<Complex32>.Build.Random(order, order, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomBM(order, order, 1);
             var matrixACopy = matrixA.Clone();
             var factorLU = matrixA.LU();
 

@@ -1041,7 +1041,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         [TestCase(-2)]
         public void RandomWithNonPositiveNumberOfRowsThrowsArgumentException(int numberOfRows)
         {
-            Assert.That(() => DenseMatrix.CreateRandom(numberOfRows, 4, new ContinuousUniform()), Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => DenseMatrixBM.CreateRandom(numberOfRows, 4, new ContinuousUniform()), Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         /// <summary>

@@ -258,15 +258,15 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         public override void CanComputeFrobeniusNorm()
         {
             var matrix = TestMatrices["Square3x3"];
-            var denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Square3x3"]);
+            var denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Square3x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.FrobeniusNorm(), matrix.FrobeniusNorm(), 14);
 
             matrix = TestMatrices["Wide2x3"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Wide2x3"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Wide2x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.FrobeniusNorm(), matrix.FrobeniusNorm(), 14);
 
             matrix = TestMatrices["Tall3x2"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Tall3x2"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Tall3x2"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.FrobeniusNorm(), matrix.FrobeniusNorm(), 14);
         }
 
@@ -276,15 +276,15 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         public override void CanComputeInfinityNorm()
         {
             var matrix = TestMatrices["Square3x3"];
-            var denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Square3x3"]);
+            var denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Square3x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.InfinityNorm(), matrix.InfinityNorm(), 14);
 
             matrix = TestMatrices["Wide2x3"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Wide2x3"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Wide2x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.InfinityNorm(), matrix.InfinityNorm(), 14);
 
             matrix = TestMatrices["Tall3x2"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Tall3x2"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Tall3x2"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.InfinityNorm(), matrix.InfinityNorm(), 14);
         }
 
@@ -298,11 +298,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
             AssertHelpers.AlmostEqualRelative(denseMatrix.L1Norm(), matrix.L1Norm(), 14);
 
             matrix = TestMatrices["Wide2x3"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Wide2x3"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Wide2x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.L1Norm(), matrix.L1Norm(), 14);
 
             matrix = TestMatrices["Tall3x2"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Tall3x2"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Tall3x2"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.L1Norm(), matrix.L1Norm(), 14);
         }
 
@@ -312,15 +312,15 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         public override void CanComputeL2Norm()
         {
             var matrix = TestMatrices["Square3x3"];
-            var denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Square3x3"]);
+            var denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Square3x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.L2Norm(), matrix.L2Norm(), 14);
 
             matrix = TestMatrices["Wide2x3"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Wide2x3"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Wide2x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.L2Norm(), matrix.L2Norm(), 14);
 
             matrix = TestMatrices["Tall3x2"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Tall3x2"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Tall3x2"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.L2Norm(), matrix.L2Norm(), 14);
         }
 
@@ -331,11 +331,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         public void CanComputeDeterminant()
         {
             var matrix = TestMatrices["Square3x3"];
-            var denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Square3x3"]);
+            var denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Square3x3"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.Determinant(), matrix.Determinant(), 14);
 
             matrix = TestMatrices["Square4x4"];
-            denseMatrix = Matrix<double>.Build.DenseOfArray(TestData2D["Square4x4"]);
+            denseMatrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Square4x4"]);
             AssertHelpers.AlmostEqualRelative(denseMatrix.Determinant(), matrix.Determinant(), 14);
         }
 
@@ -387,7 +387,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         public void DiagonalDenseMatrixMultiplication_IssueCP5706()
         {
             Matrix<double> diagonal = Matrix<double>.Build.DiagonalIdentity(3);
-            Matrix<double> dense = Matrix<double>.Build.DenseOfArray(new double[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
+            Matrix<double> dense = Matrix<double>.Build.DenseOfArrayBM(new double[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
             var test = diagonal*dense;
             var test2 = dense*diagonal;
         }

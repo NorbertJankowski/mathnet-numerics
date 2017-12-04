@@ -50,7 +50,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanFactorizeIdentity(int order)
         {
-            var matrixI = DenseMatrix.CreateIdentity(order);
+            var matrixI = DenseMatrixBM.CreateIdentity(order);
             var factorC = matrixI.Cholesky().Factor;
 
             Assert.AreEqual(matrixI.RowCount, factorC.RowCount);
@@ -71,7 +71,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test]
         public void CholeskyFailsWithDiagonalNonPositiveDefiniteMatrix()
         {
-            var matrixI = DenseMatrix.CreateIdentity(10);
+            var matrixI = DenseMatrixBM.CreateIdentity(10);
             matrixI[3, 3] = -4.0f;
             Assert.That(() => matrixI.Cholesky(), Throws.ArgumentException);
         }
@@ -82,7 +82,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [Test]
         public void CholeskyFailsWithNonSquareMatrix()
         {
-            var matrix = new DenseMatrix(3, 1);
+            var matrix = new DenseMatrixBM(3, 1);
             Assert.That(() => matrix.Cholesky(), Throws.ArgumentException);
         }
 
@@ -95,7 +95,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void IdentityDeterminantIsOne(int order)
         {
-            var matrixI = DenseMatrix.CreateIdentity(order);
+            var matrixI = DenseMatrixBM.CreateIdentity(order);
             var factorC = matrixI.Cholesky();
             Assert.AreEqual(Complex32.One, factorC.Determinant);
             Assert.AreEqual(Complex32.Zero, factorC.DeterminantLn);
@@ -113,7 +113,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomMatrix(int order)
         {
-            var matrixX = Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1);
+            var matrixX = Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1);
             var chol = matrixX.Cholesky();
             var factorC = chol.Factor;
 
@@ -142,7 +142,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
             }
 
             // Check update
-            var matrixC = Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1);
+            var matrixC = Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1);
             var cholC = matrixC.Cholesky();
             chol.Factorize(matrixC);
             for (var i = 0; i < matrixC.RowCount; i++)
@@ -154,7 +154,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
             }
 
             // Check size mismatch
-            var matrixD = Matrix<Complex32>.Build.DenseIdentity(order + 1);
+            var matrixD = Matrix<Complex32>.Build.DenseIdentityBM(order + 1);
             Assert.That(() => chol.Factorize(matrixD), Throws.ArgumentException);
         }
 
@@ -170,7 +170,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
             var matrixB = Vector<Complex32>.Build.Random(order, 1);
@@ -210,10 +210,10 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100, 100)]
         public void CanSolveForRandomMatrix(int row, int col)
         {
-            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefinite(row, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefiniteBM(row, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
-            var matrixB = Matrix<Complex32>.Build.Random(row, col, 1);
+            var matrixB = Matrix<Complex32>.Build.RandomBM(row, col, 1);
             var matrixX = chol.Solve(matrixB);
 
             Assert.AreEqual(matrixB.RowCount, matrixX.RowCount);
@@ -253,7 +253,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int order)
         {
-            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefinite(order, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefiniteBM(order, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
             var matrixB = Vector<Complex32>.Build.Random(order, 1);
@@ -301,12 +301,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32.Factorization
         [TestCase(100, 100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int row, int col)
         {
-            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefinite(row, 1);
+            var matrixA = Matrix<Complex32>.Build.RandomPositiveDefiniteBM(row, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
-            var matrixB = Matrix<Complex32>.Build.Random(row, col, 1);
+            var matrixB = Matrix<Complex32>.Build.RandomBM(row, col, 1);
             var matrixBCopy = matrixB.Clone();
-            var matrixX = new DenseMatrix(row, col);
+            var matrixX = new DenseMatrixBM(row, col);
             chol.Solve(matrixB, matrixX);
 
             Assert.AreEqual(matrixB.RowCount, matrixX.RowCount);

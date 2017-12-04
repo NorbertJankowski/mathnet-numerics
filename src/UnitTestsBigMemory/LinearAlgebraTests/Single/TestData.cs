@@ -41,13 +41,13 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         {
             switch (matrix)
             {
-                case TestMatrix.DenseSquare3x3: return M.DenseOfArray(new[,] { { 1f, 1f, 2f }, { 1f, 1f, 2f }, { 1f, 1f, 2f } });
-                case TestMatrix.DenseSquare3x3b: return M.DenseOfArray(new[,] { { -1.1f, -2.2f, -3.3f }, { 0f, 1.1f, 2.2f }, { -4.4f, 5.5f, 6.6f } });
-                case TestMatrix.DenseSquare3x3c: return M.DenseOfArray(new[,] { { 1f, 2f, 3f }, { 2f, 2f, 0f }, { 3f, 0f, 3f } });
-                case TestMatrix.DenseSquare4x4: return M.DenseOfArray(new[,] { { -1.1f, -2.2f, -3.3f, -4.4f }, { 0f, 1.1f, 2.2f, 3.3f }, { 1f, 2.1f, 6.2f, 4.3f }, { -4.4f, 5.5f, 6.6f, -7.7f } });
-                case TestMatrix.DenseSquare4x4b: return M.DenseOfArray(new[,] { { -1.1f, -2.2f, -3.3f, -4.4f }, { -1.1f, -2.2f, -3.3f, -4.4f }, { -1.1f, -2.2f, -3.3f, -4.4f }, { -1.1f, -2.2f, -3.3f, -4.4f } });
-                case TestMatrix.DenseTall3x2: return M.DenseOfArray(new[,] { { -1.1f, -2.2f }, { 0f, 1.1f }, { -4.4f, 5.5f } });
-                case TestMatrix.DenseWide2x3: return M.DenseOfArray(new[,] { { -1.1f, -2.2f, -3.3f }, { 0f, 1.1f, 2.2f } });
+                case TestMatrix.DenseSquare3x3: return M.DenseOfArrayBM(new[,] { { 1f, 1f, 2f }, { 1f, 1f, 2f }, { 1f, 1f, 2f } });
+                case TestMatrix.DenseSquare3x3b: return M.DenseOfArrayBM(new[,] { { -1.1f, -2.2f, -3.3f }, { 0f, 1.1f, 2.2f }, { -4.4f, 5.5f, 6.6f } });
+                case TestMatrix.DenseSquare3x3c: return M.DenseOfArrayBM(new[,] { { 1f, 2f, 3f }, { 2f, 2f, 0f }, { 3f, 0f, 3f } });
+                case TestMatrix.DenseSquare4x4: return M.DenseOfArrayBM(new[,] { { -1.1f, -2.2f, -3.3f, -4.4f }, { 0f, 1.1f, 2.2f, 3.3f }, { 1f, 2.1f, 6.2f, 4.3f }, { -4.4f, 5.5f, 6.6f, -7.7f } });
+                case TestMatrix.DenseSquare4x4b: return M.DenseOfArrayBM(new[,] { { -1.1f, -2.2f, -3.3f, -4.4f }, { -1.1f, -2.2f, -3.3f, -4.4f }, { -1.1f, -2.2f, -3.3f, -4.4f }, { -1.1f, -2.2f, -3.3f, -4.4f } });
+                case TestMatrix.DenseTall3x2: return M.DenseOfArrayBM(new[,] { { -1.1f, -2.2f }, { 0f, 1.1f }, { -4.4f, 5.5f } });
+                case TestMatrix.DenseWide2x3: return M.DenseOfArrayBM(new[,] { { -1.1f, -2.2f, -3.3f }, { 0f, 1.1f, 2.2f } });
 
                 case TestMatrix.SparseSquare3x3: return M.SparseOfArray(new[,] { { 7f, 1f, 2f }, { 1f, 1f, 2f }, { 1f, 1f, 2f } });
                 case TestMatrix.SparseSquare3x3b: return M.SparseOfArray(new[,] { { 7f, 1f, 2f }, { 1f, 0f, 0f }, { -2f, 0f, 0f } });

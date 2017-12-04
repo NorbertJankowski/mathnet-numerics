@@ -268,7 +268,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Solvers.Iterative
             // That's why we will do 4 tries and downgrade stop criterion each time
             for (var iteration = 6; iteration > 3; iteration--)
             {
-                var matrixA = Matrix<float>.Build.Random(order, order, 1);
+                var matrixA = Matrix<float>.Build.RandomBM(order, order, 1);
                 var vectorb = Vector<float>.Build.Random(order, 1);
 
                 var monitor = new Iterator<float>(
@@ -310,8 +310,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Solvers.Iterative
             // That's why we will do 4 tries and downgrade stop criterion each time
             for (var iteration = 6; iteration > 3; iteration--)
             {
-                var matrixA = Matrix<float>.Build.Random(order, order, 1);
-                var matrixB = Matrix<float>.Build.Random(order, order, 1);
+                var matrixA = Matrix<float>.Build.RandomBM(order, order, 1);
+                var matrixB = Matrix<float>.Build.RandomBM(order, order, 1);
 
                 var monitor = new Iterator<float>(
                     new IterationCountStopCriterion<float>(MaximumIterations),

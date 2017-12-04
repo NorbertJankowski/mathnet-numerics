@@ -48,7 +48,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void CanFactorizeIdentity(int order)
         {
-            var matrixI = DenseMatrix.CreateIdentity(order);
+            var matrixI = DenseMatrixBM.CreateIdentity(order);
             var factorC = matrixI.Cholesky().Factor;
 
             Assert.AreEqual(matrixI.RowCount, factorC.RowCount);
@@ -69,7 +69,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CholeskyFailsWithDiagonalNonPositiveDefiniteMatrix()
         {
-            var matrixI = DenseMatrix.CreateIdentity(10);
+            var matrixI = DenseMatrixBM.CreateIdentity(10);
             matrixI[3, 3] = -4.0f;
             Assert.That(() => matrixI.Cholesky(), Throws.ArgumentException);
         }
@@ -80,7 +80,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [Test]
         public void CholeskyFailsWithNonSquareMatrix()
         {
-            var matrix = new DenseMatrix(3, 2);
+            var matrix = new DenseMatrixBM(3, 2);
             Assert.That(() => matrix.Cholesky(), Throws.ArgumentException);
         }
 
@@ -93,7 +93,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void IdentityDeterminantIsOne(int order)
         {
-            var matrixI = DenseMatrix.CreateIdentity(order);
+            var matrixI = DenseMatrixBM.CreateIdentity(order);
             var factorC = matrixI.Cholesky();
             Assert.AreEqual(1.0, factorC.Determinant);
             Assert.AreEqual(0.0, factorC.DeterminantLn);
@@ -111,7 +111,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void CanFactorizeRandomMatrix(int order)
         {
-            var matrixX = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var matrixX = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             var chol = matrixX.Cholesky();
             var factorC = chol.Factor;
 
@@ -139,7 +139,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
             }
 
             // Check update
-            var matrixC = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var matrixC = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             var cholC = matrixC.Cholesky();
             chol.Factorize(matrixC);
             for (var i = 0; i < matrixC.RowCount; i++)
@@ -151,7 +151,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
             }
 
             // Check size mismatch
-            var matrixD = Matrix<float>.Build.DenseIdentity(order + 1);
+            var matrixD = Matrix<float>.Build.DenseIdentityBM(order + 1);
             Assert.That(() => chol.Factorize(matrixD), Throws.ArgumentException);
         }
 
@@ -167,7 +167,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var matrixA = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
             var matrixB = Vector<float>.Build.Random(order, 1);
@@ -206,10 +206,10 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100, 100)]
         public void CanSolveForRandomMatrix(int row, int col)
         {
-            var matrixA = Matrix<float>.Build.RandomPositiveDefinite(row, 1);
+            var matrixA = Matrix<float>.Build.RandomPositiveDefiniteBM(row, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
-            var matrixB = Matrix<float>.Build.Random(row, col, 1);
+            var matrixB = Matrix<float>.Build.RandomBM(row, col, 1);
             var matrixX = chol.Solve(matrixB);
 
             Assert.AreEqual(matrixB.RowCount, matrixX.RowCount);
@@ -248,7 +248,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100)]
         public void CanSolveForRandomVectorWhenResultVectorGiven(int order)
         {
-            var matrixA = Matrix<float>.Build.RandomPositiveDefinite(order, 1);
+            var matrixA = Matrix<float>.Build.RandomPositiveDefiniteBM(order, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
             var matrixB = Vector<float>.Build.Random(order, 1);
@@ -295,12 +295,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single.Factorization
         [TestCase(100, 100)]
         public void CanSolveForRandomMatrixWhenResultMatrixGiven(int row, int col)
         {
-            var matrixA = Matrix<float>.Build.RandomPositiveDefinite(row, 1);
+            var matrixA = Matrix<float>.Build.RandomPositiveDefiniteBM(row, 1);
             var matrixACopy = matrixA.Clone();
             var chol = matrixA.Cholesky();
-            var matrixB = Matrix<float>.Build.Random(row, col, 1);
+            var matrixB = Matrix<float>.Build.RandomBM(row, col, 1);
             var matrixBCopy = matrixB.Clone();
-            var matrixX = new DenseMatrix(row, col);
+            var matrixX = new DenseMatrixBM(row, col);
             chol.Solve(matrixB, matrixX);
 
             Assert.AreEqual(matrixB.RowCount, matrixX.RowCount);

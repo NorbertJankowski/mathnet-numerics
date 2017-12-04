@@ -48,7 +48,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         /// <returns>A matrix with the given dimensions.</returns>
         protected override Matrix<float> CreateMatrix(int rows, int columns)
         {
-            return new DenseMatrix(rows, columns);
+            return new DenseMatrixBM(rows, columns);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         /// <returns>A matrix with the given values.</returns>
         protected override Matrix<float> CreateMatrix(float[,] data)
         {
-            return DenseMatrix.OfArray(data);
+            return DenseMatrixBM.OfArray(data);
         }
 
         /// <summary>
@@ -69,11 +69,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         {
             var testData = new Dictionary<string, Matrix<float>>
                 {
-                    {"Singular3x3", new DenseMatrix(3, 3, new[] {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f})},
-                    {"Square3x3", new DenseMatrix(3, 3, new[] {-1.1f, 0.0f, -4.4f, -2.2f, 1.1f, 5.5f, -3.3f, 2.2f, 6.6f})},
-                    {"Square4x4", new DenseMatrix(4, 4, new[] {-1.1f, 0.0f, 1.0f, -4.4f, -2.2f, 1.1f, 2.1f, 5.5f, -3.3f, 2.2f, 6.2f, 6.6f, -4.4f, 3.3f, 4.3f, -7.7f})},
-                    {"Tall3x2", new DenseMatrix(3, 2, new[] {-1.1f, 0.0f, -4.4f, -2.2f, 1.1f, 5.5f})},
-                    {"Wide2x3", new DenseMatrix(2, 3, new[] {-1.1f, 0.0f, -2.2f, 1.1f, -3.3f, 2.2f})}
+                    {"Singular3x3", new DenseMatrixBM(3, 3, new[] {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f})},
+                    {"Square3x3", new DenseMatrixBM(3, 3, new[] {-1.1f, 0.0f, -4.4f, -2.2f, 1.1f, 5.5f, -3.3f, 2.2f, 6.6f})},
+                    {"Square4x4", new DenseMatrixBM(4, 4, new[] {-1.1f, 0.0f, 1.0f, -4.4f, -2.2f, 1.1f, 2.1f, 5.5f, -3.3f, 2.2f, 6.2f, 6.6f, -4.4f, 3.3f, 4.3f, -7.7f})},
+                    {"Tall3x2", new DenseMatrixBM(3, 2, new[] {-1.1f, 0.0f, -4.4f, -2.2f, 1.1f, 5.5f})},
+                    {"Wide2x3", new DenseMatrixBM(2, 3, new[] {-1.1f, 0.0f, -2.2f, 1.1f, -3.3f, 2.2f})}
                 };
 
             foreach (var name in testData.Keys)
@@ -89,7 +89,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         public void MatrixFrom1DArrayIsReference()
         {
             var data = new float[] {1, 1, 1, 1, 1, 1, 2, 2, 2};
-            var matrix = new DenseMatrix(3, 3, data);
+            var matrix = new DenseMatrixBM(3, 3, data);
             matrix[0, 0] = 10.0f;
             Assert.AreEqual(10.0f, data[0]);
         }
@@ -100,7 +100,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         [Test]
         public void MatrixFrom2DArrayIsCopy()
         {
-            var matrix = DenseMatrix.OfArray(TestData2D["Singular3x3"]);
+            var matrix = DenseMatrixBM.OfArray(TestData2D["Singular3x3"]);
             matrix[0, 0] = 10.0f;
             Assert.AreEqual(1.0f, TestData2D["Singular3x3"][0, 0]);
         }
@@ -117,7 +117,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         [TestCase("Wide2x3")]
         public void CanCreateMatrixFrom2DArray(string name)
         {
-            var matrix = DenseMatrix.OfArray(TestData2D[name]);
+            var matrix = DenseMatrixBM.OfArray(TestData2D[name]);
             for (var i = 0; i < TestData2D[name].GetLength(0); i++)
             {
                 for (var j = 0; j < TestData2D[name].GetLength(1); j++)
@@ -133,7 +133,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         [Test]
         public void CanCreateMatrixWithUniformValues()
         {
-            var matrix = DenseMatrix.Create(10, 10, 10.0f);
+            var matrix = DenseMatrixBM.Create(10, 10, 10.0f);
             for (var i = 0; i < matrix.RowCount; i++)
             {
                 for (var j = 0; j < matrix.ColumnCount; j++)
@@ -149,7 +149,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         [Test]
         public void CanCreateIdentity()
         {
-            var matrix = DenseMatrix.CreateIdentity(5);
+            var matrix = DenseMatrixBM.CreateIdentity(5);
             for (var i = 0; i < matrix.RowCount; i++)
             {
                 for (var j = 0; j < matrix.ColumnCount; j++)
@@ -167,7 +167,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         [TestCase(-1)]
         public void IdentityWithWrongOrderThrowsArgumentOutOfRangeException(int order)
         {
-            Assert.That(() => DenseMatrix.CreateIdentity(order), Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => DenseMatrixBM.CreateIdentity(order), Throws.TypeOf<ArgumentOutOfRangeException>());
         }
     }
 }

@@ -240,7 +240,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Solvers.Iterative
         [TestCase(10)]
         public void CanSolveForRandomVector(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var vectorb = Vector<double>.Build.Random(order, 1);
 
             var monitor = new Iterator<double>(
@@ -270,7 +270,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double.Solvers.Iterative
         [TestCase(10)]
         public void CanSolveForRandomMatrix(int order)
         {
-            var matrixA = Matrix<double>.Build.Random(order, order, 1);
+            var matrixA = Matrix<double>.Build.RandomBM(order, order, 1);
             var matrixB = Matrix<double>.Build.Random(order, order, 1);
 
             var monitor = new Iterator<double>(

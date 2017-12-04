@@ -48,7 +48,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// <returns>A matrix with the given dimensions.</returns>
         protected override Matrix<double> CreateMatrix(int rows, int columns)
         {
-            return Matrix<double>.Build.Dense(rows, columns);
+            return Matrix<double>.Build.DenseBM(rows, columns);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// <returns>A matrix with the given values.</returns>
         protected override Matrix<double> CreateMatrix(double[,] data)
         {
-            return Matrix<double>.Build.DenseOfArray(data);
+            return Matrix<double>.Build.DenseOfArrayBM(data);
         }
 
         /// <summary>
@@ -69,11 +69,11 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         {
             var testData = new Dictionary<string, Matrix<double>>
                 {
-                    {"Singular3x3", Matrix<double>.Build.Dense(3, 3, new[] {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0})},
-                    {"Square3x3", Matrix<double>.Build.Dense(3, 3, new[] {-1.1, 0.0, -4.4, -2.2, 1.1, 5.5, -3.3, 2.2, 6.6})},
-                    {"Square4x4", Matrix<double>.Build.Dense(4, 4, new[] {-1.1, 0.0, 1.0, -4.4, -2.2, 1.1, 2.1, 5.5, -3.3, 2.2, 6.2, 6.6, -4.4, 3.3, 4.3, -7.7})},
-                    {"Tall3x2", Matrix<double>.Build.Dense(3, 2, new[] {-1.1, 0.0, -4.4, -2.2, 1.1, 5.5})},
-                    {"Wide2x3", Matrix<double>.Build.Dense(2, 3, new[] {-1.1, 0.0, -2.2, 1.1, -3.3, 2.2})}
+                    {"Singular3x3", Matrix<double>.Build.DenseBM(3, 3, new[] {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0})},
+                    {"Square3x3", Matrix<double>.Build.DenseBM(3, 3, new[] {-1.1, 0.0, -4.4, -2.2, 1.1, 5.5, -3.3, 2.2, 6.6})},
+                    {"Square4x4", Matrix<double>.Build.DenseBM(4, 4, new[] {-1.1, 0.0, 1.0, -4.4, -2.2, 1.1, 2.1, 5.5, -3.3, 2.2, 6.2, 6.6, -4.4, 3.3, 4.3, -7.7})},
+                    {"Tall3x2", Matrix<double>.Build.DenseBM(3, 2, new[] {-1.1, 0.0, -4.4, -2.2, 1.1, 5.5})},
+                    {"Wide2x3", Matrix<double>.Build.DenseBM(2, 3, new[] {-1.1, 0.0, -2.2, 1.1, -3.3, 2.2})}
                 };
 
             foreach (var name in testData.Keys)
@@ -89,7 +89,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         public void MatrixFrom1DArrayIsReference()
         {
             var data = new double[] {1, 1, 1, 1, 1, 1, 2, 2, 2};
-            var matrix = Matrix<double>.Build.Dense(3, 3, data);
+            var matrix = Matrix<double>.Build.DenseBM(3, 3, data);
             matrix[0, 0] = 10.0;
             Assert.AreEqual(10.0, data[0]);
         }
@@ -100,8 +100,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [Test]
         public void MatrixFrom2DArrayIsCopy()
         {
-            var matrix = Matrix<double>.Build.DenseOfArray(TestData2D["Singular3x3"]);
-            Assert.That(matrix, Is.TypeOf<DenseMatrix>());
+            var matrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D["Singular3x3"]);
+            Assert.That(matrix, Is.TypeOf<DenseMatrixBM>());
             matrix[0, 0] = 10.0;
             Assert.AreEqual(1.0, TestData2D["Singular3x3"][0, 0]);
         }
@@ -118,8 +118,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [TestCase("Wide2x3")]
         public void CanCreateMatrixFrom2DArray(string name)
         {
-            var matrix = Matrix<double>.Build.DenseOfArray(TestData2D[name]);
-            Assert.That(matrix, Is.TypeOf<DenseMatrix>());
+            var matrix = Matrix<double>.Build.DenseOfArrayBM(TestData2D[name]);
+            Assert.That(matrix, Is.TypeOf<DenseMatrixBM>());
             for (var i = 0; i < TestData2D[name].GetLength(0); i++)
             {
                 for (var j = 0; j < TestData2D[name].GetLength(1); j++)
@@ -135,8 +135,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [Test]
         public void CanCreateMatrixWithUniformValues()
         {
-            var matrix = Matrix<double>.Build.Dense(10, 10, 10.0);
-            Assert.That(matrix, Is.TypeOf<DenseMatrix>());
+            var matrix = Matrix<double>.Build.DenseBM(10, 10, 10.0);
+            Assert.That(matrix, Is.TypeOf<DenseMatrixBM>());
             for (var i = 0; i < matrix.RowCount; i++)
             {
                 for (var j = 0; j < matrix.ColumnCount; j++)
@@ -152,7 +152,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [Test]
         public void CanCreateIdentity()
         {
-            var matrix = Matrix<double>.Build.DenseIdentity(5);
+            var matrix = Matrix<double>.Build.DenseIdentityBM(5);
             for (var i = 0; i < matrix.RowCount; i++)
             {
                 for (var j = 0; j < matrix.ColumnCount; j++)
@@ -170,13 +170,13 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [TestCase(-1)]
         public void IdentityWithWrongOrderThrowsArgumentOutOfRangeException(int order)
         {
-            Assert.That(() => Matrix<double>.Build.DenseIdentity(order), Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => Matrix<double>.Build.DenseIdentityBM(order), Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
         public void MatrixPower()
         {
-            var d = Matrix<double>.Build.Random(3, 3, 1);
+            var d = Matrix<double>.Build.RandomBM(3, 3, 1);
             var d2 = d*d;
             var d3 = d2*d;
             var d4 = d3*d;
@@ -199,7 +199,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [Test]
         public void MatrixToMatrixString()
         {
-            var m = Matrix<double>.Build.Dense(20, 10);
+            var m = Matrix<double>.Build.DenseBM(20, 10);
             for (int i = 1; i < 25; i++)
             {
                 for (int j = 1; j < 25; j++)
