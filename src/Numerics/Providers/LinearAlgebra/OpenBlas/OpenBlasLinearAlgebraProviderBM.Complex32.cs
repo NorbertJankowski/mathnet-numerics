@@ -1372,6 +1372,10 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
             DataTableStorage.DataTableStorage_SvdSolveFactored_Complex32(rowsA, columnsA, s, u.Data, vt.Data, b, columnsB, x);
         }
 
+        public long TriangularInverse(bool uplo, bool unitTriangular, long n, IStorageBM matrix)
+        {
+            return SafeNativeMethodsBM_Complex32.c_triangular_inverse(uplo, unitTriangular, n, matrix.Data);
+        }
 
     }
 }

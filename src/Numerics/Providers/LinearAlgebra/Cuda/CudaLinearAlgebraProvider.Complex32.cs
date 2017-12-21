@@ -578,6 +578,11 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Cuda
                 base.SingularValueDecomposition(computeVectors, a, rowsA, columnsA, s, u, vt);
             else Solver(SafeNativeMethods.c_svd_factor(_solverHandle, (char)computeVectors, rowsA, columnsA, a, s, u, vt));
         }
+
+        public override long TriangularInverse(bool uplo, bool unitTriangular, long n, Complex32[] matrix)
+        {
+            return SafeNativeMethods.c_triangular_inverse(uplo, unitTriangular, n, matrix);
+        }
     }
 }
 

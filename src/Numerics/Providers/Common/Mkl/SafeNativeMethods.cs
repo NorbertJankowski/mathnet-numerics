@@ -315,6 +315,20 @@ namespace MathNet.Numerics.Providers.Common.Mkl
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         internal static extern long z_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, long n, [In] Complex[] a, [In, Out] Complex[] vectors, [In, Out] Complex[] values, [In, Out] Complex[] d);
 
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long s_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] float[] a);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long d_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] double[] a);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long c_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] Complex32[] a);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long z_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] Complex[] a);
+
+
         #endregion LAPACK
 
         #region Vector Functions

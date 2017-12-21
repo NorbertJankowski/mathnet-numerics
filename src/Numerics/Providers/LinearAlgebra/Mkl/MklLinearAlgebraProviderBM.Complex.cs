@@ -1494,6 +1494,10 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
             DataTableStorage.DataTableStorage_SvdSolveFactored_Complex(rowsA, columnsA, s, u.Data, vt.Data, b, columnsB, x);
         }
 
+        public long TriangularInverse(bool uplo, bool unitTriangular, long n, IStorageBM matrix)
+        {
+            return SafeNativeMethodsBM_Complex.z_triangular_inverse(uplo, unitTriangular, n, matrix.Data);
+        }
 
     }
 }

@@ -1373,6 +1373,12 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         {
             DataTableStorage.DataTableStorage_PointWisePower_Double(x.Data, y.Data, result.Data, x.Length);
         }
+
+
+        public long TriangularInverse(bool uplo, bool unitTriangular, long n, IStorageBM matrix)
+        {
+            return SafeNativeMethodsBM_Double.d_triangular_inverse(uplo, unitTriangular, n, matrix.Data);
+        }
     }
 }
 

@@ -523,6 +523,13 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
             Map(Complex32.Tanh, result, Zeros.AllowSkip);
         }
 
+        /// <summary>Computes the inverse of this triangular matrix.</summary>
+        /// <returns>The inverse of this matrix.</returns>
+        public override Matrix<Complex32> InverseTringular(bool upperMatrix, bool unitTriangular)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Computes the Moore-Penrose Pseudo-Inverse of this matrix.
         /// </summary>

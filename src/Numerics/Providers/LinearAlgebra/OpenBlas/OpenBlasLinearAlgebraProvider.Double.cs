@@ -1026,6 +1026,11 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
                 throw new NonConvergenceException();
             }
         }
+
+        public override long TriangularInverse(bool uplo, bool unitTriangular, long n, double[] matrix)
+        {
+            return SafeNativeMethods.d_triangular_inverse(uplo, unitTriangular, n, matrix);
+        }
     }
 }
 

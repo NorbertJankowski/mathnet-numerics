@@ -1322,6 +1322,22 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             return DenseEvdBM.Create(this, symmetricity);
         }
 
+        public override Matrix<Complex> InverseTringular(bool upperMatrix, bool unitTriangular)
+        {
+            if (RowCount != ColumnCount)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixSquare);
+            }
+
+            Matrix<Complex> m = this.Clone() as Matrix<Complex>;
+            long i = LinearAlgebraProvider.TriangularInverse(upperMatrix, unitTriangular, this.RowCount,
+                (m.Storage as DenseColumnMajorMatrixStorageBM<Complex>));
+            if (i > 0)
+                throw new Exception(string.Format("{0}-th diagonal element of A is zero, A is singular, and the inversion could not be completed", i));
+            if (i < 0)
+                throw new Exception("illegal return value of InverseTringular");
+            return m;
+        }
         public void Dispose()
         {
             if (_values != null)

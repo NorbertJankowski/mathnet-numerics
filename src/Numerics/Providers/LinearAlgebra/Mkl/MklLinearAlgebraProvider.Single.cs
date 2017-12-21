@@ -1201,6 +1201,11 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 throw new NonConvergenceException();
             }
         }
+
+        public override long TriangularInverse(bool uplo, bool unitTriangular, long n, float[] matrix)
+        {
+            return SafeNativeMethods.s_triangular_inverse(uplo, unitTriangular, n, matrix);
+        }
     }
 }
 

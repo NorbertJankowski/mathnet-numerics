@@ -398,5 +398,14 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// provide optimized (parallel and/or vectorized) versions of this
         /// routine.</remarks>
         void PointWisePowerArrays(IStorageBM x, IStorageBM y, IStorageBM result);
+
+        /// <summary>
+        /// Does a triangle matrix inversion.
+        /// </summary>
+        /// <param name="uplo">true means upper tringle, false lower.</param>
+        /// <param name="unitTriangular">true menas ones on diagonal, otherwise any values on diagonal.</param>
+        /// <param name="result">The result of inversion.</param>
+        long TriangularInverse(bool uplo, bool unitTriangular, long n, IStorageBM result);
+
     }
 }

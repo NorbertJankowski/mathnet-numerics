@@ -41,6 +41,7 @@ using MathNet.Numerics.Threading;
 
 namespace MathNet.Numerics.LinearAlgebra.Complex
 {
+    using System.Numerics;
 
 #if NOSYSNUMERICS
     using Complex = Numerics.Complex;
@@ -1325,6 +1326,24 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         public override Evd<Complex> Evd(Symmetricity symmetricity = Symmetricity.Unknown)
         {
             return DenseEvd.Create(this, symmetricity);
+        }
+
+        public override Matrix<Complex> InverseTringular(bool upperMatrix, bool unitTriangular)
+        {
+            if (RowCount != ColumnCount)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixSquare);
+            }
+
+            Matrix<Complex> m = this.Clone() as Matrix<Complex>;
+            long i = Control.LinearAlgebraProvider.TriangularInverse(upperMatrix, unitTriangular, this.RowCount,
+                (m.Storage as DenseColumnMajorMatrixStorage<Complex>).Data);
+            if (i > 0)
+                throw new Exception(string.Format("{0}-th diagonal element of A is zero, A is singular, and the inversion could not be completed", i));
+            if (i < 0)
+                throw new Exception("illegal return value of InverseTringular");
+
+            return m;
         }
     }
 }

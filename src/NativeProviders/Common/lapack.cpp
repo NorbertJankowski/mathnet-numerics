@@ -415,6 +415,13 @@ inline lapack_int sym_eigen_factor(lapack_int n, T a[], T vectors[], lapack_comp
 	}
 }
 
+template<typename T, typename TRTRI>
+inline lapack_int triangular_inverse(bool uplo, bool unitTriangular, lapack_int n, T a[],
+    TRTRI trtri)
+{
+    return trtri(LAPACK_COL_MAJOR, uplo ? 'U' : 'L', unitTriangular ? 'U' : 'N', n, a, n);
+}
+
 extern "C" {
 
 	DLLEXPORT float s_matrix_norm(char norm, lapack_int m, lapack_int n, float a[])
@@ -744,4 +751,25 @@ extern "C" {
 			return eigen_complex_factor(n, a, vectors, values, d, LAPACKE_zgees, LAPACKE_ztrevc);
 		}
 	}
+
+    DLLEXPORT lapack_int s_triangular_inverse(bool uplo, bool unitTriangular, lapack_int n,
+        float a[])
+    {
+        return triangular_inverse(uplo, unitTriangular, n, a, LAPACKE_strtri);
+    }
+    DLLEXPORT lapack_int d_triangular_inverse(bool uplo, bool unitTriangular, lapack_int n,
+        double a[])
+    {
+        return triangular_inverse(uplo, unitTriangular, n, a, LAPACKE_dtrtri);
+    }
+    DLLEXPORT lapack_int c_triangular_inverse(bool uplo, bool unitTriangular, lapack_int n,
+        lapack_complex_float a[])
+    {
+        return triangular_inverse(uplo, unitTriangular, n, a, LAPACKE_ctrtri);
+    }
+    DLLEXPORT lapack_int z_triangular_inverse(bool uplo, bool unitTriangular, lapack_int n,
+        lapack_complex_double a[])
+    {
+        return triangular_inverse(uplo, unitTriangular, n, a, LAPACKE_ztrtri);
+    }
 }

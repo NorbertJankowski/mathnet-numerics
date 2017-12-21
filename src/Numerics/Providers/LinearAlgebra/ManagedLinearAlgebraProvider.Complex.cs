@@ -2957,5 +2957,11 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
                 }
             }
         }
+
+        public virtual long TriangularInverse(bool uplo, bool unitTriangular, long n, Complex[] matrix)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
