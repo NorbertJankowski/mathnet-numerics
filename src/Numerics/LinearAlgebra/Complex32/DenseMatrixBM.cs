@@ -1316,7 +1316,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
             return DenseEvdBM.Create(this, symmetricity);
         }
 
-        public override Matrix<Complex32> InverseTringular(bool upperMatrix, bool unitTriangular)
+        public override Matrix<Complex32> InverseTringular(bool upperMatrix, bool unitTriangular = false)
         {
             if (RowCount != ColumnCount)
             {

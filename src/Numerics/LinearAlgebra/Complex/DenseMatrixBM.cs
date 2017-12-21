@@ -1322,7 +1322,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             return DenseEvdBM.Create(this, symmetricity);
         }
 
-        public override Matrix<Complex> InverseTringular(bool upperMatrix, bool unitTriangular)
+        public override Matrix<Complex> InverseTringular(bool upperMatrix, bool unitTriangular = false)
         {
             if (RowCount != ColumnCount)
             {

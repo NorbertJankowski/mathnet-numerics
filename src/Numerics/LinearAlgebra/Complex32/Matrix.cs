@@ -524,8 +524,10 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
         }
 
         /// <summary>Computes the inverse of this triangular matrix.</summary>
+        /// <param name="upperMatrix">Whether the matrix is upper triangular, false means lower triangular.</param>
+        /// <param name="unitTriangular">Whether triangular matrix has only one's on diagonal.</param>
         /// <returns>The inverse of this matrix.</returns>
-        public override Matrix<Complex32> InverseTringular(bool upperMatrix, bool unitTriangular)
+        public override Matrix<Complex32> InverseTringular(bool upperMatrix, bool unitTriangular = false)
         {
             throw new NotImplementedException();
         }

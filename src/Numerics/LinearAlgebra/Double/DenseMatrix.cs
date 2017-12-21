@@ -1246,7 +1246,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             return DenseEvd.Create(this, symmetricity);
         }
 
-        public override Matrix<double> InverseTringular(bool upperMatrix, bool unitTriangular)
+        public override Matrix<double> InverseTringular(bool upperMatrix, bool unitTriangular = false)
         {
             if (RowCount != ColumnCount)
             {

@@ -1247,7 +1247,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         }
 
 
-        public override Matrix<float> InverseTringular(bool upperMatrix, bool unitTriangular)
+        public override Matrix<float> InverseTringular(bool upperMatrix, bool unitTriangular = false)
         {
             if (RowCount != ColumnCount)
             {

@@ -1269,7 +1269,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             return DenseEvdBM.Create(this, symmetricity);
         }
 
-        public override Matrix<float> InverseTringular(bool upperMatrix, bool unitTriangular)
+        public override Matrix<float> InverseTringular(bool upperMatrix, bool unitTriangular = false)
         {
             if (RowCount != ColumnCount)
             {
