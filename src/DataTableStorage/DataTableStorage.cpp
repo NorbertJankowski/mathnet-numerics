@@ -590,7 +590,7 @@ extern "C" {					// byte
 		void *storage, LL columnCount, LL rowId, byte *row)
 	{
 		DataTableStorage_SetRow(storage, columnCount, rowId, row);
-	}
+    }
 	// [get | set] subrow
 	DLLEXPORT void DataTableStorage_GetSubRow_Byte(
 		void *storage, LL columnCount, LL rowId, LL startColumn, LL subRowColumnCount, byte *row)
@@ -720,12 +720,12 @@ extern "C" {					// bool
 			void *storage, LL columnCount, LL rowId, bool *row)
 	{
 		DataTableStorage_GetRow(storage, columnCount, rowId, row);
-	}
+    }
 	DLLEXPORT void DataTableStorage_SetRow_Bool(
 		void *storage, LL columnCount, LL rowId, bool *row)
 	{
 		DataTableStorage_SetRow(storage, columnCount, rowId, row);
-	}
+    }
 	// [get | set] subrow
 	DLLEXPORT void DataTableStorage_GetSubRow_Bool(
 		void *storage, LL columnCount, LL rowId, LL startColumn, LL subRowColumnCount, bool *row)

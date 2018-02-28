@@ -15,7 +15,7 @@ namespace Anemon
         //public static extern IntPtr DataTableStorage_AllocByte(long size);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DataTableStorage_SetRowDF(IntPtr storage, long columnCount, long rowId, float[] row);
+        public static extern void DataTableStorage_SetRowDF([Out] IntPtr storage, long columnCount, long rowId, [In] float[] row);
     }
 
     public abstract class DataTableStorage<T>
@@ -1004,72 +1004,84 @@ namespace Anemon
     {
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Bool(
-            IntPtr storage, long columnCount, long rowId, [Out] bool[] row);
+            IntPtr storage, long columnCount, long rowId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Bool(
             IntPtr storage, long columnCount, long rowId, [Out] IntPtr row);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, bool[] row);
+            [Out] IntPtr storage, long columnCount, long rowId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Bool(
             [Out] IntPtr storage, long columnCount, long rowId, IntPtr row);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubRow_Bool(
-            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out] bool[] row);
+            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubRow_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, bool[] row);
+            [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
 
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Bool(
-            IntPtr storage, long rowCount, long columnCount, long columnId, [Out] bool[] column);
+            IntPtr storage, long rowCount, long columnCount, long columnId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Bool(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] IntPtr column);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Bool(
-            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, bool[] column);
+            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Bool(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubColumn_Bool(
-            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out] bool[] column);
+            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubColumn_Bool(
-            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, bool[] column);
+            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetElementAt_Bool(
-            IntPtr storage, long columnCount, long rowId, long columnId, [Out] out bool value);
+            IntPtr storage, long columnCount, long rowId, long columnId, [Out, MarshalAs(UnmanagedType.U1)] out bool value);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetElementAt_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, long columnId, bool value);
+            [Out] IntPtr storage, long columnCount, long rowId, long columnId, [MarshalAs(UnmanagedType.U1)] bool value);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRowSkip_Bool(
-            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out] bool[] row);
+            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRowSkip_Bool(
-            [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, bool[] row);
+            [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumnSkip_Bool(
-            IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out] bool[] column);
+            IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumnSkip_Bool(
-            [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, bool[] column);
+            [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Clear_Bool(
-            [Out] IntPtr storage, long startPos, long length, bool value);
+            [Out] IntPtr storage, long startPos, long length, [MarshalAs(UnmanagedType.U1)] bool value);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearRow_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, bool value);
+            [Out] IntPtr storage, long columnCount, long rowId, [MarshalAs(UnmanagedType.U1)] bool value);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearColumn_Bool(
-            [Out] IntPtr storage, long columnCount, long rowCount, long columnId, bool value);
+            [Out] IntPtr storage, long columnCount, long rowCount, long columnId, [MarshalAs(UnmanagedType.U1)] bool value);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Add_Bool(

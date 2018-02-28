@@ -17,6 +17,8 @@ gawk "{ gsub(/Float/, \"Complex32\"); print }" < DataTableStorageFloat.cs > tmp.
 gawk "{ gsub(/float/, \"Complex32\"); print }" < tmp.cs >> ..\DataTableStorage.cs
 
 
+echo MarshalAs( UnmanagedType.LPArray,
+echo                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)]
 
-
+pause
 echo qniec
