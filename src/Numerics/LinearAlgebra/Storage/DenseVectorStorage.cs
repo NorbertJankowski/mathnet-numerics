@@ -237,7 +237,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             if (denseTargetBM != null)
             {
                 denseTargetBM.dataTableStorage.DataTableStorage_SetColumn(denseTargetBM.Data,
-                    denseTargetBM.RowCount, denseTargetBM.ColumnCount, rowIndex, Data);
+                    denseTargetBM.ColumnCount, denseTargetBM.RowCount, rowIndex, Data);
                 return;
             }
             var denseTarget = target as DenseColumnMajorMatrixStorage<T>;

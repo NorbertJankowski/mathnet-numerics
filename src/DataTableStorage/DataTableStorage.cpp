@@ -37,6 +37,14 @@ template<typename T> inline void DataTableStorage_SetRow(
 	for (LL i = columnCount; i--;)
 		*s++ = *r++;
 }
+template<typename T1, typename T2> inline void DataTableStorage_SetRowTT(
+    void *storage, LL columnCount, LL rowId, T2 *row)
+{
+    T1 *s = (T1*)storage + columnCount*rowId;
+    T2 *r = row;
+    for (LL i = columnCount; i--;)
+        *s++ = *r++;
+}
 // [get | set] subrow
 template<typename T> inline void DataTableStorage_GetSubRow(
 	void *storage, LL columnCount, LL rowId, LL startColumn, LL subRowColumnCount, T *row)
@@ -255,6 +263,13 @@ extern "C" {
     }*/
 }
 
+extern "C" {
+    DLLEXPORT void DataTableStorage_SetRowDF(
+        void *storage, LL columnCount, LL rowId, float *row)
+    {
+        DataTableStorage_SetRowTT<double, float>(storage, columnCount, rowId, row);
+    }
+}
 template<typename T> inline void DataTableStorage_SvdSolveFactored(
 	LL rowsA, LL columnsA, T* s, T* u, T* vt, T* b, LL columnsB, T* x)
 {
@@ -575,7 +590,7 @@ extern "C" {					// byte
 		void *storage, LL columnCount, LL rowId, byte *row)
 	{
 		DataTableStorage_SetRow(storage, columnCount, rowId, row);
-	}
+    }
 	// [get | set] subrow
 	DLLEXPORT void DataTableStorage_GetSubRow_Byte(
 		void *storage, LL columnCount, LL rowId, LL startColumn, LL subRowColumnCount, byte *row)
@@ -705,12 +720,12 @@ extern "C" {					// bool
 			void *storage, LL columnCount, LL rowId, bool *row)
 	{
 		DataTableStorage_GetRow(storage, columnCount, rowId, row);
-	}
+    }
 	DLLEXPORT void DataTableStorage_SetRow_Bool(
 		void *storage, LL columnCount, LL rowId, bool *row)
 	{
 		DataTableStorage_SetRow(storage, columnCount, rowId, row);
-	}
+    }
 	// [get | set] subrow
 	DLLEXPORT void DataTableStorage_GetSubRow_Bool(
 		void *storage, LL columnCount, LL rowId, LL startColumn, LL subRowColumnCount, bool *row)

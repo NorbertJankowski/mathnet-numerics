@@ -84,349 +84,363 @@ namespace MathNet.Numerics.Providers.Common.Mkl
         #region BLAS
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_axpy(int n, float alpha, float[] x, [In, Out] float[] y);
+        internal static extern void s_axpy(long n, float alpha, float[] x, [In, Out] float[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_axpy(int n, double alpha, double[] x, [In, Out] double[] y);
+        internal static extern void d_axpy(long n, double alpha, double[] x, [In, Out] double[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_axpy(int n, Complex32 alpha, Complex32[] x, [In, Out] Complex32[] y);
+        internal static extern void c_axpy(long n, Complex32 alpha, Complex32[] x, [In, Out] Complex32[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_axpy(int n, Complex alpha, Complex[] x, [In, Out] Complex[] y);
+        internal static extern void z_axpy(long n, Complex alpha, Complex[] x, [In, Out] Complex[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_scale(int n, float alpha, [Out] float[] x);
+        internal static extern void s_scale(long n, float alpha, [Out] float[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_scale(int n, double alpha, [Out] double[] x);
+        internal static extern void d_scale(long n, double alpha, [Out] double[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_scale(int n, Complex32 alpha, [In, Out] Complex32[] x);
+        internal static extern void c_scale(long n, Complex32 alpha, [In, Out] Complex32[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_scale(int n, Complex alpha, [In, Out] Complex[] x);
+        internal static extern void z_scale(long n, Complex alpha, [In, Out] Complex[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern float s_dot_product(int n, float[] x, float[] y);
+        internal static extern float s_dot_product(long n, float[] x, float[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern double d_dot_product(int n, double[] x, double[] y);
+        internal static extern double d_dot_product(long n, double[] x, double[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern Complex32 c_dot_product(int n, Complex32[] x, Complex32[] y);
+        internal static extern Complex32 c_dot_product(long n, Complex32[] x, Complex32[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern Complex z_dot_product(int n, Complex[] x, Complex[] y);
+        internal static extern Complex z_dot_product(long n, Complex[] x, Complex[] y);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_matrix_multiply(Transpose transA, Transpose transB, int m, int n, int k, float alpha, float[] x, float[] y, float beta, [In, Out] float[] c);
+        internal static extern void s_matrix_multiply(Transpose transA, Transpose transB, long m, long n, long k, float alpha, float[] x, float[] y, float beta, [In, Out] float[] c);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_matrix_multiply(Transpose transA, Transpose transB, int m, int n, int k, double alpha, double[] x, double[] y, double beta, [In, Out] double[] c);
+        internal static extern void d_matrix_multiply(Transpose transA, Transpose transB, long m, long n, long k, double alpha, double[] x, double[] y, double beta, [In, Out] double[] c);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_matrix_multiply(Transpose transA, Transpose transB, int m, int n, int k, Complex32 alpha, Complex32[] x, Complex32[] y, Complex32 beta, [In, Out] Complex32[] c);
+        internal static extern void c_matrix_multiply(Transpose transA, Transpose transB, long m, long n, long k, Complex32 alpha, Complex32[] x, Complex32[] y, Complex32 beta, [In, Out] Complex32[] c);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_matrix_multiply(Transpose transA, Transpose transB, int m, int n, int k, Complex alpha, Complex[] x, Complex[] y, Complex beta, [In, Out] Complex[] c);
+        internal static extern void z_matrix_multiply(Transpose transA, Transpose transB, long m, long n, long k, Complex alpha, Complex[] x, Complex[] y, Complex beta, [In, Out] Complex[] c);
 
         #endregion BLAS
 
         #region LAPACK
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern float s_matrix_norm(byte norm, int rows, int columns, [In] float[] a);
+        internal static extern float s_matrix_norm(byte norm, long rows, long columns, [In] float[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern double d_matrix_norm(byte norm, int rows, int columns, [In] double[] a);
+        internal static extern double d_matrix_norm(byte norm, long rows, long columns, [In] double[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern float c_matrix_norm(byte norm, int rows, int columns, [In] Complex32[] a);
+        internal static extern float c_matrix_norm(byte norm, long rows, long columns, [In] Complex32[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern double z_matrix_norm(byte norm, int rows, int columns, [In] Complex[] a);
+        internal static extern double z_matrix_norm(byte norm, long rows, long columns, [In] Complex[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_cholesky_factor(int n, [In, Out] float[] a);
+        internal static extern long s_cholesky_factor(long n, [In, Out] float[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_cholesky_factor(int n, [In, Out] double[] a);
+        internal static extern long d_cholesky_factor(long n, [In, Out] double[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_cholesky_factor(int n, [In, Out] Complex32[] a);
+        internal static extern long c_cholesky_factor(long n, [In, Out] Complex32[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_cholesky_factor(int n, [In, Out] Complex[] a);
+        internal static extern long z_cholesky_factor(long n, [In, Out] Complex[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_factor(int n, [In, Out] float[] a, [In, Out] int[] ipiv);
+        internal static extern long s_lu_factor(long n, [In, Out] float[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_factor(int n, [In, Out] double[] a, [In, Out] int[] ipiv);
+        internal static extern long d_lu_factor(long n, [In, Out] double[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_factor(int n, [In, Out] Complex32[] a, [In, Out] int[] ipiv);
+        internal static extern long c_lu_factor(long n, [In, Out] Complex32[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_factor(int n, [In, Out] Complex[] a, [In, Out] int[] ipiv);
+        internal static extern long z_lu_factor(long n, [In, Out] Complex[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_inverse(int n, [In, Out] float[] a);
+        internal static extern long s_lu_inverse(long n, [In, Out] float[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_inverse(int n, [In, Out] double[] a);
+        internal static extern long d_lu_inverse(long n, [In, Out] double[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_inverse(int n, [In, Out] Complex32[] a);
+        internal static extern long c_lu_inverse(long n, [In, Out] Complex32[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_inverse(int n, [In, Out] Complex[] a);
+        internal static extern long z_lu_inverse(long n, [In, Out] Complex[] a);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_inverse_factored(int n, [In, Out] float[] a, [In, Out] int[] ipiv);
+        internal static extern long s_lu_inverse_factored(long n, [In, Out] float[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_inverse_factored(int n, [In, Out] double[] a, [In, Out] int[] ipiv);
+        internal static extern long d_lu_inverse_factored(long n, [In, Out] double[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_inverse_factored(int n, [In, Out] Complex32[] a, [In, Out] int[] ipiv);
+        internal static extern long c_lu_inverse_factored(long n, [In, Out] Complex32[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_inverse_factored(int n, [In, Out] Complex[] a, [In, Out] int[] ipiv);
+        internal static extern long z_lu_inverse_factored(long n, [In, Out] Complex[] a, [In, Out] long[] ipiv);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_solve_factored(int n, int nrhs, float[] a, [In, Out] int[] ipiv, [In, Out] float[] b);
+        internal static extern long s_lu_solve_factored(long n, long nrhs, float[] a, [In, Out] long[] ipiv, [In, Out] float[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_solve_factored(int n, int nrhs, double[] a, [In, Out] int[] ipiv, [In, Out] double[] b);
+        internal static extern long d_lu_solve_factored(long n, long nrhs, double[] a, [In, Out] long[] ipiv, [In, Out] double[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_solve_factored(int n, int nrhs, Complex32[] a, [In, Out] int[] ipiv, [In, Out] Complex32[] b);
+        internal static extern long c_lu_solve_factored(long n, long nrhs, Complex32[] a, [In, Out] long[] ipiv, [In, Out] Complex32[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_solve_factored(int n, int nrhs, Complex[] a, [In, Out] int[] ipiv, [In, Out] Complex[] b);
+        internal static extern long z_lu_solve_factored(long n, long nrhs, Complex[] a, [In, Out] long[] ipiv, [In, Out] Complex[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_lu_solve(int n, int nrhs, float[] a, [In, Out] float[] b);
+        internal static extern long s_lu_solve(long n, long nrhs, float[] a, [In, Out] float[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_lu_solve(int n, int nrhs, double[] a, [In, Out] double[] b);
+        internal static extern long d_lu_solve(long n, long nrhs, double[] a, [In, Out] double[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_lu_solve(int n, int nrhs, Complex32[] a, [In, Out] Complex32[] b);
+        internal static extern long c_lu_solve(long n, long nrhs, Complex32[] a, [In, Out] Complex32[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_lu_solve(int n, int nrhs, Complex[] a, [In, Out] Complex[] b);
+        internal static extern long z_lu_solve(long n, long nrhs, Complex[] a, [In, Out] Complex[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_cholesky_solve(int n, int nrhs, float[] a, [In, Out] float[] b);
+        internal static extern long s_cholesky_solve(long n, long nrhs, float[] a, [In, Out] float[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_cholesky_solve(int n, int nrhs, double[] a, [In, Out] double[] b);
+        internal static extern long d_cholesky_solve(long n, long nrhs, double[] a, [In, Out] double[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_cholesky_solve(int n, int nrhs, Complex32[] a, [In, Out] Complex32[] b);
+        internal static extern long c_cholesky_solve(long n, long nrhs, Complex32[] a, [In, Out] Complex32[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_cholesky_solve(int n, int nrhs, Complex[] a, [In, Out] Complex[] b);
+        internal static extern long z_cholesky_solve(long n, long nrhs, Complex[] a, [In, Out] Complex[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_cholesky_solve_factored(int n, int nrhs, float[] a, [In, Out] float[] b);
+        internal static extern long s_cholesky_solve_factored(long n, long nrhs, float[] a, [In, Out] float[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_cholesky_solve_factored(int n, int nrhs, double[] a, [In, Out] double[] b);
+        internal static extern long d_cholesky_solve_factored(long n, long nrhs, double[] a, [In, Out] double[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_cholesky_solve_factored(int n, int nrhs, Complex32[] a, [In, Out] Complex32[] b);
+        internal static extern long c_cholesky_solve_factored(long n, long nrhs, Complex32[] a, [In, Out] Complex32[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_cholesky_solve_factored(int n, int nrhs, Complex[] a, [In, Out] Complex[] b);
+        internal static extern long z_cholesky_solve_factored(long n, long nrhs, Complex[] a, [In, Out] Complex[] b);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_qr_factor(int m, int n, [In, Out] float[] r, [In, Out] float[] tau, [In, Out] float[] q);
+        internal static extern long s_qr_factor(long m, long n, [In, Out] float[] r, [In, Out] float[] tau, [In, Out] float[] q);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_qr_factor(int m, int n, [In, Out] double[] r, [In, Out] double[] tau, [In, Out] double[] q);
+        internal static extern long d_qr_factor(long m, long n, [In, Out] double[] r, [In, Out] double[] tau, [In, Out] double[] q);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_qr_factor(int m, int n, [In, Out] Complex32[] r, [In, Out] Complex32[] tau, [In, Out] Complex32[] q);
+        internal static extern long c_qr_factor(long m, long n, [In, Out] Complex32[] r, [In, Out] Complex32[] tau, [In, Out] Complex32[] q);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_qr_factor(int m, int n, [In, Out] Complex[] r, [In, Out] Complex[] tau, [In, Out] Complex[] q);
+        internal static extern long z_qr_factor(long m, long n, [In, Out] Complex[] r, [In, Out] Complex[] tau, [In, Out] Complex[] q);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_qr_thin_factor(int m, int n, [In, Out] float[] q, [In, Out] float[] tau, [In, Out] float[] r);
+        internal static extern long s_qr_thin_factor(long m, long n, [In, Out] float[] q, [In, Out] float[] tau, [In, Out] float[] r);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_qr_thin_factor(int m, int n, [In, Out] double[] q, [In, Out] double[] tau, [In, Out] double[] r);
+        internal static extern long d_qr_thin_factor(long m, long n, [In, Out] double[] q, [In, Out] double[] tau, [In, Out] double[] r);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_qr_thin_factor(int m, int n, [In, Out] Complex32[] q, [In, Out] Complex32[] tau, [In, Out] Complex32[] r);
+        internal static extern long c_qr_thin_factor(long m, long n, [In, Out] Complex32[] q, [In, Out] Complex32[] tau, [In, Out] Complex32[] r);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_qr_thin_factor(int m, int n, [In, Out] Complex[] q, [In, Out] Complex[] tau, [In, Out] Complex[] r);
+        internal static extern long z_qr_thin_factor(long m, long n, [In, Out] Complex[] q, [In, Out] Complex[] tau, [In, Out] Complex[] r);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_qr_solve(int m, int n, int bn, float[] r, float[] b, [In, Out] float[] x);
+        internal static extern long s_qr_solve(long m, long n, long bn, float[] r, float[] b, [In, Out] float[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_qr_solve(int m, int n, int bn, double[] r, double[] b, [In, Out] double[] x);
+        internal static extern long d_qr_solve(long m, long n, long bn, double[] r, double[] b, [In, Out] double[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_qr_solve(int m, int n, int bn, Complex32[] r, Complex32[] b, [In, Out] Complex32[] x);
+        internal static extern long c_qr_solve(long m, long n, long bn, Complex32[] r, Complex32[] b, [In, Out] Complex32[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_qr_solve(int m, int n, int bn, Complex[] r, Complex[] b, [In, Out] Complex[] x);
+        internal static extern long z_qr_solve(long m, long n, long bn, Complex[] r, Complex[] b, [In, Out] Complex[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_qr_solve_factored(int m, int n, int bn, float[] r, float[] b, float[] tau, [In, Out] float[] x);
+        internal static extern long s_qr_solve_factored(long m, long n, long bn, float[] r, float[] b, float[] tau, [In, Out] float[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_qr_solve_factored(int m, int n, int bn, double[] r, double[] b, double[] tau, [In, Out] double[] x);
+        internal static extern long d_qr_solve_factored(long m, long n, long bn, double[] r, double[] b, double[] tau, [In, Out] double[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_qr_solve_factored(int m, int n, int bn, Complex32[] r, Complex32[] b, Complex32[] tau, [In, Out] Complex32[] x);
+        internal static extern long c_qr_solve_factored(long m, long n, long bn, Complex32[] r, Complex32[] b, Complex32[] tau, [In, Out] Complex32[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_qr_solve_factored(int m, int n, int bn, Complex[] r, Complex[] b, Complex[] tau, [In, Out] Complex[] x);
+        internal static extern long z_qr_solve_factored(long m, long n, long bn, Complex[] r, Complex[] b, Complex[] tau, [In, Out] Complex[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] float[] a, [In, Out] float[] s, [In, Out] float[] u, [In, Out] float[] v);
+        internal static extern long s_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, long m, long n, [In, Out] float[] a, [In, Out] float[] s, [In, Out] float[] u, [In, Out] float[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] double[] a, [In, Out] double[] s, [In, Out] double[] u, [In, Out] double[] v);
+        internal static extern long d_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, long m, long n, [In, Out] double[] a, [In, Out] double[] s, [In, Out] double[] u, [In, Out] double[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] Complex32[] a, [In, Out] Complex32[] s, [In, Out] Complex32[] u, [In, Out] Complex32[] v);
+        internal static extern long c_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, long m, long n, [In, Out] Complex32[] a, [In, Out] Complex32[] s, [In, Out] Complex32[] u, [In, Out] Complex32[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, int m, int n, [In, Out] Complex[] a, [In, Out] Complex[] s, [In, Out] Complex[] u, [In, Out] Complex[] v);
+        internal static extern long z_svd_factor([MarshalAs(UnmanagedType.U1)] char computeVectors, long m, long n, [In, Out] Complex[] a, [In, Out] Complex[] s, [In, Out] Complex[] u, [In, Out] Complex[] v);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, int n, [In] float[] a, [In, Out] float[] vectors, [In, Out] Complex[] values, [In, Out] float[] d);
+        internal static extern long s_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, long n, [In] float[] a, [In, Out] float[] vectors, [In, Out] Complex[] values, [In, Out] float[] d);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, int n, [In] double[] a, [In, Out] double[] vectors, [In, Out] Complex[] values, [In, Out] double[] d);
+        internal static extern long d_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, long n, [In] double[] a, [In, Out] double[] vectors, [In, Out] Complex[] values, [In, Out] double[] d);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, int n, [In] Complex32[] a, [In, Out] Complex32[] vectors, [In, Out] Complex[] values, [In, Out] Complex32[] d);
+        internal static extern long c_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, long n, [In] Complex32[] a, [In, Out] Complex32[] vectors, [In, Out] Complex[] values, [In, Out] Complex32[] d);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, int n, [In] Complex[] a, [In, Out] Complex[] vectors, [In, Out] Complex[] values, [In, Out] Complex[] d);
+        internal static extern long z_eigen([MarshalAs(UnmanagedType.U1)] bool isSymmetric, long n, [In] Complex[] a, [In, Out] Complex[] vectors, [In, Out] Complex[] values, [In, Out] Complex[] d);
+
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long s_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] float[] a);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long d_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] double[] a);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long c_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] Complex32[] a);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long z_triangular_inverse([MarshalAs(UnmanagedType.U1)] bool uplo, [MarshalAs(UnmanagedType.U1)] bool unitTriangular, long n, [In, Out] Complex[] a);
+
 
         #endregion LAPACK
 
         #region Vector Functions
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_vector_add(int n, float[] x, float[] y, [In, Out] float[] result);
+        internal static extern void s_vector_add(long n, float[] x, float[] y, [In, Out] float[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_vector_subtract(int n, float[] x, float[] y, [In, Out] float[] result);
+        internal static extern void s_vector_subtract(long n, float[] x, float[] y, [In, Out] float[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_vector_multiply(int n, float[] x, float[] y, [In, Out] float[] result);
+        internal static extern void s_vector_multiply(long n, float[] x, float[] y, [In, Out] float[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_vector_divide(int n, float[] x, float[] y, [In, Out] float[] result);
+        internal static extern void s_vector_divide(long n, float[] x, float[] y, [In, Out] float[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void s_vector_power(int n, float[] x, float[] y, [In, Out] float[] result);
+        internal static extern void s_vector_power(long n, float[] x, float[] y, [In, Out] float[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_vector_add(int n, double[] x, double[] y, [In, Out] double[] result);
+        internal static extern void d_vector_add(long n, double[] x, double[] y, [In, Out] double[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_vector_subtract(int n, double[] x, double[] y, [In, Out] double[] result);
+        internal static extern void d_vector_subtract(long n, double[] x, double[] y, [In, Out] double[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_vector_multiply(int n, double[] x, double[] y, [In, Out] double[] result);
+        internal static extern void d_vector_multiply(long n, double[] x, double[] y, [In, Out] double[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_vector_divide(int n, double[] x, double[] y, [In, Out] double[] result);
+        internal static extern void d_vector_divide(long n, double[] x, double[] y, [In, Out] double[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void d_vector_power(int n, double[] x, double[] y, [In, Out] double[] result);
+        internal static extern void d_vector_power(long n, double[] x, double[] y, [In, Out] double[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_vector_add(int n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
+        internal static extern void c_vector_add(long n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_vector_subtract(int n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
+        internal static extern void c_vector_subtract(long n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_vector_multiply(int n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
+        internal static extern void c_vector_multiply(long n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_vector_divide(int n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
+        internal static extern void c_vector_divide(long n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void c_vector_power(int n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
+        internal static extern void c_vector_power(long n, Complex32[] x, Complex32[] y, [In, Out] Complex32[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_vector_add(int n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
+        internal static extern void z_vector_add(long n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_vector_subtract(int n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
+        internal static extern void z_vector_subtract(long n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_vector_multiply(int n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
+        internal static extern void z_vector_multiply(long n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_vector_divide(int n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
+        internal static extern void z_vector_divide(long n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void z_vector_power(int n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
+        internal static extern void z_vector_power(long n, Complex[] x, Complex[] y, [In, Out] Complex[] result);
 
         #endregion  Vector Functions
 
         #region FFT
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int x_fft_free([In] ref IntPtr handle);
+        internal static extern long x_fft_free([In] ref IntPtr handle);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_fft_create([Out] out IntPtr handle, int n, double forward_scale, double backward_scale);
+        internal static extern long z_fft_create([Out] out IntPtr handle, long n, double forward_scale, double backward_scale);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_fft_create([Out] out IntPtr handle, int n, float forward_scale, float backward_scale);
+        internal static extern long c_fft_create([Out] out IntPtr handle, long n, float forward_scale, float backward_scale);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_fft_create([Out] out IntPtr handle, int n, double forward_scale, double backward_scale);
+        internal static extern long d_fft_create([Out] out IntPtr handle, long n, double forward_scale, double backward_scale);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_fft_create([Out] out IntPtr handle, int n, float forward_scale, float backward_scale);
+        internal static extern long s_fft_create([Out] out IntPtr handle, long n, float forward_scale, float backward_scale);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_fft_create_multidim([Out] out IntPtr handle, int dimensions, [In] int[] n, double forward_scale, double backward_scale);
+        internal static extern long z_fft_create_multidim([Out] out IntPtr handle, long dimensions, [In] int[] n, double forward_scale, double backward_scale);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_fft_create_multidim([Out] out IntPtr handle, int dimensions, [In] int[] n, float forward_scale, float backward_scale);
+        internal static extern long c_fft_create_multidim([Out] out IntPtr handle, long dimensions, [In] int[] n, float forward_scale, float backward_scale);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_fft_forward([In] IntPtr handle, [In, Out] Complex[] x);
+        internal static extern long z_fft_forward([In] IntPtr handle, [In, Out] Complex[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_fft_forward([In] IntPtr handle, [In, Out] Complex32[] x);
+        internal static extern long c_fft_forward([In] IntPtr handle, [In, Out] Complex32[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_fft_forward([In] IntPtr handle, [In, Out] double[] x);
+        internal static extern long d_fft_forward([In] IntPtr handle, [In, Out] double[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_fft_forward([In] IntPtr handle, [In, Out] float[] x);
+        internal static extern long s_fft_forward([In] IntPtr handle, [In, Out] float[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int z_fft_backward([In] IntPtr handle, [In, Out] Complex[] x);
+        internal static extern long z_fft_backward([In] IntPtr handle, [In, Out] Complex[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int c_fft_backward([In] IntPtr handle, [In, Out] Complex32[] x);
+        internal static extern long c_fft_backward([In] IntPtr handle, [In, Out] Complex32[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int d_fft_backward([In] IntPtr handle, [In, Out] double[] x);
+        internal static extern long d_fft_backward([In] IntPtr handle, [In, Out] double[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int s_fft_backward([In] IntPtr handle, [In, Out] float[] x);
+        internal static extern long s_fft_backward([In] IntPtr handle, [In, Out] float[] x);
 
         #endregion FFT
 

@@ -66,7 +66,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
             // Create an array for the pivot indices.
             var order = matrix.RowCount;
             var factors = matrix.Clone();
-            var pivots = new int[order];
+            var pivots = new long[order];
 
             // Initialize the pivot matrix to the identity permutation.
             for (var i = 0; i < order; i++)
@@ -132,7 +132,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
             return new UserLU(factors, pivots);
         }
 
-        UserLU(Matrix<Complex32> factors, int[] pivots)
+        UserLU(Matrix<Complex32> factors, long[] pivots)
             : base(factors, pivots)
         {
         }
@@ -183,8 +183,8 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
                 var p = Pivots[i];
                 for (var j = 0; j < result.ColumnCount; j++)
                 {
-                    var temp = result.At(p, j);
-                    result.At(p, j, result.At(i, j));
+                    var temp = result.At((int)p, j);
+                    result.At((int)p, j, result.At(i, j));
                     result.At(i, j, temp);
                 }
             }
@@ -262,8 +262,8 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
                 }
 
                 var p = Pivots[i];
-                var temp = result[p];
-                result[p] = result[i];
+                var temp = result[(int)p];
+                result[(int)p] = result[i];
                 result[i] = temp;
             }
 

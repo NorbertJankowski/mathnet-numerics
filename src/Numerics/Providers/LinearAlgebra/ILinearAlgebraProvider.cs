@@ -267,7 +267,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="order">The order of the square matrix <paramref name="data"/>.</param>
         /// <param name="ipiv">On exit, it contains the pivot indices. The size of the array must be <paramref name="order"/>.</param>
         /// <remarks>This is equivalent to the GETRF LAPACK routine.</remarks>
-        void LUFactor(T[] data, int order, int[] ipiv);
+        void LUFactor(T[] data, int order, long[] ipiv);
 
         /// <summary>
         /// Computes the inverse of matrix using LU factorization.
@@ -284,7 +284,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="order">The order of the square matrix <paramref name="a"/>.</param>
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <remarks>This is equivalent to the GETRI LAPACK routine.</remarks>
-        void LUInverseFactored(T[] a, int order, int[] ipiv);
+        void LUInverseFactored(T[] a, int order, long[] ipiv);
 
         /// <summary>
         /// Solves A*X=B for X using LU factorization.
@@ -305,7 +305,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
         /// <remarks>This is equivalent to the GETRS LAPACK routine.</remarks>
-        void LUSolveFactored(int columnsOfB, T[] a, int order, int[] ipiv, T[] b);
+        void LUSolveFactored(int columnsOfB, T[] a, int order, long[] ipiv, T[] b);
 
         /// <summary>
         /// Computes the Cholesky factorization of A.
@@ -443,5 +443,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="vectorEv">On output, the eigen values (λ) of matrix in ascending value. The length of the arry must <paramref name="order"/>.</param>
         /// <param name="matrixD">On output, the block diagonal eigenvalue matrix. The lenth of the array must be order * order.</param>
         void EigenDecomp(bool isSymmetric, int order, T[] matrix, T[] matrixEv, Complex[] vectorEv, T[] matrixD);
+
+        long TriangularInverse(bool uplo, bool unitTriangular, long n, T[] matrix);
     }
 }

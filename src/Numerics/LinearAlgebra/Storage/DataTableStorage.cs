@@ -7,11 +7,15 @@ namespace Anemon
 {
     public partial class DataTableStorage
     {
-        [DllImport("DataTableStorage.dll")]
+        const string _DllName = "DataTableStorage.dll";
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Free(IntPtr storage);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_AllocByte(long size, [Out] out IntPtr p);
         //public static extern IntPtr DataTableStorage_AllocByte(long size);
+
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DataTableStorage_SetRowDF([Out] IntPtr storage, long columnCount, long rowId, [In] float[] row);
     }
 
     public abstract class DataTableStorage<T> 
@@ -83,100 +87,100 @@ namespace Anemon
 {
     public partial class DataTableStorage            // float
     {
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Float(
             IntPtr storage, long columnCount, long rowId, [Out] float[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Float(
             IntPtr storage, long columnCount, long rowId, [Out] IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Float(
             [Out] IntPtr storage, long columnCount, long rowId, float[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Float(
             [Out] IntPtr storage, long columnCount, long rowId, IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubRow_Float(
             IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out] float[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubRow_Float(
             [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, float[] row);
 
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Float(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] float[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Float(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Float(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, float[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Float(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubColumn_Float(
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out] float[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubColumn_Float(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, float[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetElementAt_Float(
             IntPtr storage, long columnCount, long rowId, long columnId, [Out] out float value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetElementAt_Float(
             [Out] IntPtr storage, long columnCount, long rowId, long columnId, float value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRowSkip_Float(
             IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out] float[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRowSkip_Float(
             [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, float[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumnSkip_Float(
             IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out] float[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumnSkip_Float(
             [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, float[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Clear_Float(
             [Out] IntPtr storage, long startPos, long length, float value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearRow_Float(
             [Out] IntPtr storage, long columnCount, long rowId, float value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearColumn_Float(
             [Out] IntPtr storage, long columnCount, long rowCount, long columnId, float value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Add_Float(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, 
             long columnCount, long rowCount, float value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Multiply_Float(
             IntPtr sourceStorage, [Out] IntPtr resultStorage,
             long form, long count, float value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ConjugateArray_Float(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, long count);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Float(
             long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, 
             float[] b, long columnsB, [Out] float[] x);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseMultiply_Float(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseDivide_Float(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWisePower_Float(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
     }
@@ -388,100 +392,100 @@ namespace Anemon
 {
     public partial class DataTableStorage            // double
     {
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Double(
             IntPtr storage, long columnCount, long rowId, [Out] double[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Double(
             IntPtr storage, long columnCount, long rowId, [Out] IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Double(
             [Out] IntPtr storage, long columnCount, long rowId, double[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Double(
             [Out] IntPtr storage, long columnCount, long rowId, IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubRow_Double(
             IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out] double[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubRow_Double(
             [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, double[] row);
 
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Double(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] double[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Double(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Double(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, double[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Double(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubColumn_Double(
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out] double[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubColumn_Double(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, double[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetElementAt_Double(
             IntPtr storage, long columnCount, long rowId, long columnId, [Out] out double value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetElementAt_Double(
             [Out] IntPtr storage, long columnCount, long rowId, long columnId, double value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRowSkip_Double(
             IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out] double[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRowSkip_Double(
             [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, double[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumnSkip_Double(
             IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out] double[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumnSkip_Double(
             [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, double[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Clear_Double(
             [Out] IntPtr storage, long startPos, long length, double value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearRow_Double(
             [Out] IntPtr storage, long columnCount, long rowId, double value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearColumn_Double(
             [Out] IntPtr storage, long columnCount, long rowCount, long columnId, double value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Add_Double(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, 
             long columnCount, long rowCount, double value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Multiply_Double(
             IntPtr sourceStorage, [Out] IntPtr resultStorage,
             long form, long count, double value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ConjugateArray_Double(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, long count);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Double(
             long rowsA, long columnsA, double[] s, IntPtr u, IntPtr vt, 
             double[] b, long columnsB, [Out] double[] x);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseMultiply_Double(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseDivide_Double(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWisePower_Double(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
     }
@@ -693,100 +697,100 @@ namespace Anemon
 {
     public partial class DataTableStorage            // byte
     {
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Byte(
             IntPtr storage, long columnCount, long rowId, [Out] byte[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Byte(
             IntPtr storage, long columnCount, long rowId, [Out] IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Byte(
             [Out] IntPtr storage, long columnCount, long rowId, byte[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Byte(
             [Out] IntPtr storage, long columnCount, long rowId, IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubRow_Byte(
             IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out] byte[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubRow_Byte(
             [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, byte[] row);
 
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Byte(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] byte[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Byte(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Byte(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, byte[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Byte(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubColumn_Byte(
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out] byte[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubColumn_Byte(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, byte[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetElementAt_Byte(
             IntPtr storage, long columnCount, long rowId, long columnId, [Out] out byte value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetElementAt_Byte(
             [Out] IntPtr storage, long columnCount, long rowId, long columnId, byte value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRowSkip_Byte(
             IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out] byte[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRowSkip_Byte(
             [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, byte[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumnSkip_Byte(
             IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out] byte[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumnSkip_Byte(
             [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, byte[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Clear_Byte(
             [Out] IntPtr storage, long startPos, long length, byte value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearRow_Byte(
             [Out] IntPtr storage, long columnCount, long rowId, byte value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearColumn_Byte(
             [Out] IntPtr storage, long columnCount, long rowCount, long columnId, byte value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Add_Byte(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, 
             long columnCount, long rowCount, byte value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Multiply_Byte(
             IntPtr sourceStorage, [Out] IntPtr resultStorage,
             long form, long count, byte value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ConjugateArray_Byte(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, long count);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Byte(
             long rowsA, long columnsA, byte[] s, IntPtr u, IntPtr vt, 
             byte[] b, long columnsB, [Out] byte[] x);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseMultiply_Byte(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseDivide_Byte(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWisePower_Byte(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
     }
@@ -998,100 +1002,112 @@ namespace Anemon
 {
     public partial class DataTableStorage            // bool
     {
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Bool(
-            IntPtr storage, long columnCount, long rowId, [Out] bool[] row);
-        [DllImport("DataTableStorage.dll")]
+            IntPtr storage, long columnCount, long rowId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Bool(
             IntPtr storage, long columnCount, long rowId, [Out] IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, bool[] row);
-        [DllImport("DataTableStorage.dll")]
+            [Out] IntPtr storage, long columnCount, long rowId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Bool(
             [Out] IntPtr storage, long columnCount, long rowId, IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubRow_Bool(
-            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out] bool[] row);
-        [DllImport("DataTableStorage.dll")]
+            IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubRow_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, bool[] row);
+            [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
 
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Bool(
-            IntPtr storage, long rowCount, long columnCount, long columnId, [Out] bool[] column);
-        [DllImport("DataTableStorage.dll")]
+            IntPtr storage, long rowCount, long columnCount, long columnId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Bool(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Bool(
-            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, bool[] column);
-        [DllImport("DataTableStorage.dll")]
+            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Bool(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubColumn_Bool(
-            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out] bool[] column);
-        [DllImport("DataTableStorage.dll")]
+            IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubColumn_Bool(
-            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, bool[] column);
+            [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetElementAt_Bool(
-            IntPtr storage, long columnCount, long rowId, long columnId, [Out] out bool value);
-        [DllImport("DataTableStorage.dll")]
+            IntPtr storage, long columnCount, long rowId, long columnId, [Out, MarshalAs(UnmanagedType.U1)] out bool value);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetElementAt_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, long columnId, bool value);
+            [Out] IntPtr storage, long columnCount, long rowId, long columnId, [MarshalAs(UnmanagedType.U1)] bool value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRowSkip_Bool(
-            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out] bool[] row);
-        [DllImport("DataTableStorage.dll")]
+            IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRowSkip_Bool(
-            [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, bool[] row);
-        [DllImport("DataTableStorage.dll")]
+            [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] row);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumnSkip_Bool(
-            IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out] bool[] column);
-        [DllImport("DataTableStorage.dll")]
+            IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumnSkip_Bool(
-            [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, bool[] column);
+            [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, [In, MarshalAs( UnmanagedType.LPArray,
+                ArraySubType = System.Runtime.InteropServices.UnmanagedType.U1)] bool[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Clear_Bool(
-            [Out] IntPtr storage, long startPos, long length, bool value);
-        [DllImport("DataTableStorage.dll")]
+            [Out] IntPtr storage, long startPos, long length, [MarshalAs(UnmanagedType.U1)] bool value);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearRow_Bool(
-            [Out] IntPtr storage, long columnCount, long rowId, bool value);
-        [DllImport("DataTableStorage.dll")]
+            [Out] IntPtr storage, long columnCount, long rowId, [MarshalAs(UnmanagedType.U1)] bool value);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearColumn_Bool(
-            [Out] IntPtr storage, long columnCount, long rowCount, long columnId, bool value);
+            [Out] IntPtr storage, long columnCount, long rowCount, long columnId, [MarshalAs(UnmanagedType.U1)] bool value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Add_Bool(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, 
             long columnCount, long rowCount, bool value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Multiply_Bool(
             IntPtr sourceStorage, [Out] IntPtr resultStorage,
             long form, long count, bool value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ConjugateArray_Bool(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, long count);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Bool(
             long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt, 
             bool[] b, long columnsB, [Out] bool[] x);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseMultiply_Bool(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseDivide_Bool(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWisePower_Bool(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
     }
@@ -1303,100 +1319,100 @@ namespace Anemon
 {
     public partial class DataTableStorage            // Complex
     {
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Complex(
             IntPtr storage, long columnCount, long rowId, [Out] Complex[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Complex(
             IntPtr storage, long columnCount, long rowId, [Out] IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Complex(
             [Out] IntPtr storage, long columnCount, long rowId, Complex[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Complex(
             [Out] IntPtr storage, long columnCount, long rowId, IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubRow_Complex(
             IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out] Complex[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubRow_Complex(
             [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, Complex[] row);
 
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Complex(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] Complex[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Complex(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Complex(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, Complex[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Complex(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubColumn_Complex(
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out] Complex[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubColumn_Complex(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetElementAt_Complex(
             IntPtr storage, long columnCount, long rowId, long columnId, [Out] out Complex value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetElementAt_Complex(
             [Out] IntPtr storage, long columnCount, long rowId, long columnId, Complex value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRowSkip_Complex(
             IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out] Complex[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRowSkip_Complex(
             [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, Complex[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumnSkip_Complex(
             IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out] Complex[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumnSkip_Complex(
             [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, Complex[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Clear_Complex(
             [Out] IntPtr storage, long startPos, long length, Complex value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearRow_Complex(
             [Out] IntPtr storage, long columnCount, long rowId, Complex value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearColumn_Complex(
             [Out] IntPtr storage, long columnCount, long rowCount, long columnId, Complex value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Add_Complex(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, 
             long columnCount, long rowCount, Complex value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Multiply_Complex(
             IntPtr sourceStorage, [Out] IntPtr resultStorage,
             long form, long count, Complex value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ConjugateArray_Complex(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, long count);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Complex(
             long rowsA, long columnsA, Complex[] s, IntPtr u, IntPtr vt, 
             Complex[] b, long columnsB, [Out] Complex[] x);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseMultiply_Complex(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseDivide_Complex(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWisePower_Complex(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
     }
@@ -1608,100 +1624,100 @@ namespace Anemon
 {
     public partial class DataTableStorage            // Complex32
     {
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Complex32(
             IntPtr storage, long columnCount, long rowId, [Out] Complex32[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRow_Complex32(
             IntPtr storage, long columnCount, long rowId, [Out] IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Complex32(
             [Out] IntPtr storage, long columnCount, long rowId, Complex32[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRow_Complex32(
             [Out] IntPtr storage, long columnCount, long rowId, IntPtr row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubRow_Complex32(
             IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, [Out] Complex32[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubRow_Complex32(
             [Out] IntPtr storage, long columnCount, long rowId, long startColumn, long subRowColumnCount, Complex32[] row);
 
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Complex32(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] Complex32[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumn_Complex32(
             IntPtr storage, long rowCount, long columnCount, long columnId, [Out] IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Complex32(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, Complex32[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumn_Complex32(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, IntPtr column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetSubColumn_Complex32(
             IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, [Out] Complex32[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetSubColumn_Complex32(
             [Out] IntPtr storage, long rowCount, long columnCount, long columnId, long startRow, long subColumnRowCount, Complex32[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetElementAt_Complex32(
             IntPtr storage, long columnCount, long rowId, long columnId, [Out] out Complex32 value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetElementAt_Complex32(
             [Out] IntPtr storage, long columnCount, long rowId, long columnId, Complex32 value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetRowSkip_Complex32(
             IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, [Out] Complex32[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetRowSkip_Complex32(
             [Out] IntPtr storage, long columnCount, long[] columnSkip, long skipSize, long rowId, Complex32[] row);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_GetColumnSkip_Complex32(
             IntPtr storage, long[] rowSkip, long skipSize, long columnId, [Out] Complex32[] column);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SetColumnSkip_Complex32(
             [Out] IntPtr storage, long[] rowSkip, long skipSize, long columnId, Complex32[] column);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Clear_Complex32(
             [Out] IntPtr storage, long startPos, long length, Complex32 value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearRow_Complex32(
             [Out] IntPtr storage, long columnCount, long rowId, Complex32 value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ClearColumn_Complex32(
             [Out] IntPtr storage, long columnCount, long rowCount, long columnId, Complex32 value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Add_Complex32(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, 
             long columnCount, long rowCount, Complex32 value);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_Multiply_Complex32(
             IntPtr sourceStorage, [Out] IntPtr resultStorage,
             long form, long count, Complex32 value);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_ConjugateArray_Complex32(
             IntPtr sourceStorage, [Out] IntPtr resultStorage, long count);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Complex32(
             long rowsA, long columnsA, Complex32[] s, IntPtr u, IntPtr vt, 
             Complex32[] b, long columnsB, [Out] Complex32[] x);
 
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseMultiply_Complex32(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWiseDivide_Complex32(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
-        [DllImport("DataTableStorage.dll")]
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_PointWisePower_Complex32(
             IntPtr x, IntPtr y, [Out] IntPtr result, long length);
     }

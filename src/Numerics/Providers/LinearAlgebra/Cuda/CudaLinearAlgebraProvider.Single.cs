@@ -214,7 +214,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Cuda
         /// <param name="ipiv">On exit, it contains the pivot indices. The size of the array must be <paramref name="order"/>.</param>
         /// <remarks>This is equivalent to the GETRF LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUFactor(float[] data, int order, int[] ipiv)
+        public override void LUFactor(float[] data, int order, long[] ipiv)
         {
             if (data == null)
             {
@@ -269,7 +269,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Cuda
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <remarks>This is equivalent to the GETRI LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUInverseFactored(float[] a, int order, int[] ipiv)
+        public override void LUInverseFactored(float[] a, int order, long[] ipiv)
         {
             if (a == null)
             {
@@ -338,7 +338,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Cuda
         /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
         /// <remarks>This is equivalent to the GETRS LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUSolveFactored(int columnsOfB, float[] a, int order, int[] ipiv, float[] b)
+        public override void LUSolveFactored(int columnsOfB, float[] a, int order, long[] ipiv, float[] b)
         {
             if (a == null)
             {
@@ -577,6 +577,11 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Cuda
             if (columnsA > rowsA || computeVectors == SVDVectorsComputation.NoVectorComputation) // see remarks http://docs.nvidia.com/cuda/cusolver/index.html#cuds-lt-t-gt-gesvd
                 base.SingularValueDecomposition(computeVectors, a, rowsA, columnsA, s, u, vt);
             else Solver(SafeNativeMethods.s_svd_factor(_solverHandle, (char)computeVectors, rowsA, columnsA, a, s, u, vt));
+        }
+
+        public override long TriangularInverse(bool uplo, bool unitTriangular, long n, float[] matrix)
+        {
+            return SafeNativeMethods.s_triangular_inverse(uplo, unitTriangular, n, matrix);
         }
     }
 }

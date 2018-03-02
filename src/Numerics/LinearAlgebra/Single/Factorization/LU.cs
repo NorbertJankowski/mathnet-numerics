@@ -43,7 +43,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
     /// </remarks>
     internal abstract class LU : LU<float>
     {
-        protected LU(Matrix<float> factors, int[] pivots)
+        protected LU(Matrix<float> factors, long[] pivots)
             : base(factors, pivots)
         {
         }

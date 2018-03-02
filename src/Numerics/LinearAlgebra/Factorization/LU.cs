@@ -49,19 +49,19 @@ namespace MathNet.Numerics.LinearAlgebra.Factorization
 
         readonly Lazy<Matrix<T>> _lazyL;
         readonly Lazy<Matrix<T>> _lazyU;
-        readonly Lazy<Permutation> _lazyP;
+        readonly Lazy<Permutation_Long> _lazyP;
 
         protected readonly Matrix<T> Factors;
-        protected readonly int[] Pivots;
+        protected readonly long[] Pivots;
 
-        protected LU(Matrix<T> factors, int[] pivots)
+        protected LU(Matrix<T> factors, long[] pivots)
         {
             Factors = factors;
             Pivots = pivots;
 
             _lazyL = new Lazy<Matrix<T>>(ComputeL);
             _lazyU = new Lazy<Matrix<T>>(Factors.UpperTriangle);
-            _lazyP = new Lazy<Permutation>(() => Permutation.FromInversions(Pivots));
+            _lazyP = new Lazy<Permutation_Long>(() => Permutation_Long.FromInversions(Pivots));
         }
 
         Matrix<T> ComputeL()
@@ -93,7 +93,7 @@ namespace MathNet.Numerics.LinearAlgebra.Factorization
         /// <summary>
         /// Gets the permutation applied to LU factorization.
         /// </summary>
-        public Permutation P
+        public Permutation_Long P
         {
             get { return _lazyP.Value; }
         }

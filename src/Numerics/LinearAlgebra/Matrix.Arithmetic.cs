@@ -2009,6 +2009,13 @@ namespace MathNet.Numerics.LinearAlgebra
             return LU().Inverse();
         }
 
+        /// <summary>Computes the inverse of this triangular matrix.</summary>
+        /// <returns>The inverse of this matrix.</returns>
+        public virtual Matrix<T> InverseTringular(bool upperMatrix, bool unitTriangular)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>Computes the Moore-Penrose Pseudo-Inverse of this matrix.</summary>
         public abstract Matrix<T> PseudoInverse();
 

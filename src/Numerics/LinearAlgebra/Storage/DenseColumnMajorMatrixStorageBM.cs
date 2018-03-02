@@ -48,8 +48,8 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
     [Serializable]
     [DataContract(Namespace = "urn:MathNet/Numerics/LinearAlgebra")]
-//    [DebuggerDisplay("Count = {Length}")]
-//    [DebuggerTypeProxy(typeof(DenseStorageViewer))]
+    [DebuggerDisplay("Count = {Length}")]
+    [DebuggerTypeProxy(typeof(DenseStorageViewer))]
     public class DenseColumnMajorMatrixStorageBM<T> : MatrixStorage<T>, IStorageBM, IDisposable
         where T : struct, IEquatable<T>, IFormattable
     {
@@ -72,7 +72,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             if (Data == IntPtr.Zero)
                 throw new Exception("Out ofmemory in DenseColumnMajorMatrixStorageBM");
         }
-        internal DenseColumnMajorMatrixStorageBM(int rows, int columns, IntPtr data)
+        public DenseColumnMajorMatrixStorageBM(int rows, int columns, IntPtr data, bool frameOnly = false)
             : base(rows, columns)
         {
             if (data == null)
@@ -81,6 +81,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             }
             Data = data;
             Length = (long)rows * (long)columns;
+            this.frameOnly = frameOnly;
         }
         internal DenseColumnMajorMatrixStorageBM(int rows, int columns, T[] data)
             : base(rows, columns)
@@ -92,9 +93,10 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             dataTableStorage.DataTableStorage_SetRow(Data, RowCount * ColumnCount, 0, data);
         }
 
-        public void Free()
+        bool frameOnly = false;
+        internal void Free()
         {
-            if (Data != IntPtr.Zero)
+            if (Data != IntPtr.Zero && !frameOnly)
             {
                 dataTableStorage.DataTableStorage_Free(Data);
                 Data = IntPtr.Zero;

@@ -251,7 +251,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// <param name="ipiv">On exit, it contains the pivot indices. The size of the array must be <paramref name="order"/>.</param>
         /// <remarks>This is equivalent to the GETRF LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUFactor(double[] data, int order, int[] ipiv)
+        public override void LUFactor(double[] data, int order, long[] ipiv)
         {
             if (data == null)
             {
@@ -326,7 +326,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// <param name="ipiv">The pivot indices of <paramref name="a"/>.</param>
         /// <remarks>This is equivalent to the GETRI LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUInverseFactored(double[] a, int order, int[] ipiv)
+        public override void LUInverseFactored(double[] a, int order, long[] ipiv)
         {
             if (a == null)
             {
@@ -415,7 +415,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
         /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
         /// <remarks>This is equivalent to the GETRS LAPACK routine.</remarks>
         [SecuritySafeCritical]
-        public override void LUSolveFactored(int columnsOfB, double[] a, int order, int[] ipiv, double[] b)
+        public override void LUSolveFactored(int columnsOfB, double[] a, int order, long[] ipiv, double[] b)
         {
             if (a == null)
             {
@@ -1025,6 +1025,11 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.OpenBlas
             {
                 throw new NonConvergenceException();
             }
+        }
+
+        public override long TriangularInverse(bool uplo, bool unitTriangular, long n, double[] matrix)
+        {
+            return SafeNativeMethods.d_triangular_inverse(uplo, unitTriangular, n, matrix);
         }
     }
 }

@@ -493,7 +493,6 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             Map(x => (float)Math.Tanh(x), result, Zeros.AllowSkip);
         }
 
-
         /// <summary>
         /// Computes the Moore-Penrose Pseudo-Inverse of this matrix.
         /// </summary>

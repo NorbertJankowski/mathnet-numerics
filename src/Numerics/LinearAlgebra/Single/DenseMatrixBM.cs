@@ -1281,6 +1281,23 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             return DenseEvdBM.Create(this, symmetricity);
         }
 
+        public override Matrix<float> InverseTringular(bool upperMatrix, bool unitTriangular = false)
+        {
+            if (RowCount != ColumnCount)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixSquare);
+            }
+
+            Matrix<float> m = this.Clone() as Matrix<float>;
+            long i = LinearAlgebraProvider.TriangularInverse(upperMatrix, unitTriangular, this.RowCount,
+                (m.Storage as DenseColumnMajorMatrixStorageBM<float>));
+            if (i > 0)
+                throw new Exception(string.Format("{0}-th diagonal element of A is zero, A is singular, and the inversion could not be completed", i));
+            if (i < 0)
+                throw new Exception("illegal return value of InverseTringular");
+            return m;
+        }
+
         public void Dispose()
         {
             if (_values != null)

@@ -728,6 +728,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             var ret = new double[RowCount];
             Storage.FoldByRowUnchecked(ret, (s, x) => s + x, (x, c) => x, ret, Zeros.AllowSkip);
+            (this as DenseMatrixBM).KeepAlive(this as DenseMatrixBM);
             return Vector<double>.Build.Dense(ret);
         }
 
