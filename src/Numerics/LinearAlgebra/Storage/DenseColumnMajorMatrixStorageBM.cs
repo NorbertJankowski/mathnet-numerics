@@ -823,80 +823,91 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
         internal override Tuple<int, int, T, TOther> Find2Unchecked<TOther>(MatrixStorage<TOther> other, Func<T, TOther, bool> predicate, Zeros zeros)
         {
-            throw new Exception("Find2Unchecked not yet implemented");
-            /*            var denseOther = other as DenseColumnMajorMatrixStorage<TOther>;
-                        if (denseOther != null)
+            //throw new Exception("Find2Unchecked not yet implemented");
+
+            var denseOther = other as DenseColumnMajorMatrixStorageBM<TOther>;
+            if (denseOther != null)
+            {
+                for (int i = 0; i < RowCount; i++)
+                    for (int j = 0; j < ColumnCount; j++)
+                    {
+                        if (predicate(At(i,j), denseOther.At(i,j)))
+                    {
+                        return new Tuple<int, int, T, TOther>(i, j, At(i, j), denseOther.At(i, j));
+
+                    }
+                }
+                return null;
+            }
+
+            var denseOther2 = other as DenseColumnMajorMatrixStorage<TOther>;
+            if (denseOther2 != null)
+            {
+                for (int i = 0; i < RowCount; i++)
+                    for (int j = 0; j < ColumnCount; j++)
+                    {
+                        if (predicate(At(i, j), denseOther2.At(i, j)))
                         {
-                            TOther[] otherData = denseOther.Data;
-                            for (int i = 0; i < Data.Length; i++)
-                            {
-                                if (predicate(Data[i], otherData[i]))
-                                {
-                                    int row, column;
-                                    RowColumnAtIndex(i, out row, out column);
-                                    return new Tuple<int, int, T, TOther>(row, column, Data[i], otherData[i]);
+                            return new Tuple<int, int, T, TOther>(i, j, At(i, j), denseOther2.At(i, j));
 
-                                }
-                            }
-                            return null;
                         }
+                    }
+                return null;
+            }            
 
-                        var diagonalOther = other as DiagonalMatrixStorage<TOther>;
-                        if (diagonalOther != null)
+            var diagonalOther = other as DiagonalMatrixStorage<TOther>;
+            if (diagonalOther != null)
+            {
+                TOther[] otherData = diagonalOther.Data;
+                TOther otherZero = BuilderInstance<TOther>.Matrix.Zero;
+                for (int j = 0; j < ColumnCount; j++)
+                {
+                    for (int i = 0; i < RowCount; i++)
+                    {
+                        if (predicate(At(i,j), i == j ? otherData[i] : otherZero))
                         {
-                            TOther[] otherData = diagonalOther.Data;
-                            TOther otherZero = BuilderInstance<TOther>.Matrix.Zero;
-                            int k = 0;
-                            for (int j = 0; j < ColumnCount; j++)
-                            {
-                                for (int i = 0; i < RowCount; i++)
-                                {
-                                    if (predicate(Data[k], i == j ? otherData[i] : otherZero))
-                                    {
-                                        return new Tuple<int, int, T, TOther>(i, j, Data[k], i == j ? otherData[i] : otherZero);
-                                    }
-                                    k++;
-                                }
-                            }
-                            return null;
+                            return new Tuple<int, int, T, TOther>(i, j, At(i,j), i == j ? otherData[i] : otherZero);
                         }
+                    }
+                }
+                return null;
+            }
 
-                        var sparseOther = other as SparseCompressedRowMatrixStorage<TOther>;
-                        if (sparseOther != null)
+            var sparseOther = other as SparseCompressedRowMatrixStorage<TOther>;
+            if (sparseOther != null)
+            {
+                int[] otherRowPointers = sparseOther.RowPointers;
+                int[] otherColumnIndices = sparseOther.ColumnIndices;
+                TOther[] otherValues = sparseOther.Values;
+                TOther otherZero = BuilderInstance<TOther>.Matrix.Zero;
+                int k = 0;
+                for (int row = 0; row < RowCount; row++)
+                {
+                    for (int col = 0; col < ColumnCount; col++)
+                    {
+                        if (k < otherRowPointers[row + 1] && otherColumnIndices[k] == col)
                         {
-                            int[] otherRowPointers = sparseOther.RowPointers;
-                            int[] otherColumnIndices = sparseOther.ColumnIndices;
-                            TOther[] otherValues = sparseOther.Values;
-                            TOther otherZero = BuilderInstance<TOther>.Matrix.Zero;
-                            int k = 0;
-                            for (int row = 0; row < RowCount; row++)
+                            if (predicate(At(row, col), otherValues[k]))
                             {
-                                for (int col = 0; col < ColumnCount; col++)
-                                {
-                                    if (k < otherRowPointers[row + 1] && otherColumnIndices[k] == col)
-                                    {
-                                        if (predicate(Data[col * RowCount + row], otherValues[k]))
-                                        {
-                                            return new Tuple<int, int, T, TOther>(row, col, Data[col * RowCount + row], otherValues[k]);
-                                        }
-                                        k++;
-                                    }
-                                    else
-                                    {
-                                        if (predicate(Data[col * RowCount + row], otherZero))
-                                        {
-                                            return new Tuple<int, int, T, TOther>(row, col, Data[col * RowCount + row], otherValues[k]);
-                                        }
-                                    }
-                                }
+                                return new Tuple<int, int, T, TOther>(row, col, At(row, col), otherValues[k]);
                             }
-                            return null;
+                            k++;
                         }
+                        else
+                        {
+                            if (predicate(At(row, col), otherZero))
+                            {
+                                return new Tuple<int, int, T, TOther>(row, col, At(row, col), otherValues[k]);
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
 
-                        // FALL BACK
+            // FALL BACK
 
-                        return base.Find2Unchecked(other, predicate, zeros);
-                        */
+            return base.Find2Unchecked(other, predicate, zeros);
         }
 
         // FUNCTIONAL COMBINATORS: MAP

@@ -1459,10 +1459,28 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
         internal override Tuple<int, int, T, TOther> Find2Unchecked<TOther>(MatrixStorage<TOther> other, Func<T, TOther, bool> predicate, Zeros zeros)
         {
-            var denseOther = other as DenseColumnMajorMatrixStorage<TOther>;
+            var denseOther = other as DenseColumnMajorMatrixStorageBM<TOther>;
             if (denseOther != null)
             {
-                TOther[] otherData = denseOther.Data;
+                int k = 0;
+                for (int row = 0; row < RowCount; row++)
+                {
+                    for (int col = 0; col < ColumnCount; col++)
+                    {
+                        bool available = k < RowPointers[row + 1] && ColumnIndices[k] == col;
+                        if (predicate(available ? Values[k++] : Zero, denseOther.At(row,col)))
+                        {
+                            return new Tuple<int, int, T, TOther>(row, col, available ? Values[k - 1] : Zero, denseOther.At(row, col));
+                        }
+                    }
+                }
+                return null;
+            }
+
+            var denseOther2 = other as DenseColumnMajorMatrixStorage<TOther>;
+            if (denseOther2 != null)
+            {
+                TOther[] otherData = denseOther2.Data;
                 int k = 0;
                 for (int row = 0; row < RowCount; row++)
                 {
