@@ -18,7 +18,7 @@ namespace Anemon
         public static extern void DataTableStorage_SetRowDF([Out] IntPtr storage, long columnCount, long rowId, [In] float[] row);
     }
 
-    public abstract class DataTableStorage<T>
+    public abstract class DataTableStorage<T> 
     {
         public void DataTableStorage_Free(IntPtr storage)
         {

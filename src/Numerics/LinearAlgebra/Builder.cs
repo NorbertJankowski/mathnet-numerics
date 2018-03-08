@@ -613,6 +613,12 @@ namespace MathNet.Numerics.LinearAlgebra
         {
             return Dense(new DenseColumnMajorMatrixStorage<T>(rows, columns, storage));
         }
+
+        public Matrix<T> DenseBM(int rows, int columns, T[] storage)
+        {
+            return DenseBM(new DenseColumnMajorMatrixStorageBM<T>(rows, columns, storage));
+        }
+
         public Matrix<T> DenseBM(int rows, int columns, IntPtr storage)
         {
             return DenseBM(new DenseColumnMajorMatrixStorageBM<T>(rows, columns, storage));

@@ -1051,6 +1051,35 @@ namespace MathNet.Numerics.LinearAlgebra
         }
 
         /// <summary>
+        /// Permute the rows of a matrix according to a permutation.
+        /// </summary>
+        /// <param name="p">The row permutation to apply to this matrix.</param>
+        public virtual void PermuteRows(Permutation_Long p)
+        {
+            if (p.Dimension != RowCount)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "p");
+            }
+
+            // Get a sequence of inversions from the permutation.
+            var inv = p.ToInversions();
+
+            for (var i = 0; i < inv.Length; i++)
+            {
+                if (inv[i] != i)
+                {
+                    var q = (int)inv[i];
+                    for (var j = 0; j < ColumnCount; j++)
+                    {
+                        var temp = At(q, j);
+                        At(q, j, At(i, j));
+                        At(i, j, temp);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Permute the columns of a matrix according to a permutation.
         /// </summary>
         /// <param name="p">The column permutation to apply to this matrix.</param>

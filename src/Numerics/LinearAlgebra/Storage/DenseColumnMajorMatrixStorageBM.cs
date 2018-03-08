@@ -90,6 +90,15 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             {
                 throw new ArgumentNullException("data");
             }
+
+            T t = default(T);
+            int sizeOfT = System.Runtime.InteropServices.Marshal.SizeOf(t);
+            Length = (long)rows * (long)columns;
+            Data = dataTableStorage.DataTableStorage_AllocByte(
+                    Length * sizeOfT);
+            if (Data == IntPtr.Zero)
+                throw new Exception("Out ofmemory in DenseColumnMajorMatrixStorageBM");
+
             dataTableStorage.DataTableStorage_SetRow(Data, RowCount * ColumnCount, 0, data);
         }
 
