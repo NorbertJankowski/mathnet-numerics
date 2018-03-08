@@ -30,7 +30,7 @@
     <ProjectGuid>{C0B0DBA9-7FB0-4C87-BDB1-3EED19DC2B8F}</ProjectGuid>
     <RootNamespace>MKLWrapper</RootNamespace>
     <ProjectName>MKL</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

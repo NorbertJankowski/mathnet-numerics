@@ -368,7 +368,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var a = new Complex32[matrix.RowCount*matrix.RowCount];
             Array.Copy(matrix.Values, a, a.Length);
 
-            var ipiv = new int[matrix.RowCount];
+            var ipiv = new long[matrix.RowCount];
 
             Control.LinearAlgebraProvider.LUFactor(a, matrix.RowCount, ipiv);
 
@@ -420,7 +420,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var a = new Complex32[matrix.RowCount*matrix.RowCount];
             Array.Copy(matrix.Values, a, a.Length);
 
-            var ipiv = new int[matrix.RowCount];
+            var ipiv = new long[matrix.RowCount];
 
             Control.LinearAlgebraProvider.LUFactor(a, matrix.RowCount, ipiv);
             Control.LinearAlgebraProvider.LUInverseFactored(a, matrix.RowCount, ipiv);
@@ -469,7 +469,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Complex32
             var a = new Complex32[matrix.RowCount*matrix.RowCount];
             Array.Copy(matrix.Values, a, a.Length);
 
-            var ipiv = new int[matrix.RowCount];
+            var ipiv = new long[matrix.RowCount];
             Control.LinearAlgebraProvider.LUFactor(a, matrix.RowCount, ipiv);
 
             var b = new[] {new Complex32(1.0f, 0.0f), 2.0f, 3.0f, 4.0f, 5.0f, 6.0f};
