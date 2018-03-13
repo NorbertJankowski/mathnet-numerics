@@ -964,7 +964,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 // we don't have access to the raw Q matrix any more(it is stored in R in the full QR), need to think about this.
                 // let just call the managed version in the meantime. The heavy lifting has already been done. -marcus
                 //base.QRSolveFactored(q, r, rowsA, columnsA, tau, b, columnsB, x, QRMethod.Thin);
-                new Exception("There is no thin QRSolveFactored in MKL");
+                throw new Exception("There is no thin QRSolveFactored in MKL");
             }
         }
         public void QRSolveFactored(IStorageBM q, IStorageBM r, int rowsA, int columnsA, double[] tau, double[] b, int columnsB, double[] x, QRMethod method = QRMethod.Full)
@@ -1039,7 +1039,8 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
             {
                 // we don't have access to the raw Q matrix any more(it is stored in R in the full QR), need to think about this.
                 // let just call the managed version in the meantime. The heavy lifting has already been done. -marcus
-                QRSolveFactored(q, r, rowsA, columnsA, tau, b, columnsB, x, QRMethod.Thin);
+                //base.QRSolveFactored(q, r, rowsA, columnsA, tau, b, columnsB, x, QRMethod.Thin);
+                throw new Exception("There is no thin QRSolveFactored in MKL");
             }
         }
 

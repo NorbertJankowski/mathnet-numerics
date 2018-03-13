@@ -1268,7 +1268,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
 
         public override GramSchmidt<float> GramSchmidt()
         {
-            return DenseGramSchmidt.Create(this);
+            return DenseGramSchmidtBM.Create(this);
         }
 
         public override Svd<float> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)
