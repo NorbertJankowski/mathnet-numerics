@@ -132,4 +132,11 @@ extern "C" {					// float
 	{
 		DataTableStorage_SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
 	}
+
+    DLLEXPORT void DataTableStorage_QRSolveFactored_Float(
+        void* q, void* r, LL rowsA, LL columnsA, void* tau, void* b, LL columnsB, void* x, char methodFull)
+    {
+        DataTableStorage_QRSolveFactored<float>(
+            (float*)q, (float*)r, rowsA, columnsA, (float*)tau, (float*)b, columnsB, (float*)x, methodFull);
+    }
 }

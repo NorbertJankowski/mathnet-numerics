@@ -308,6 +308,83 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 	}
 	delete[] tmp;
 }
+
+inline double conj(double d) { return d; }
+inline float conj(float d) { return d; }
+
+template<typename T> inline void DataTableStorage_QRSolveFactored(
+    T* q, T* r, LL rowsA, LL columnsA, T* tau, T* b, LL columnsB, T* x, char methodFull)
+{
+    int rowsQ, columnsQ, rowsR, columnsR;
+    if (methodFull)
+    {
+        rowsQ = columnsQ = rowsR = rowsA;
+        columnsR = columnsA;
+    }
+    else
+    {
+        rowsQ = rowsA;
+        columnsQ = rowsR = columnsR = columnsA;
+    }
+    LL length = rowsA * columnsA;
+    T* sol = new T[length];
+
+    // Copy B matrix to "sol", so B data will not be changed
+    for (LL i = 0; i < length; i++)
+        sol[i] = b[i];
+
+    // Compute Y = transpose(Q)*B
+    T* column = new T[rowsA];
+    for (LL j = 0; j < columnsB; j++)
+    {
+        LL jm = j * rowsA;
+        for (LL i = 0; i < rowsA; i++)
+            column[i] = sol[jm + i];
+        //CommonParallel.For(0, columnsA, (u, v) = >
+        //{
+            for (LL i = 0; i < columnsA; i++)
+            {
+                LL im = i * rowsA;
+
+                T sum;
+                sum = 0;
+                for (LL k = 0; k < rowsA; k++)
+                {
+                    sum += conj(q[im + k])*column[k];
+                }
+
+                sol[jm + i] = sum;
+            }
+        //});
+    }
+
+    // Solve R*X = Y;
+    for (LL k = columnsA - 1; k >= 0; k--)
+    {
+        LL km = k * rowsR;
+        for (LL j = 0; j < columnsB; j++)
+        {
+            sol[(j*rowsA) + k] /= r[km + k];
+        }
+
+        for (LL i = 0; i < k; i++)
+        {
+            for (LL j = 0; j < columnsB; j++)
+            {
+                LL jm = j * rowsA;
+                sol[jm + i] -= sol[jm + k] * r[km + i];
+            }
+        }
+    }
+
+    // Fill result matrix
+    for (LL col = 0; col < columnsB; col++)
+    {
+        T *xp = x + col * columnsA, *solp = sol + col * rowsA;
+        for (LL i = 0; i < columnsR; i++)
+            *xp++ = *solp++;
+    }
+}
 extern "C" {					// float
 
 	// [get | set] row
@@ -442,6 +519,13 @@ extern "C" {					// float
 	{
 		DataTableStorage_SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
 	}
+
+    DLLEXPORT void DataTableStorage_QRSolveFactored_Float(
+        void* q, void* r, LL rowsA, LL columnsA, void* tau, void* b, LL columnsB, void* x, char methodFull)
+    {
+        DataTableStorage_QRSolveFactored<float>(
+            (float*)q, (float*)r, rowsA, columnsA, (float*)tau, (float*)b, columnsB, (float*)x, methodFull);
+    }
 }
 extern "C" {					// double
 
@@ -577,6 +661,13 @@ extern "C" {					// double
 	{
 		DataTableStorage_SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
 	}
+
+    DLLEXPORT void DataTableStorage_QRSolveFactored_Double(
+        void* q, void* r, LL rowsA, LL columnsA, void* tau, void* b, LL columnsB, void* x, char methodFull)
+    {
+        DataTableStorage_QRSolveFactored<double>(
+            (double*)q, (double*)r, rowsA, columnsA, (double*)tau, (double*)b, columnsB, (double*)x, methodFull);
+    }
 }
 extern "C" {					// byte
 
@@ -590,7 +681,7 @@ extern "C" {					// byte
 		void *storage, LL columnCount, LL rowId, byte *row)
 	{
 		DataTableStorage_SetRow(storage, columnCount, rowId, row);
-    }
+	}
 	// [get | set] subrow
 	DLLEXPORT void DataTableStorage_GetSubRow_Byte(
 		void *storage, LL columnCount, LL rowId, LL startColumn, LL subRowColumnCount, byte *row)
@@ -712,6 +803,13 @@ extern "C" {					// byte
 	{
 		DataTableStorage_SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
 	}
+
+    DLLEXPORT void DataTableStorage_QRSolveFactored_Byte(
+        void* q, void* r, LL rowsA, LL columnsA, void* tau, void* b, LL columnsB, void* x, char methodFull)
+    {
+        DataTableStorage_QRSolveFactored<byte>(
+            (byte*)q, (byte*)r, rowsA, columnsA, (byte*)tau, (byte*)b, columnsB, (byte*)x, methodFull);
+    }
 }
 extern "C" {					// bool
 
@@ -720,12 +818,12 @@ extern "C" {					// bool
 			void *storage, LL columnCount, LL rowId, bool *row)
 	{
 		DataTableStorage_GetRow(storage, columnCount, rowId, row);
-    }
+	}
 	DLLEXPORT void DataTableStorage_SetRow_Bool(
 		void *storage, LL columnCount, LL rowId, bool *row)
 	{
 		DataTableStorage_SetRow(storage, columnCount, rowId, row);
-    }
+	}
 	// [get | set] subrow
 	DLLEXPORT void DataTableStorage_GetSubRow_Bool(
 		void *storage, LL columnCount, LL rowId, LL startColumn, LL subRowColumnCount, bool *row)
@@ -847,6 +945,13 @@ extern "C" {					// bool
 	{
 		DataTableStorage_SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
 	}
+
+    DLLEXPORT void DataTableStorage_QRSolveFactored_Bool(
+        void* q, void* r, LL rowsA, LL columnsA, void* tau, void* b, LL columnsB, void* x, char methodFull)
+    {
+        DataTableStorage_QRSolveFactored<bool>(
+            (bool*)q, (bool*)r, rowsA, columnsA, (bool*)tau, (bool*)b, columnsB, (bool*)x, methodFull);
+    }
 }
 extern "C" {					// Complex
 
@@ -982,6 +1087,13 @@ extern "C" {					// Complex
 	{
 		DataTableStorage_SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
 	}
+
+    DLLEXPORT void DataTableStorage_QRSolveFactored_Complex(
+        void* q, void* r, LL rowsA, LL columnsA, void* tau, void* b, LL columnsB, void* x, char methodFull)
+    {
+        DataTableStorage_QRSolveFactored<Complex>(
+            (Complex*)q, (Complex*)r, rowsA, columnsA, (Complex*)tau, (Complex*)b, columnsB, (Complex*)x, methodFull);
+    }
 }
 extern "C" {					// Complex32
 
@@ -1117,4 +1229,11 @@ extern "C" {					// Complex32
 	{
 		DataTableStorage_SvdSolveFactored(rowsA, columnsA, s, u, vt, b, columnsB, x);
 	}
+
+    DLLEXPORT void DataTableStorage_QRSolveFactored_Complex32(
+        void* q, void* r, LL rowsA, LL columnsA, void* tau, void* b, LL columnsB, void* x, char methodFull)
+    {
+        DataTableStorage_QRSolveFactored<Complex32>(
+            (Complex32*)q, (Complex32*)r, rowsA, columnsA, (Complex32*)tau, (Complex32*)b, columnsB, (Complex32*)x, methodFull);
+    }
 }

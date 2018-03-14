@@ -308,3 +308,80 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 	}
 	delete[] tmp;
 }
+
+inline double conj(double d) { return d; }
+inline float conj(float d) { return d; }
+
+template<typename T> inline void DataTableStorage_QRSolveFactored(
+    T* q, T* r, LL rowsA, LL columnsA, T* tau, T* b, LL columnsB, T* x, char methodFull)
+{
+    int rowsQ, columnsQ, rowsR, columnsR;
+    if (methodFull)
+    {
+        rowsQ = columnsQ = rowsR = rowsA;
+        columnsR = columnsA;
+    }
+    else
+    {
+        rowsQ = rowsA;
+        columnsQ = rowsR = columnsR = columnsA;
+    }
+    LL length = rowsA * columnsA;
+    T* sol = new T[length];
+
+    // Copy B matrix to "sol", so B data will not be changed
+    for (LL i = 0; i < length; i++)
+        sol[i] = b[i];
+
+    // Compute Y = transpose(Q)*B
+    T* column = new T[rowsA];
+    for (LL j = 0; j < columnsB; j++)
+    {
+        LL jm = j * rowsA;
+        for (LL i = 0; i < rowsA; i++)
+            column[i] = sol[jm + i];
+        //CommonParallel.For(0, columnsA, (u, v) = >
+        //{
+            for (LL i = 0; i < columnsA; i++)
+            {
+                LL im = i * rowsA;
+
+                T sum;
+                sum = 0;
+                for (LL k = 0; k < rowsA; k++)
+                {
+                    sum += conj(q[im + k])*column[k];
+                }
+
+                sol[jm + i] = sum;
+            }
+        //});
+    }
+
+    // Solve R*X = Y;
+    for (LL k = columnsA - 1; k >= 0; k--)
+    {
+        LL km = k * rowsR;
+        for (LL j = 0; j < columnsB; j++)
+        {
+            sol[(j*rowsA) + k] /= r[km + k];
+        }
+
+        for (LL i = 0; i < k; i++)
+        {
+            for (LL j = 0; j < columnsB; j++)
+            {
+                LL jm = j * rowsA;
+                sol[jm + i] -= sol[jm + k] * r[km + i];
+            }
+        }
+    }
+
+    // Fill result matrix
+    for (LL col = 0; col < columnsB; col++)
+    {
+        T *xp = x + col * columnsA, *solp = sol + col * rowsA;
+        for (LL i = 0; i < columnsR; i++)
+            *xp++ = *solp++;
+    }
+}

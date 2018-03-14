@@ -80,5 +80,7 @@ namespace Anemon
 
         abstract public void DataTableStorage_ConjugateArray(IntPtr sourceStorage, IntPtr resultStorage, long count);
         abstract public void DataTableStorage_SvdSolveFactored(long rowsA, long columnsA, T[] s, IntPtr u, IntPtr vt, T[] b, long columnsB, T[] x);
+        abstract public void DataTableStorage_QRSolveFactored(IntPtr q, IntPtr r, long rowsA, long columnsA, T[] tau, IntPtr b, long columnsB, IntPtr x, char methodFull);
+        abstract public void DataTableStorage_QRSolveFactored(IntPtr q, IntPtr r, long rowsA, long columnsA, T[] tau, T[] b, long columnsB, T[] x, char methodFull);
     }
 }
