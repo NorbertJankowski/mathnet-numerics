@@ -480,7 +480,7 @@ namespace MathNet.Numerics.LinearAlgebra
         /// </summary>
         public Matrix<T> SameAs(Vector<T> example, int rows, int columns)
         {
-            return example.Storage.IsDense ? Dense(rows, columns) : Sparse(rows, columns);
+            return example.Storage.IsDense ? DenseBM(rows, columns) : Sparse(rows, columns);
         }
 
         /// <summary>

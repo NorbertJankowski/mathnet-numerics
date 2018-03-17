@@ -675,7 +675,6 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     denseOther._columnCount,
                     denseResult._values);
                 denseResult.KeepAlive(this, denseOther);
-                Console.WriteLine("T*");
                 return;
             }
 
@@ -1321,7 +1320,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 
         public override GramSchmidt<Complex> GramSchmidt()
         {
-            return DenseGramSchmidt.Create(this);
+            return DenseGramSchmidtBM.Create(this);
         }
 
         public override Svd<Complex> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)

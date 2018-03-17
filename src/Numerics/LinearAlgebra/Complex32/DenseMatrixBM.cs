@@ -1314,7 +1314,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
 
         public override GramSchmidt<Complex32> GramSchmidt()
         {
-            return DenseGramSchmidt.Create(this);
+            return DenseGramSchmidtBM.Create(this);
         }
 
         public override Svd<Complex32> Svd(SVDVectorsComputation computeVectors = SVDVectorsComputation.VectorComputation)

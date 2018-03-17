@@ -630,8 +630,8 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             var v = new T[RowCount];
             for (var j = 0; j < ColumnCount; j++)
             {
-                dataTableStorage.DataTableStorage_GetColumn(Data, ColumnCount, RowCount, j, v);
-                dataTableStorage.DataTableStorage_SetRow(target.Data, target.RowCount, j, v);
+                dataTableStorage.DataTableStorage_GetRow(Data, RowCount, j, v);
+                dataTableStorage.DataTableStorage_SetColumn(target.Data, target.ColumnCount, target.RowCount, j, v);
             }
         }
 

@@ -113,12 +113,14 @@
     <Compile Include="LinearAlgebra\Complex32\DenseMatrixBM.cs" />
     <Compile Include="LinearAlgebra\Complex32\Factorization\DenseCholeskyBM.cs" />
     <Compile Include="LinearAlgebra\Complex32\Factorization\DenseEvdBM.cs" />
+    <Compile Include="LinearAlgebra\Complex32\Factorization\DenseGramSchmidtBM.cs" />
     <Compile Include="LinearAlgebra\Complex32\Factorization\DenseLUBM.cs" />
     <Compile Include="LinearAlgebra\Complex32\Factorization\DenseQRBM.cs" />
     <Compile Include="LinearAlgebra\Complex32\Factorization\DenseSvdBM.cs" />
     <Compile Include="LinearAlgebra\Complex\DenseMatrixBM.cs" />
     <Compile Include="LinearAlgebra\Complex\Factorization\DenseCholeskyBM.cs" />
     <Compile Include="LinearAlgebra\Complex\Factorization\DenseEvdBM.cs" />
+    <Compile Include="LinearAlgebra\Complex\Factorization\DenseGramSchmidtBM.cs" />
     <Compile Include="LinearAlgebra\Complex\Factorization\DenseLUBM.cs" />
     <Compile Include="LinearAlgebra\Complex\Factorization\DenseQRBM.cs" />
     <Compile Include="LinearAlgebra\Complex\Factorization\DenseSvdBM.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="LinearAlgebra\Double\DenseMatrixBM.cs" />
     <Compile Include="LinearAlgebra\Double\Factorization\DenseCholeskyBM.cs" />
     <Compile Include="LinearAlgebra\Double\Factorization\DenseEvdBM.cs" />
+    <Compile Include="LinearAlgebra\Double\Factorization\DenseGramSchmidtBM.cs" />
     <Compile Include="LinearAlgebra\Double\Factorization\DenseLUBM.cs" />
     <Compile Include="LinearAlgebra\Double\Factorization\DenseQRBM.cs" />
     <Compile Include="LinearAlgebra\Double\Factorization\DenseSvdBM.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="LinearAlgebra\Single\DenseMatrixBM.cs" />
     <Compile Include="LinearAlgebra\Single\Factorization\DenseCholeskyBM.cs" />
     <Compile Include="LinearAlgebra\Single\Factorization\DenseEvdBM.cs" />
+    <Compile Include="LinearAlgebra\Single\Factorization\DenseGramSchmidtBM.cs" />
     <Compile Include="LinearAlgebra\Single\Factorization\DenseLUBM.cs" />
     <Compile Include="LinearAlgebra\Single\Factorization\DenseQRBM.cs" />
     <Compile Include="LinearAlgebra\Single\Factorization\DenseSvdBM.cs" />
