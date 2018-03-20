@@ -449,7 +449,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
                                 if (!rowIterator.MoveNext()) throw new ArgumentOutOfRangeException("data", string.Format(Resources.ArgumentArrayWrongLength, rows));
                                 v[index] = rowIterator.Current;
                             }
-                            storage.dataTableStorage.DataTableStorage_SetRow(storage.Data, rows, column, arrayColumn);
+                            storage.dataTableStorage.DataTableStorage_SetRow(storage.Data, rows, column, v);
                             if (rowIterator.MoveNext()) throw new ArgumentOutOfRangeException("data", string.Format(Resources.ArgumentArrayWrongLength, rows));
                         }
                     }

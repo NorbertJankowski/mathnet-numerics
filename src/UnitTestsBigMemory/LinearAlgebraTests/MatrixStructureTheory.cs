@@ -427,7 +427,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             T[,] array = Matrix<T>.Build.RandomBM(4, 3, 0).ToArray();
             var matrix = Matrix<T>.Build.DenseOfArrayBM(array);
-            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrix"));
+            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrixBM"));
             Assert.That(matrix.RowCount, Is.EqualTo(4));
             Assert.That(matrix.ColumnCount, Is.EqualTo(3));
             for (int i = 0; i < 4; i++)
@@ -453,7 +453,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var columnMajor = Vector<T>.Build.Random(6, 0).ToArray();
             var matrix = Matrix<T>.Build.DenseOfColumnMajorBM(2, 3, columnMajor);
-            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrix"));
+            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrixBM"));
             Assert.That(matrix.RowCount, Is.EqualTo(2));
             Assert.That(matrix.ColumnCount, Is.EqualTo(3));
             for (int i = 0; i < 2; i++)
@@ -466,7 +466,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
         {
             var columnMajor = Vector<T>.Build.Random(6, 0).ToArray();
             var matrix = Matrix<T>.Build.DenseOfRowMajorBM(2, 3, columnMajor);
-            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrix"));
+            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrixBM"));
             Assert.That(matrix.RowCount, Is.EqualTo(2));
             Assert.That(matrix.ColumnCount, Is.EqualTo(3));
             for (int i = 0; i < 2; i++)
@@ -484,7 +484,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
                 Vector<T>.Build.Random(4, 3).ToArray()
             };
             var matrix = Matrix<T>.Build.DenseOfRowsBM(3, 4, array);
-            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrix"));
+            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrixBM"));
             Assert.That(matrix.RowCount, Is.EqualTo(3));
             Assert.That(matrix.ColumnCount, Is.EqualTo(4));
             for (int i = 0; i < 3; i++)
@@ -520,7 +520,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
                 Vector<T>.Build.Random(4, 3)
             };
             var matrix = Matrix<T>.Build.DenseOfColumnsBM(4, 3, columns);
-            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrix"));
+            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrixBM"));
             Assert.That(matrix.RowCount, Is.EqualTo(4));
             Assert.That(matrix.ColumnCount, Is.EqualTo(3));
             for (int i = 0; i < 4; i++)
@@ -556,7 +556,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
                 Vector<T>.Build.Random(4, 3)
             };
             var matrix = Matrix<T>.Build.DenseOfRowsBM(3, 4, rows);
-            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrix"));
+            Assert.That(matrix.GetType().Name, Is.EqualTo("DenseMatrixBM"));
             Assert.That(matrix.RowCount, Is.EqualTo(3));
             Assert.That(matrix.ColumnCount, Is.EqualTo(4));
             for (int j = 0; j < 4; j++)
