@@ -954,6 +954,22 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
         internal override void MapToUnchecked<TU>(MatrixStorage<TU> target, Func<T, TU> f,
             Zeros zeros, ExistingData existingData)
         {
+            var denseTarget2 = target as DenseColumnMajorMatrixStorageBM<TU>;
+            if (denseTarget2 != null)
+            {
+                CommonParallel.For(0, ColumnCount, 4096, (a, b) =>
+                {
+                    for (int i = a; i < b; i++)
+                    {
+                        for (int j = 0; j < RowCount; j++)
+                        {
+                            denseTarget2.At(j, i, f(At(j, i)));
+                        }
+                    }
+                });
+                return;
+            }
+
             var denseTarget = target as DenseColumnMajorMatrixStorage<TU>;
             if (denseTarget != null)
             {
@@ -984,6 +1000,22 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
         internal override void MapIndexedToUnchecked<TU>(MatrixStorage<TU> target, Func<int, int, T, TU> f,
             Zeros zeros, ExistingData existingData)
         {
+            var denseTarget2 = target as DenseColumnMajorMatrixStorageBM<TU>;
+            if (denseTarget2 != null)
+            {
+                CommonParallel.For(0, ColumnCount, Math.Max(4096 / RowCount, 32), (a, b) =>
+                {
+                    for (int j = a; j < b; j++)
+                    {
+                        for (int i = 0; i < RowCount; i++)
+                        {
+                            denseTarget2.At(i, j, f(i, j, At(i, j)));
+                        }
+                    }
+                });
+                return;
+            }
+
             var denseTarget = target as DenseColumnMajorMatrixStorage<TU>;
             if (denseTarget != null)
             {
@@ -1016,6 +1048,26 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             int sourceColumnIndex, int targetColumnIndex, int columnCount,
             Zeros zeros, ExistingData existingData)
         {
+            var denseTarget2 = target as DenseColumnMajorMatrixStorageBM<TU>;
+            if (denseTarget2 != null)
+            {
+                CommonParallel.For(0, columnCount, Math.Max(4096 / rowCount, 32), (a, b) =>
+                {
+                    for (int j = a; j < b; j++)
+                    {
+                        int sourceIndex = sourceRowIndex + (j + sourceColumnIndex) * RowCount;
+                        int targetIndex = targetRowIndex + (j + targetColumnIndex) * target.RowCount;
+                        for (int i = 0; i < rowCount; i++)
+                        {
+                            denseTarget2.At(targetRowIndex + i, targetColumnIndex + j,
+                                f(targetRowIndex + i, targetColumnIndex + j,
+                                At(i + sourceRowIndex, j + sourceColumnIndex)));
+                        }
+                    }
+                });
+                return;
+            }
+
             var denseTarget = target as DenseColumnMajorMatrixStorage<TU>;
             if (denseTarget != null)
             {
@@ -1081,10 +1133,22 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
         internal override TState Fold2Unchecked<TOther, TState>(MatrixStorage<TOther> other, Func<TState, T, TOther, TState> f, TState state, Zeros zeros)
         {
+            var denseOther2 = other as DenseColumnMajorMatrixStorageBM<TOther>;
+            if (denseOther2 != null)
+            {
+                for (int i = 0; i < ColumnCount; i++)
+                {
+                    for (int j = 0; j < RowCount; j++)
+                    {
+                        state = f(state, At(i, j), other.At(i, j));
+                    }
+                }
+                return state;
+            }
+
             var denseOther = other as DenseColumnMajorMatrixStorage<TOther>;
             if (denseOther != null)
             {
-                TOther[] otherData = denseOther.Data;
                 for (int i = 0; i < ColumnCount; i++)
                 {
                     for (int j = 0; j < RowCount; j++)
@@ -1139,7 +1203,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
             // FALL BACK
 
-            return Fold2Unchecked(other, f, state, zeros);
+            return base.Fold2Unchecked(other, f, state, zeros);
         }
 
     }
