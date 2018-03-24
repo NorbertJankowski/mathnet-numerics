@@ -55,9 +55,10 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
     {
         // [ruegg] public fields are OK here
 
-        [DataMember(Order = 1)]
+        //[DataMember(Order = 1)]
         public IntPtr Data { get; private set; }
         internal DataTableStorage<T> dataTableStorage = DataTableStorage<T>.CreateDataTableStorage();
+        [DataMember(Order = 1)]
         public long Length { get; private set; }
 
         public DenseColumnMajorMatrixStorageBM(int rows, int columns)
@@ -102,6 +103,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             dataTableStorage.DataTableStorage_SetRow(Data, RowCount * ColumnCount, 0, data);
         }
 
+        [DataMember(Order = 1)]
         bool frameOnly = false;
         internal void Free()
         {
@@ -118,6 +120,48 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
         ~DenseColumnMajorMatrixStorageBM()
         {
             Free();
+        }
+        const long oneGB = 1024l * 1024l * 1024l;
+        [DataMember(Order = 1)]
+        T[][] serializationArray;
+        [OnSerializing()]
+        internal void OnSerializingMethod(StreamingContext context)
+        {
+            long d = (Length - 1) / oneGB + 1, m = Length % oneGB;
+            serializationArray = new T[d][];
+            long x = oneGB;
+            for (long i = 0; i < d; i++)
+            {
+                if (i == d - 1)
+                    x = m;
+                serializationArray[i] = new T[(int)x];
+                dataTableStorage.DataTableStorage_GetRow(Data, x, i, serializationArray[i]);
+            }
+        }
+        [OnSerialized()]
+        internal void OnSerializedMethod(StreamingContext context)
+        {
+            serializationArray = null;
+        }
+        [OnDeserialized()]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            T t = default(T);
+            int sizeOfT = System.Runtime.InteropServices.Marshal.SizeOf(t);
+            dataTableStorage = DataTableStorage<T>.CreateDataTableStorage();
+            Data = dataTableStorage.DataTableStorage_AllocByte(
+                    Length * sizeOfT);
+            if (Data == IntPtr.Zero)
+                throw new Exception("Out ofmemory in DenseColumnMajorMatrixStorageBM");
+            long d = (Length - 1) / oneGB + 1, m = Length % oneGB;
+            long x = oneGB;
+            for (long i = 0; i < d; i++)
+            {
+                if (i == d - 1)
+                    x = m;
+                dataTableStorage.DataTableStorage_SetRow(Data, x, i, serializationArray[i]);
+            }
+            serializationArray = null;
         }
 
         /// <summary>
