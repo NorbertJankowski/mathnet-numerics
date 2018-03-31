@@ -1152,7 +1152,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                         {
                             for (var i = 0; i < order; i++)
                             {
-                                value += ((DenseMatrix) EigenVectors).Values[(j*order) + i]*input.At(i, k);
+                                value += ((DenseMatrixBM) EigenVectors).At(i,j) * input.At(i, k);
                             }
 
                             value /= (float) EigenValues[j].Real;
@@ -1166,7 +1166,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                         float value = 0;
                         for (var i = 0; i < order; i++)
                         {
-                            value += ((DenseMatrix) EigenVectors).Values[(i*order) + j]*tmp[i];
+                            value += ((DenseMatrixBM) EigenVectors).At(j,i) * tmp[i];
                         }
 
                         result.At(j, k, value);
@@ -1213,7 +1213,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                     {
                         for (var i = 0; i < order; i++)
                         {
-                            value += ((DenseMatrix) EigenVectors).Values[(j*order) + i]*input[i];
+                            value += ((DenseMatrixBM) EigenVectors).At(i,j) * input[i];
                         }
 
                         value /= (float) EigenValues[j].Real;
@@ -1227,7 +1227,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                     value = 0;
                     for (var i = 0; i < order; i++)
                     {
-                        value += ((DenseMatrix) EigenVectors).Values[(i*order) + j]*tmp[i];
+                        value += ((DenseMatrixBM) EigenVectors).At(j,i) * tmp[i];
                     }
 
                     result[j] = value;
