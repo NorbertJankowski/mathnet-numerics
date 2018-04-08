@@ -859,7 +859,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                         {
                             for (var i = 0; i < order; i++)
                             {
-                                value += ((DenseMatrix) EigenVectors).Values[(j*order) + i].Conjugate()*input.At(i, k);
+                                value += ((DenseMatrixBM) EigenVectors).At(i,j).Conjugate()*input.At(i, k);
                             }
 
                             value /= EigenValues[j].Real;
@@ -873,7 +873,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                         Complex value = 0.0;
                         for (var i = 0; i < order; i++)
                         {
-                            value += ((DenseMatrix) EigenVectors).Values[(i*order) + j]*tmp[i];
+                            value += ((DenseMatrixBM) EigenVectors).At(j,i)*tmp[i];
                         }
 
                         result.At(j, k, value);
@@ -920,7 +920,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                     {
                         for (var i = 0; i < order; i++)
                         {
-                            value += ((DenseMatrix) EigenVectors).Values[(j*order) + i].Conjugate()*input[i];
+                            value += ((DenseMatrixBM) EigenVectors).At(i,j).Conjugate()*input[i];
                         }
 
                         value /= EigenValues[j].Real;
@@ -934,7 +934,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization
                     value = 0;
                     for (var i = 0; i < order; i++)
                     {
-                        value += ((DenseMatrix) EigenVectors).Values[(i*order) + j]*tmp[i];
+                        value += ((DenseMatrixBM) EigenVectors).At(j,i)*tmp[i];
                     }
 
                     result[j] = value;
