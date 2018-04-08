@@ -1213,6 +1213,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double.Factorization
                     {
                         for (var i = 0; i < order; i++)
                         {
+                            var p = ((DenseMatrix)EigenVectors).Values[i];
                             value += ((DenseMatrix) EigenVectors).Values[(j*order) + i]*input[i];
                         }
 

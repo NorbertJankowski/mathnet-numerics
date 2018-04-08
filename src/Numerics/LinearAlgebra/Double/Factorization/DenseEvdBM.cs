@@ -1140,7 +1140,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double.Factorization
 
             if (IsSymmetric)
             {
-                var order = EigenValues.Count;
+                var order = (long)EigenValues.Count;
                 var tmp = new double[order];
 
                 for (var k = 0; k < order; k++)

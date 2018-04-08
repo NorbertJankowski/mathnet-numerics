@@ -366,7 +366,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var a = new float[matrix.RowCount*matrix.RowCount];
             Array.Copy(matrix.Values, a, a.Length);
 
-            var ipiv = new int[matrix.RowCount];
+            var ipiv = new long[matrix.RowCount];
 
             Control.LinearAlgebraProvider.LUFactor(a, matrix.RowCount, ipiv);
 
@@ -418,7 +418,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var a = new float[matrix.RowCount*matrix.RowCount];
             Array.Copy(matrix.Values, a, a.Length);
 
-            var ipiv = new int[matrix.RowCount];
+            var ipiv = new long[matrix.RowCount];
 
             Control.LinearAlgebraProvider.LUFactor(a, matrix.RowCount, ipiv);
             Control.LinearAlgebraProvider.LUInverseFactored(a, matrix.RowCount, ipiv);
@@ -467,7 +467,7 @@ namespace MathNet.Numerics.UnitTests.Providers.LinearAlgebra.Single
             var a = new float[matrix.RowCount*matrix.RowCount];
             Array.Copy(matrix.Values, a, a.Length);
 
-            var ipiv = new int[matrix.RowCount];
+            var ipiv = new long[matrix.RowCount];
             Control.LinearAlgebraProvider.LUFactor(a, matrix.RowCount, ipiv);
 
             var b = new[] {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f};
