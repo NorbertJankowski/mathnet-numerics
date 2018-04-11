@@ -336,6 +336,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
             {
                 for (var j = 0; j < right.ColumnCount; j++)
                 {
+                    var l = result[left.RowCount + i, left.ColumnCount + j];
+                    var r = right[i, j];
                     Assert.That(result[left.RowCount + i, left.ColumnCount + j], Is.EqualTo(right[i, j]), "{0}+{1}->{2}", left.GetType(), right.GetType(), result.GetType());
                 }
             }

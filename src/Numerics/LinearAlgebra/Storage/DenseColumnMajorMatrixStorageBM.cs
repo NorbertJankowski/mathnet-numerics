@@ -809,7 +809,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             for (int i = 0; i < ColumnCount; i++)
             {
                 dataTableStorage.DataTableStorage_GetRow(Data, RowCount, i, v);
-                for (int j = 0; j < ColumnCount; j++)
+                for (int j = 0; j < RowCount; j++)
                 {
                     yield return v[j];
                 }

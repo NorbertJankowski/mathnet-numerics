@@ -113,7 +113,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
             switch (type)
             {
                 case TestMatrixStorage.DenseMatrix:
-                    return DenseColumnMajorMatrixStorage<T>.OfArray(data);
+                    return DenseColumnMajorMatrixStorageBM<T>.OfArray(data);
                 case TestMatrixStorage.SparseMatrix:
                     return SparseCompressedRowMatrixStorage<T>.OfArray(data);
                 case TestMatrixStorage.DiagonalMatrix:
@@ -129,7 +129,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
             switch (type)
             {
                 case TestMatrixStorage.DenseMatrix:
-                    return new DenseColumnMajorMatrixStorage<T>(rows, columns);
+                    return new DenseColumnMajorMatrixStorageBM<T>(rows, columns);
                 case TestMatrixStorage.SparseMatrix:
                     return new SparseCompressedRowMatrixStorage<T>(rows, columns);
                 case TestMatrixStorage.DiagonalMatrix:
