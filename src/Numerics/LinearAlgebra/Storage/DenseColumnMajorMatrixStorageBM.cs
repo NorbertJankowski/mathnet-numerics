@@ -573,10 +573,9 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
             for (int j = sourceColumnIndex, jj = targetColumnIndex; j < sourceColumnIndex + columnCount; j++, jj++)
             {
-                int index = sourceRowIndex + j * RowCount;
-                for (int ii = targetRowIndex; ii < targetRowIndex + rowCount; ii++)
+                for (int i=sourceRowIndex, ii = targetRowIndex; ii < targetRowIndex + rowCount; i++, ii++)
                 {
-                    target.At(ii, jj, At(index, j));
+                    target.At(ii, jj, At(i, j));
                 }
             }
         }
@@ -1137,10 +1136,9 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
 
             for (int j = sourceColumnIndex, jj = targetColumnIndex; j < sourceColumnIndex + columnCount; j++, jj++)
             {
-                int index = sourceRowIndex + j * RowCount;
-                for (int ii = targetRowIndex; ii < targetRowIndex + rowCount; ii++)
+                for (int i = sourceRowIndex, ii = targetRowIndex; ii < targetRowIndex + rowCount; i++, ii++)
                 {
-                    target.At(ii, jj, f(ii, jj, At(ii, jj)));
+                    target.At(ii, jj, f(ii, jj, At(i, j)));
                 }
             }
         }
@@ -1184,7 +1182,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
                 {
                     for (int j = 0; j < RowCount; j++)
                     {
-                        state = f(state, At(i, j), other.At(i, j));
+                        state = f(state, At(j, i), other.At(j, i));
                     }
                 }
                 return state;
@@ -1197,7 +1195,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
                 {
                     for (int j = 0; j < RowCount; j++)
                     {
-                        state = f(state, At(i, j), other.At(i, j));
+                        state = f(state, At(j, i), other.At(j, i));
                     }
                 }
                 return state;

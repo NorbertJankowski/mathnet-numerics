@@ -892,7 +892,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                     DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
-                        v[i] = Euclid.Modulus(v[i], divisor);
+                        v[j] = Euclid.Modulus(v[j], divisor);
                     }
                     DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
                 }
@@ -923,7 +923,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                     DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
-                        v[i] = Euclid.Modulus(dividend, v[i]);
+                        v[j] = Euclid.Modulus(dividend, v[j]);
                     }
                     DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
                 }
@@ -954,7 +954,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                     DataTableStorage.DataTableStorage_GetRow_Float(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
-                        v[i] %= divisor;
+                        v[j] %= divisor;
                     }
                     DataTableStorage.DataTableStorage_SetRow_Float(denseResult.Values.Data, RowCount, i, v);
                 }

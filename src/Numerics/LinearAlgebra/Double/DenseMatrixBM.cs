@@ -891,7 +891,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     DataTableStorage.DataTableStorage_GetRow_Double(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
-                        v[i] = Euclid.Modulus(v[i], divisor);
+                        v[j] = Euclid.Modulus(v[j], divisor);
                     }
                     DataTableStorage.DataTableStorage_SetRow_Double(denseResult.Values.Data, RowCount, i, v);
                 }
@@ -953,7 +953,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     DataTableStorage.DataTableStorage_GetRow_Double(_values.Data, RowCount, i, v);
                     for (int j = 0; j < RowCount; j++)
                     {
-                        v[i] %= divisor;
+                        v[j] %= divisor;
                     }
                     DataTableStorage.DataTableStorage_SetRow_Double(denseResult.Values.Data, RowCount, i, v);
                 }

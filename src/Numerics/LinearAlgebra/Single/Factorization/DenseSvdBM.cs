@@ -111,13 +111,13 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                 throw new ArgumentException(Resources.ArgumentMatrixSameColumnDimension);
             }
 
-            var dinput = input as DenseMatrix;
+            var dinput = input as DenseMatrixBM;
             if (dinput == null)
             {
                 throw new NotSupportedException("Can only do SVD factorization for dense matrices at the moment.");
             }
 
-            var dresult = result as DenseMatrix;
+            var dresult = result as DenseMatrixBM;
             if (dresult == null)
             {
                 throw new NotSupportedException("Can only do SVD factorization for dense matrices at the moment.");

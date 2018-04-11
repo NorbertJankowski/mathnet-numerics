@@ -494,9 +494,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
                 length = sourceRowIndex + rowCount > sourceColumnIndex + columnCount ? rowCount : columnCount - (sourceRowIndex - sourceColumnIndex);
                 targetRowIndex += sourceRowIndex - sourceColumnIndex;
             }
-            else
-                return;
-            if (sourceRowIndex < sourceColumnIndex && sourceColumnIndex + columnCount - 1 >= sourceRowIndex)
+            else if (sourceRowIndex < sourceColumnIndex && sourceColumnIndex + columnCount - 1 >= sourceRowIndex)
             {
                 p = sourceRowIndex;
                 length = sourceColumnIndex + columnCount > sourceRowIndex + rowCount ? columnCount : rowCount - (sourceColumnIndex - sourceRowIndex);
@@ -943,17 +941,17 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
             int sourceColumnIndex, int targetColumnIndex, int columnCount,
             Zeros zeros, ExistingData existingData)
         {
-            var diagonalTarget = target as DiagonalMatrixStorage<TU>;
-            if (diagonalTarget != null)
-            {
-                MapSubMatrixIndexedToUnchecked(diagonalTarget, f, sourceRowIndex, targetRowIndex, rowCount, sourceColumnIndex, targetColumnIndex, columnCount, zeros);
-                return;
-            }
-
             var denseTargetBM = target as DenseColumnMajorMatrixStorageBM<TU>;
             if (denseTargetBM != null)
             {
                 MapSubMatrixIndexedToUnchecked(denseTargetBM, f, sourceRowIndex, targetRowIndex, rowCount, sourceColumnIndex, targetColumnIndex, columnCount, zeros, existingData);
+                return;
+            }
+
+            var diagonalTarget = target as DiagonalMatrixStorage<TU>;
+            if (diagonalTarget != null)
+            {
+                MapSubMatrixIndexedToUnchecked(diagonalTarget, f, sourceRowIndex, targetRowIndex, rowCount, sourceColumnIndex, targetColumnIndex, columnCount, zeros);
                 return;
             }
 
@@ -1066,7 +1064,7 @@ namespace MathNet.Numerics.LinearAlgebra.Storage
                         for (int i = 0; i < rowCount; i++)
                         {
                             target.At(targetRow + i, targetColumn,
-                                f(targetRow++, targetColumn, sourceRow++ == sourceColumn ? Data[sourceColumn] : Zero) );
+                                f(targetRow+i, targetColumn, sourceRow+i == sourceColumn ? Data[sourceColumn] : Zero) );
                         }
                         sourceColumn++;
                         targetColumn++;
