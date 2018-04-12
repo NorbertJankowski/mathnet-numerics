@@ -29,6 +29,7 @@
 
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using MathNet.Numerics.LinearAlgebra.Storage;
+using System;
 
 namespace MathNet.Numerics.Providers.LinearAlgebra
 {
@@ -326,6 +327,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra
         /// <param name="columnsB">The number of columns of B.</param>
         /// <param name="x">On exit, the solution matrix.</param>
         void SvdSolveFactored(int rowsA, int columnsA, T[] s, IStorageBM u, IStorageBM vt, T[] b, int columnsB, T[] x);
+        void SvdSolveFactored(int rowsA, int columnsA, T[] s, IStorageBM u, IStorageBM vt, IntPtr b, int columnsB, IntPtr x);
 
         /// <summary>
         /// Computes the eigenvalues and eigenvectors of a matrix.

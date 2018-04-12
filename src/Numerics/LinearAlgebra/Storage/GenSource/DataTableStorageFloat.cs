@@ -87,17 +87,17 @@ namespace Anemon
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Float(
-            long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, 
-            float[] b, long columnsB, [Out] float[] x);
+            long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, IntPtr b, long columnsB, IntPtr x);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DataTableStorage_SvdSolveFactored_Float(
+            long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, float[] b, long columnsB, [Out] float[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_QRSolveFactored_Float(
-            IntPtr q, IntPtr r, long rowsA, long columnsA, float[] tau,
-            IntPtr b, long columnsB, IntPtr x, char methodFull);
+            IntPtr q, IntPtr r, long rowsA, long columnsA, float[] tau, IntPtr b, long columnsB, IntPtr x, char methodFull);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DataTableStorage_QRSolveFactored2_Float(
-            IntPtr q, IntPtr r, long rowsA, long columnsA, float[] tau,
-            float[] b, long columnsB, float[] x, char methodFull);
+        public static extern void DataTableStorage_QRSolveFactored_Float(
+            IntPtr q, IntPtr r, long rowsA, long columnsA, float[] tau, float[] b, long columnsB, [Out] float[] x, char methodFull);
 
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
@@ -305,6 +305,11 @@ namespace Anemon
             DataTableStorage.DataTableStorage_ConjugateArray_Float(sourceStorage, resultStorage, count);
         }
 
+        override public void DataTableStorage_SvdSolveFactored(long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, IntPtr b, long columnsB, IntPtr x)
+        {
+            DataTableStorage.DataTableStorage_SvdSolveFactored_Float(rowsA, columnsA, s, u, vt, b, columnsB, x);
+        }
+
         override public void DataTableStorage_SvdSolveFactored(long rowsA, long columnsA, float[] s, IntPtr u, IntPtr vt, float[] b, long columnsB, float[] x)
         {
             DataTableStorage.DataTableStorage_SvdSolveFactored_Float(rowsA, columnsA, s, u, vt, b, columnsB, x);
@@ -316,7 +321,7 @@ namespace Anemon
         }
         override public void DataTableStorage_QRSolveFactored(IntPtr q, IntPtr r, long rowsA, long columnsA, float[] tau, float[] b, long columnsB, float[] x, char methodFull)
         {
-            DataTableStorage.DataTableStorage_QRSolveFactored2_Float(q, r, rowsA, columnsA, tau, b, columnsB, x, methodFull);
+            DataTableStorage.DataTableStorage_QRSolveFactored_Float(q, r, rowsA, columnsA, tau, b, columnsB, x, methodFull);
         }
     }
 }

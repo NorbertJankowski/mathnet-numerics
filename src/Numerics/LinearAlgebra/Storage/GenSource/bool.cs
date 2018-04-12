@@ -98,14 +98,16 @@ namespace Anemon
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_SvdSolveFactored_Bool(
-            long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt,
-            bool[] b, long columnsB, [Out] bool[] x);
+            long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt, IntPtr b, long columnsB, IntPtr x);
+        [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DataTableStorage_SvdSolveFactored_Bool(
+            long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt, bool[] b, long columnsB, [Out] bool[] x);
 
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DataTableStorage_QRSolveFactored_Bool(
             IntPtr q, IntPtr r, long rowsA, long columnsA, bool[] tau, IntPtr b, long columnsB, IntPtr x, char methodFull);
         [DllImport(_DllName, ExactSpelling = true, SetLastError = false, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DataTableStorage_QRSolveFactored2_Bool(
+        public static extern void DataTableStorage_QRSolveFactored_Bool(
             IntPtr q, IntPtr r, long rowsA, long columnsA, bool[] tau, bool[] b, long columnsB, bool[] x, char methodFull);
 
 
@@ -314,20 +316,22 @@ namespace Anemon
             DataTableStorage.DataTableStorage_ConjugateArray_Bool(sourceStorage, resultStorage, count);
         }
 
+        override public void DataTableStorage_SvdSolveFactored(long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt, IntPtr b, long columnsB, IntPtr x)
+        {
+            DataTableStorage.DataTableStorage_SvdSolveFactored_Bool(rowsA, columnsA, s, u, vt, b, columnsB, x);
+        }
         override public void DataTableStorage_SvdSolveFactored(long rowsA, long columnsA, bool[] s, IntPtr u, IntPtr vt, bool[] b, long columnsB, bool[] x)
         {
             DataTableStorage.DataTableStorage_SvdSolveFactored_Bool(rowsA, columnsA, s, u, vt, b, columnsB, x);
         }
 
-        override public void DataTableStorage_QRSolveFactored(
-            IntPtr q, IntPtr r, long rowsA, long columnsA, bool[] tau, IntPtr b, long columnsB, IntPtr x, char methodFull)
+        override public void DataTableStorage_QRSolveFactored(IntPtr q, IntPtr r, long rowsA, long columnsA, bool[] tau, IntPtr b, long columnsB, IntPtr x, char methodFull)
         {
             DataTableStorage.DataTableStorage_QRSolveFactored_Bool(q, r, rowsA, columnsA, tau, b, columnsB, x, methodFull);
         }
-        override public void DataTableStorage_QRSolveFactored(
-            IntPtr q, IntPtr r, long rowsA, long columnsA, bool[] tau, bool[] b, long columnsB, bool[] x, char methodFull)
+        override public void DataTableStorage_QRSolveFactored(IntPtr q, IntPtr r, long rowsA, long columnsA, bool[] tau, bool[] b, long columnsB, bool[] x, char methodFull)
         {
-            DataTableStorage.DataTableStorage_QRSolveFactored2_Bool(q, r, rowsA, columnsA, tau, b, columnsB, x, methodFull);
+            DataTableStorage.DataTableStorage_QRSolveFactored_Bool(q, r, rowsA, columnsA, tau, b, columnsB, x, methodFull);
         }
 
     }

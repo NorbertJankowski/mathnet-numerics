@@ -1039,7 +1039,7 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
                 // we don't have access to the raw Q matrix any more(it is stored in R in the full QR), need to think about this.
                 // let just call the managed version in the meantime. The heavy lifting has already been done. -marcus
                 //base.QRSolveFactored(q, r, rowsA, columnsA, tau, b, columnsB, x, QRMethod.Thin);
-                DataTableStorage.DataTableStorage_QRSolveFactored2_Complex(q.Data, r.Data, rowsA, columnsA, tau, b, columnsB, x, '\0');
+                DataTableStorage.DataTableStorage_QRSolveFactored_Complex(q.Data, r.Data, rowsA, columnsA, tau, b, columnsB, x, '\0');
             }
         }
 
@@ -1489,6 +1489,50 @@ namespace MathNet.Numerics.Providers.LinearAlgebra.Mkl
             if (x.Length != (long)columnsA * columnsB)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "b");
+            }
+
+            DataTableStorage.DataTableStorage_SvdSolveFactored_Complex(rowsA, columnsA, s, u.Data, vt.Data, b, columnsB, x);
+        }
+        public void SvdSolveFactored(int rowsA, int columnsA, Complex[] s, IStorageBM u, IStorageBM vt, IntPtr b, int columnsB, IntPtr x)
+        {
+            if (s == null)
+            {
+                throw new ArgumentNullException("s");
+            }
+
+            if (u == null)
+            {
+                throw new ArgumentNullException("u");
+            }
+
+            if (vt == null)
+            {
+                throw new ArgumentNullException("vt");
+            }
+
+            if (b == null)
+            {
+                throw new ArgumentNullException("b");
+            }
+
+            if (x == null)
+            {
+                throw new ArgumentNullException("x");
+            }
+
+            if (u.Length != (long)rowsA * rowsA)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "u");
+            }
+
+            if (vt.Length != (long)columnsA * columnsA)
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "vt");
+            }
+
+            if (s.Length != Math.Min(rowsA, columnsA))
+            {
+                throw new ArgumentException(Resources.ArgumentArraysSameLength, "s");
             }
 
             DataTableStorage.DataTableStorage_SvdSolveFactored_Complex(rowsA, columnsA, s, u.Data, vt.Data, b, columnsB, x);
