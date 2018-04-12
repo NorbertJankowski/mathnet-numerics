@@ -123,7 +123,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single.Factorization
                 throw new NotSupportedException("Can only do SVD factorization for dense matrices at the moment.");
             }
 
-            ((DenseMatrixBM)U).LinearAlgebraProvider.SvdSolveFactored(U.RowCount, VT.ColumnCount, ((DenseVector) S).Values, ((DenseMatrixBM) U).Values, ((DenseMatrixBM) VT).Values, dinput.Values, input.ColumnCount, dresult.Values);
+            ((DenseMatrixBM)U).LinearAlgebraProvider.SvdSolveFactored(U.RowCount, VT.ColumnCount, ((DenseVector) S).Values, ((DenseMatrixBM) U).Values, ((DenseMatrixBM) VT).Values, dinput.Values.Data, input.ColumnCount, dresult.Values.Data);
         }
 
         /// <summary>
