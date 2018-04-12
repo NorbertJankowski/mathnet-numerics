@@ -31,6 +31,7 @@ using System;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 using NUnit.Framework;
+using MathNet.Numerics.LinearAlgebra.Storage;
 
 namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
 {
@@ -381,7 +382,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests
                 return;
             }
 
-            Assert.That(array, Is.SameAs(matrix.AsColumnMajorArray()));
+            if(!(matrix.Storage is DenseColumnMajorMatrixStorageBM<T>))
+                Assert.That(array, Is.SameAs(matrix.AsColumnMajorArray()));
             Assert.That(array, Is.Not.SameAs(matrix.ToColumnMajorArray()));
             Assert.That(array.Length, Is.EqualTo(matrix.RowCount * matrix.ColumnCount));
             for (int i = 0; i < array.Length; i++)
