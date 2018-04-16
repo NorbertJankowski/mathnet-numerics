@@ -88,8 +88,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         [Test]
         public void MatrixFrom1DArrayIsReference()
         {
-            var data = new float[] {1, 1, 1, 1, 1, 1, 2, 2, 2};
-            var matrix = new DenseMatrixBM(3, 3, data);
+            var data = new float[] { 1, 1, 1, 1, 1, 1, 2, 2, 2 };
+            var matrix = new DenseMatrix(3, 3, data);
             matrix[0, 0] = 10.0f;
             Assert.AreEqual(10.0f, data[0]);
         }

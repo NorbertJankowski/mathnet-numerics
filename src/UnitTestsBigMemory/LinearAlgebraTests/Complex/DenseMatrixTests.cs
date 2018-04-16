@@ -94,8 +94,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         [Test]
         public void MatrixFrom1DArrayIsReference()
         {
-            var data = new[] {new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(2.0, 1), new Complex(2.0, 1), new Complex(2.0, 1)};
-            var matrix = new DenseMatrixBM(3, 3, data);
+            var data = new[] { new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(1.0, 1), new Complex(2.0, 1), new Complex(2.0, 1), new Complex(2.0, 1) };
+            var matrix = new DenseMatrix(3, 3, data);
             matrix[0, 0] = new Complex(10.0, 1);
             Assert.AreEqual(new Complex(10.0, 1), data[0]);
         }

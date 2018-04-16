@@ -88,8 +88,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [Test]
         public void MatrixFrom1DArrayIsReference()
         {
-            var data = new double[] {1, 1, 1, 1, 1, 1, 2, 2, 2};
-            var matrix = Matrix<double>.Build.DenseBM(3, 3, data);
+            var data = new double[] { 1, 1, 1, 1, 1, 1, 2, 2, 2 };
+            var matrix = Matrix<double>.Build.Dense(3, 3, data);
             matrix[0, 0] = 10.0;
             Assert.AreEqual(10.0, data[0]);
         }
@@ -177,13 +177,13 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         public void MatrixPower()
         {
             var d = Matrix<double>.Build.RandomBM(3, 3, 1);
-            var d2 = d*d;
-            var d3 = d2*d;
-            var d4 = d3*d;
-            var d5 = d4*d;
-            var d6 = d5*d;
-            var d7 = d6*d;
-            var d8 = d7*d;
+            var d2 = d * d;
+            var d3 = d2 * d;
+            var d4 = d3 * d;
+            var d5 = d4 * d;
+            var d6 = d5 * d;
+            var d7 = d6 * d;
+            var d8 = d7 * d;
 
             AssertHelpers.AlmostEqual(Matrix<double>.Build.DiagonalIdentity(3), d.Power(0), 10);
             AssertHelpers.AlmostEqual(d, d.Power(1), 10);
