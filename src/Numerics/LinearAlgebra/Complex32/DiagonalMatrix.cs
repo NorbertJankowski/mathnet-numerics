@@ -35,6 +35,7 @@ using MathNet.Numerics.Distributions;
 using MathNet.Numerics.LinearAlgebra.Storage;
 using MathNet.Numerics.Properties;
 using MathNet.Numerics.Threading;
+using Anemon;
 
 namespace MathNet.Numerics.LinearAlgebra.Complex32
 {
@@ -295,6 +296,15 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
             var diagResult = result as DiagonalMatrix;
             if (diagResult == null)
             {
+                var dense = result.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+                if (dense != null)
+                {
+                    CopyTo(result);
+                    var d = Math.Min(ColumnCount, RowCount);
+                    for (int i = 0; i < d; i++)
+                        result.At(i, i, result.At(i, i) * scalar);
+                    return;
+                }
                 base.DoMultiply(scalar, result);
             }
             else
@@ -352,6 +362,28 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
                 return;
             }
 
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.RowCount, RowCount);
+                if (d < RowCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.RowCount, RowCount - denseOtherBM.RowCount, 0, denseOtherBM.ColumnCount);
+                }
+                var v = new Complex32[denseOtherBM.ColumnCount];
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_GetColumn_Complex32(denseOtherBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] *= diagonal[j];
+                    DataTableStorage.DataTableStorage_SetColumn_Complex32(denseResultBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                }
+                return;
+            }
+
             var denseOther = other.Storage as DenseColumnMajorMatrixStorage<Complex32>;
             if (denseOther != null)
             {
@@ -405,6 +437,28 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
                 return;
             }
 
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.ColumnCount, RowCount);
+                if (d < RowCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.ColumnCount, RowCount - denseOtherBM.ColumnCount, 0, denseOtherBM.RowCount);
+                }
+                var v = new Complex32[denseOtherBM.RowCount];
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_GetRow_Complex32(denseOtherBM.Data, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] *= diagonal[j];
+                    DataTableStorage.DataTableStorage_SetRow_Complex32(denseOtherBM.Data, denseOtherBM.RowCount, j, v);
+                }
+                return;
+            }
+
             var denseOther = other.Storage as DenseColumnMajorMatrixStorage<Complex32>;
             if (denseOther != null)
             {
@@ -451,6 +505,28 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
                 return;
             }
 
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.ColumnCount, RowCount);
+                if (d < RowCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.ColumnCount, RowCount - denseOtherBM.ColumnCount, 0, denseOtherBM.RowCount);
+                }
+                var v = new Complex32[denseOtherBM.RowCount];
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_GetRow_Complex32(denseOtherBM.Data, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] = v[i].Conjugate() * diagonal[j];
+                    DataTableStorage.DataTableStorage_SetRow_Complex32(denseOtherBM.Data, denseOtherBM.RowCount, j, v);
+                }
+                return;
+            }
+
             var denseOther = other.Storage as DenseColumnMajorMatrixStorage<Complex32>;
             if (denseOther != null)
             {
@@ -492,6 +568,28 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 Control.LinearAlgebraProvider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
+                return;
+            }
+
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.RowCount, ColumnCount);
+                if (d < ColumnCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.RowCount, ColumnCount - denseOtherBM.RowCount, 0, denseOtherBM.ColumnCount);
+                }
+                var v = new Complex32[denseOtherBM.ColumnCount];
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_GetColumn_Complex32(denseOtherBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] *= diagonal[j];
+                    DataTableStorage.DataTableStorage_SetColumn_Complex32(denseResultBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                }
                 return;
             }
 
@@ -547,6 +645,29 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
                 // TODO: merge/MulByConj
                 Control.LinearAlgebraProvider.ConjugateArray(thisDataCopy, thisDataCopy);
                 Control.LinearAlgebraProvider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
+                return;
+            }
+
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<Complex32>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.RowCount, ColumnCount);
+                if (d < ColumnCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.RowCount, ColumnCount - denseOtherBM.RowCount, 0, denseOtherBM.ColumnCount);
+                }
+                var v = new Complex32[denseOtherBM.ColumnCount];
+                for (int j = 0; j < d; j++)
+                {
+                    var dd = diagonal[j].Conjugate();
+                    DataTableStorage.DataTableStorage_GetColumn_Complex32(denseOtherBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] *= dd;
+                    DataTableStorage.DataTableStorage_SetColumn_Complex32(denseResultBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                }
                 return;
             }
 

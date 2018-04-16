@@ -35,6 +35,7 @@ using MathNet.Numerics.Distributions;
 using MathNet.Numerics.LinearAlgebra.Storage;
 using MathNet.Numerics.Properties;
 using MathNet.Numerics.Threading;
+using Anemon;
 
 namespace MathNet.Numerics.LinearAlgebra.Single
 {
@@ -274,6 +275,15 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             var diagResult = result as DiagonalMatrix;
             if (diagResult == null)
             {
+                var dense = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+                if (dense != null)
+                {
+                    CopyTo(result);
+                    var d = Math.Min(ColumnCount, RowCount);
+                    for (int i = 0; i < d; i++)
+                        result.At(i, i, result.At(i, i) * scalar);
+                    return;
+                }
                 base.DoMultiply(scalar, result);
             }
             else
@@ -331,6 +341,28 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.RowCount, RowCount);
+                if (d < RowCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.RowCount, RowCount - denseOtherBM.RowCount, 0, denseOtherBM.ColumnCount);
+                }
+                var v = new float[denseOtherBM.ColumnCount];
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_GetColumn_Float(denseOtherBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] *= diagonal[j];
+                    DataTableStorage.DataTableStorage_SetColumn_Float(denseResultBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                }
+                return;
+            }
+
             var denseOther = other.Storage as DenseColumnMajorMatrixStorage<float>;
             if (denseOther != null)
             {
@@ -384,6 +416,28 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.ColumnCount, RowCount);
+                if (d < RowCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.ColumnCount, RowCount - denseOtherBM.ColumnCount, 0, denseOtherBM.RowCount);
+                }
+                var v = new float[denseOtherBM.RowCount];
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_GetRow_Float(denseOtherBM.Data, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] *= diagonal[j];
+                    DataTableStorage.DataTableStorage_SetRow_Float(denseOtherBM.Data, denseOtherBM.RowCount, j, v);
+                }
+                return;
+            }
+
             var denseOther = other.Storage as DenseColumnMajorMatrixStorage<float>;
             if (denseOther != null)
             {
@@ -428,6 +482,27 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
+            var denseOtherBM = other.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            var denseResultBM = result.Storage as DenseColumnMajorMatrixStorageBM<float>;
+            if (denseOtherBM != null)
+            {
+                var dense = denseOtherBM.Data;
+                var diagonal = _data;
+                var d = Math.Min(denseOtherBM.RowCount, ColumnCount);
+                if (d < ColumnCount)
+                {
+                    result.ClearSubMatrix(denseOtherBM.RowCount, ColumnCount - denseOtherBM.RowCount, 0, denseOtherBM.ColumnCount);
+                }
+                var v = new float[denseOtherBM.ColumnCount];
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_GetColumn_Float(denseOtherBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                    for (int i = 0; i < v.Length; i++)
+                        v[i] *= diagonal[j];
+                    DataTableStorage.DataTableStorage_SetColumn_Float(denseResultBM.Data, denseOtherBM.ColumnCount, denseOtherBM.RowCount, j, v);
+                }
+                return;
+            }
             var denseOther = other.Storage as DenseColumnMajorMatrixStorage<float>;
             if (denseOther != null)
             {
