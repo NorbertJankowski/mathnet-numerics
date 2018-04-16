@@ -270,10 +270,12 @@ extern "C" {
         DataTableStorage_SetRowTT<double, float>(storage, columnCount, rowId, row);
     }
 }
+inline double conj(double d) { return d; }
+inline float conj(float d) { return d; }
+
 template<typename T> inline void DataTableStorage_SvdSolveFactored(
 	LL rowsA, LL columnsA, T* s, T* u, T* vt, T* b, LL columnsB, T* x)
 {
-
 	LL mn = Min(rowsA, columnsA);
 	T* tmp = new T[columnsA];
 
@@ -286,7 +288,7 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 			{
 				for (LL i = 0; i < rowsA; i++)
 				{
-					value += u[(j * rowsA) + i] * b[(k * rowsA) + i];
+					value += conj(u[(j * rowsA) + i]) * b[(k * rowsA) + i];
 				}
 
 				value /= s[j];
@@ -300,7 +302,7 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 			T value = 0;
 			for (LL i = 0; i < columnsA; i++)
 			{
-				value += vt[(j * columnsA) + i] * tmp[i];
+				value += conj(vt[(j * columnsA) + i]) * tmp[i];
 			}
 
 			x[(k * columnsA) + j] = value;
@@ -309,8 +311,6 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 	delete[] tmp;
 }
 
-inline double conj(double d) { return d; }
-inline float conj(float d) { return d; }
 
 template<typename T> inline void DataTableStorage_QRSolveFactored(
     T* q, T* r, LL rowsA, LL columnsA, T* tau, T* b, LL columnsB, T* x, char methodFull)
@@ -427,7 +427,7 @@ extern "C" {					// float
 	{
 		DataTableStorage_GetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
 	}
-	DLLEXPORT void DDataTableStorage_SetSubColumn_Float(
+	DLLEXPORT void DataTableStorage_SetSubColumn_Float(
 		void *storage, LL rowCount, LL columnCount, LL columnId, LL startRow, LL subColumnRowCount, float *column)
 	{
 		DataTableStorage_SetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
@@ -526,6 +526,7 @@ extern "C" {					// float
         DataTableStorage_QRSolveFactored<float>(
             (float*)q, (float*)r, rowsA, columnsA, (float*)tau, (float*)b, columnsB, (float*)x, methodFull);
     }
+
 }
 extern "C" {					// double
 
@@ -569,7 +570,7 @@ extern "C" {					// double
 	{
 		DataTableStorage_GetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
 	}
-	DLLEXPORT void DDataTableStorage_SetSubColumn_Double(
+	DLLEXPORT void DataTableStorage_SetSubColumn_Double(
 		void *storage, LL rowCount, LL columnCount, LL columnId, LL startRow, LL subColumnRowCount, double *column)
 	{
 		DataTableStorage_SetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
@@ -668,6 +669,7 @@ extern "C" {					// double
         DataTableStorage_QRSolveFactored<double>(
             (double*)q, (double*)r, rowsA, columnsA, (double*)tau, (double*)b, columnsB, (double*)x, methodFull);
     }
+
 }
 extern "C" {					// byte
 
@@ -711,7 +713,7 @@ extern "C" {					// byte
 	{
 		DataTableStorage_GetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
 	}
-	DLLEXPORT void DDataTableStorage_SetSubColumn_Byte(
+	DLLEXPORT void DataTableStorage_SetSubColumn_Byte(
 		void *storage, LL rowCount, LL columnCount, LL columnId, LL startRow, LL subColumnRowCount, byte *column)
 	{
 		DataTableStorage_SetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
@@ -810,6 +812,7 @@ extern "C" {					// byte
         DataTableStorage_QRSolveFactored<byte>(
             (byte*)q, (byte*)r, rowsA, columnsA, (byte*)tau, (byte*)b, columnsB, (byte*)x, methodFull);
     }
+
 }
 extern "C" {					// bool
 
@@ -853,7 +856,7 @@ extern "C" {					// bool
 	{
 		DataTableStorage_GetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
 	}
-	DLLEXPORT void DDataTableStorage_SetSubColumn_Bool(
+	DLLEXPORT void DataTableStorage_SetSubColumn_Bool(
 		void *storage, LL rowCount, LL columnCount, LL columnId, LL startRow, LL subColumnRowCount, bool *column)
 	{
 		DataTableStorage_SetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
@@ -952,6 +955,7 @@ extern "C" {					// bool
         DataTableStorage_QRSolveFactored<bool>(
             (bool*)q, (bool*)r, rowsA, columnsA, (bool*)tau, (bool*)b, columnsB, (bool*)x, methodFull);
     }
+
 }
 extern "C" {					// Complex
 
@@ -995,7 +999,7 @@ extern "C" {					// Complex
 	{
 		DataTableStorage_GetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
 	}
-	DLLEXPORT void DDataTableStorage_SetSubColumn_Complex(
+	DLLEXPORT void DataTableStorage_SetSubColumn_Complex(
 		void *storage, LL rowCount, LL columnCount, LL columnId, LL startRow, LL subColumnRowCount, Complex *column)
 	{
 		DataTableStorage_SetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
@@ -1094,6 +1098,7 @@ extern "C" {					// Complex
         DataTableStorage_QRSolveFactored<Complex>(
             (Complex*)q, (Complex*)r, rowsA, columnsA, (Complex*)tau, (Complex*)b, columnsB, (Complex*)x, methodFull);
     }
+
 }
 extern "C" {					// Complex32
 
@@ -1137,7 +1142,7 @@ extern "C" {					// Complex32
 	{
 		DataTableStorage_GetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
 	}
-	DLLEXPORT void DDataTableStorage_SetSubColumn_Complex32(
+	DLLEXPORT void DataTableStorage_SetSubColumn_Complex32(
 		void *storage, LL rowCount, LL columnCount, LL columnId, LL startRow, LL subColumnRowCount, Complex32 *column)
 	{
 		DataTableStorage_SetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
@@ -1236,4 +1241,5 @@ extern "C" {					// Complex32
         DataTableStorage_QRSolveFactored<Complex32>(
             (Complex32*)q, (Complex32*)r, rowsA, columnsA, (Complex32*)tau, (Complex32*)b, columnsB, (Complex32*)x, methodFull);
     }
+
 }
