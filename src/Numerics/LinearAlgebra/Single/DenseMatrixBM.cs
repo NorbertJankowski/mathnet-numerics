@@ -779,8 +779,16 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
             if (diagonalOther != null)
             {
-                this.Transpose(result);
-                result.Multiply(other, result);
+                var diagonal = diagonalOther.Data;
+                var d = Math.Min(ColumnCount, other.RowCount);
+                if (d < other.RowCount)
+                {
+                    result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
+                }
+                for (int j = 0; j < d; j++)
+                {
+                    DataTableStorage.DataTableStorage_Multiply_Float(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
+                }
                 return;
             }
 

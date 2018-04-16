@@ -144,7 +144,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization
             }
 
             // Copy the contents of input to result.
-            Buffer.BlockCopy(dinput.Values, 0, dresult.Values, 0, dinput.Values.Length*Constants.SizeOfComplex32);
+            Array.Copy(dinput.Values, 0, dresult.Values, 0, dinput.Values.Length);
 
             // Cholesky solve by overwriting result.
             var dfactor = (DenseMatrixBM) Factor;
