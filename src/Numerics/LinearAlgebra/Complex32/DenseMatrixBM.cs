@@ -722,15 +722,14 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
             if (diagonalOther != null)
             {
                 var diagonal = diagonalOther.Data;
-                var d = Math.Min(ColumnCount, other.RowCount);
-                if (d < other.RowCount)
+                var v = new Complex32[RowCount];
+                for (int i = 0; i < ColumnCount; i++)
                 {
-                    result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
+                    DataTableStorage.DataTableStorage_GetRow_Complex32(_values.Data, RowCount, i, v);
+                    DataTableStorage.DataTableStorage_SetColumn_Complex32(denseResult._values.Data, RowCount, ColumnCount, i, v);
                 }
-                for (int j = 0; j < d; j++)
-                {
-                    DataTableStorage.DataTableStorage_Multiply_Complex32(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
-                }
+                for (int j = 0; j < denseResult.ColumnCount; j++)
+                    DataTableStorage.DataTableStorage_Multiply_Complex32(denseResult.Values.Data, denseResult.Values.Data, j * denseResult.RowCount, denseResult.RowCount, diagonal[j]);
                 return;
             }
 
