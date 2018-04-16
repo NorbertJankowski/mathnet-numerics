@@ -270,10 +270,12 @@ extern "C" {
         DataTableStorage_SetRowTT<double, float>(storage, columnCount, rowId, row);
     }
 }
+inline double conj(double d) { return d; }
+inline float conj(float d) { return d; }
+
 template<typename T> inline void DataTableStorage_SvdSolveFactored(
 	LL rowsA, LL columnsA, T* s, T* u, T* vt, T* b, LL columnsB, T* x)
 {
-
 	LL mn = Min(rowsA, columnsA);
 	T* tmp = new T[columnsA];
 
@@ -286,7 +288,7 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 			{
 				for (LL i = 0; i < rowsA; i++)
 				{
-					value += u[(j * rowsA) + i] * b[(k * rowsA) + i];
+					value += conj(u[(j * rowsA) + i]) * b[(k * rowsA) + i];
 				}
 
 				value /= s[j];
@@ -300,7 +302,7 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 			T value = 0;
 			for (LL i = 0; i < columnsA; i++)
 			{
-				value += vt[(j * columnsA) + i] * tmp[i];
+				value += conj(vt[(j * columnsA) + i]) * tmp[i];
 			}
 
 			x[(k * columnsA) + j] = value;
@@ -309,8 +311,6 @@ template<typename T> inline void DataTableStorage_SvdSolveFactored(
 	delete[] tmp;
 }
 
-inline double conj(double d) { return d; }
-inline float conj(float d) { return d; }
 
 template<typename T> inline void DataTableStorage_QRSolveFactored(
     T* q, T* r, LL rowsA, LL columnsA, T* tau, T* b, LL columnsB, T* x, char methodFull)

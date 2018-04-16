@@ -40,7 +40,7 @@ extern "C" {					// float
 	{
 		DataTableStorage_GetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
 	}
-	DLLEXPORT void DDataTableStorage_SetSubColumn_Float(
+	DLLEXPORT void DataTableStorage_SetSubColumn_Float(
 		void *storage, LL rowCount, LL columnCount, LL columnId, LL startRow, LL subColumnRowCount, float *column)
 	{
 		DataTableStorage_SetSubColumn(storage, rowCount, columnCount, columnId, startRow, subColumnRowCount, column);
@@ -139,4 +139,5 @@ extern "C" {					// float
         DataTableStorage_QRSolveFactored<float>(
             (float*)q, (float*)r, rowsA, columnsA, (float*)tau, (float*)b, columnsB, (float*)x, methodFull);
     }
+
 }
