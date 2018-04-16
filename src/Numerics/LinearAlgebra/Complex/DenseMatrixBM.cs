@@ -44,7 +44,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 {
 
 #if NOSYSNUMERICS
-    using Complex = Numerics.Complex;
+	using Complex = Numerics.Complex;
 #else
     using Complex = System.Numerics.Complex;
 #endif
@@ -436,7 +436,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public static DenseMatrixBM CreateRandom(int rows, int columns, IContinuousDistribution distribution)
         {
-            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<Complex>(rows, columns, Generate.RandomComplex(rows*columns, distribution)));
+            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<Complex>(rows, columns, Generate.RandomComplex(rows * columns, distribution)));
         }
 
         /// <summary>
@@ -727,16 +727,18 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             var diagonalOther = other.Storage as DiagonalMatrixStorage<Complex>;
             if (diagonalOther != null)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(ColumnCount, other.RowCount);
-                if (d < other.RowCount)
-                {
-                    result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
-                }
-                for (int j = 0; j < d; j++)
-                {
-                    DataTableStorage.DataTableStorage_Multiply_Complex(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
-                }
+                //var diagonal = diagonalOther.Data;
+                //var d = Math.Min(ColumnCount, other.RowCount);
+                //if (d < other.RowCount)
+                //{
+                //	result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
+                //}
+                //for (int j = 0; j < d; j++)
+                //{
+                //	DataTableStorage.DataTableStorage_Multiply_Complex(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
+                //}
+                var m = this.Transpose();
+                m.Multiply(other, result);
                 return;
             }
 
@@ -854,7 +856,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 return;
             }
 
-	    this.ConjugateTranspose().Multiply(rightSide, result);
+            this.ConjugateTranspose().Multiply(rightSide, result);
         }
 
         /// <summary>
@@ -947,7 +949,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
             else
             {
-                LinearAlgebraProvider.ScaleArray(1.0/divisor, _values, denseResult._values);
+                LinearAlgebraProvider.ScaleArray(1.0 / divisor, _values, denseResult._values);
                 (result as DenseMatrixBM).KeepAlive(this);
             }
         }
@@ -1273,7 +1275,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 
             return true;
         }
-	
+
         /// <summary>
         /// Evaluates whether this matrix is hermitian (conjugate symmetric).
         /// </summary>
@@ -1359,6 +1361,6 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         {
             Dispose();
         }
-        
+
     }
 }

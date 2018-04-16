@@ -428,7 +428,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrixBM CreateRandom(int rows, int columns, IContinuousDistribution distribution)
         {
-            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<float>(rows, columns, Generate.RandomSingle(rows*columns, distribution)));
+            return new DenseMatrixBM(new DenseColumnMajorMatrixStorageBM<float>(rows, columns, Generate.RandomSingle(rows * columns, distribution)));
         }
 
         /// <summary>
@@ -779,16 +779,18 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             var diagonalOther = other.Storage as DiagonalMatrixStorage<float>;
             if (diagonalOther != null)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(ColumnCount, other.RowCount);
-                if (d < other.RowCount)
-                {
-                    result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
-                }
-                for (int j = 0; j < d; j++)
-                {
-                    DataTableStorage.DataTableStorage_Multiply_Float(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
-                }
+                //var diagonal = diagonalOther.Data;
+                //var d = Math.Min(ColumnCount, other.RowCount);
+                //if (d < other.RowCount)
+                //{
+                //    result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
+                //}
+                //for (int j = 0; j < d; j++)
+                //{
+                //    DataTableStorage.DataTableStorage_Multiply_Float(_values.Data, denseResult.Values.Data, j * RowCount, RowCount, diagonal[j]);
+                //}
+                var m = this.Transpose();
+                m.Multiply(other, result);
                 return;
             }
 
@@ -809,7 +811,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
             else
             {
-                LinearAlgebraProvider.ScaleArray(1.0f/divisor, _values, denseResult._values);
+                LinearAlgebraProvider.ScaleArray(1.0f / divisor, _values, denseResult._values);
                 (result as DenseMatrixBM).KeepAlive(this);
             }
         }
