@@ -219,7 +219,7 @@
       </LargeAddressAware>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(INTEL_DEV_REDIST)redist\intel64\compiler\libiomp5md.dll" $(OutputPath)</Command>
+      <Command>copy "$(INTEL_DEV_REDIST)\redist\intel64\compiler\libiomp5md.dll" $(OutputPath)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|x64'">
