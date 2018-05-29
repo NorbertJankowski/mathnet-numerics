@@ -113,7 +113,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         [Test]
         public void CanCreateDenseVectorFromAnotherVector()
         {
-            var vector = (Vector<Complex>) new DenseVector(Data);
+            var vector = (Vector<Complex>)new DenseVector(Data);
             var other = DenseVector.OfVector(vector);
 
             Assert.AreNotSame(vector, other);
@@ -159,7 +159,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         {
             var vector = new DenseVector(3);
             var matrix = Matrix<Complex>.Build.SameAs(vector, 2, 3);
-            Assert.IsInstanceOf<DenseMatrix>(matrix);
+            Assert.IsInstanceOf<DenseMatrixBM>(matrix);
             Assert.AreEqual(2, matrix.RowCount);
             Assert.AreEqual(3, matrix.ColumnCount);
         }
@@ -171,8 +171,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         public void CanConvertDenseVectorToArray()
         {
             var vector = new DenseVector(Data);
-            var array = (Complex[]) vector;
-            Assert.IsInstanceOf(typeof (Complex[]), array);
+            var array = (Complex[])vector;
+            Assert.IsInstanceOf(typeof(Complex[]), array);
             CollectionAssert.AreEqual(vector, array);
         }
 
@@ -182,9 +182,9 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         [Test]
         public void CanConvertArrayToDenseVector()
         {
-            var array = new[] {new Complex(1, 1), new Complex(2, 1), new Complex(3, 1), new Complex(4, 1)};
-            var vector = (DenseVector) array;
-            Assert.IsInstanceOf(typeof (DenseVector), vector);
+            var array = new[] { new Complex(1, 1), new Complex(2, 1), new Complex(3, 1), new Complex(4, 1) };
+            var vector = (DenseVector)array;
+            Assert.IsInstanceOf(typeof(DenseVector), vector);
             CollectionAssert.AreEqual(array, array);
         }
 
@@ -216,7 +216,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
 
             for (var i = 0; i < Data.Length; i++)
             {
-                Assert.AreEqual(Data[i]*2.0, result[i]);
+                Assert.AreEqual(Data[i] * 2.0, result[i]);
             }
         }
 
@@ -259,31 +259,31 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         public void CanMultiplyDenseVectorByScalarUsingOperators()
         {
             var vector = new DenseVector(Data);
-            vector = vector*new Complex(2.0, 1);
+            vector = vector * new Complex(2.0, 1);
 
             for (var i = 0; i < Data.Length; i++)
             {
-                Assert.AreEqual(Data[i]*new Complex(2.0, 1), vector[i]);
+                Assert.AreEqual(Data[i] * new Complex(2.0, 1), vector[i]);
             }
 
-            vector = vector*1.0;
+            vector = vector * 1.0;
             for (var i = 0; i < Data.Length; i++)
             {
-                Assert.AreEqual(Data[i]*new Complex(2.0, 1), vector[i]);
+                Assert.AreEqual(Data[i] * new Complex(2.0, 1), vector[i]);
             }
 
             vector = new DenseVector(Data);
-            vector = new Complex(2.0, 1)*vector;
+            vector = new Complex(2.0, 1) * vector;
 
             for (var i = 0; i < Data.Length; i++)
             {
-                Assert.AreEqual(Data[i]*new Complex(2.0, 1), vector[i]);
+                Assert.AreEqual(Data[i] * new Complex(2.0, 1), vector[i]);
             }
 
-            vector = 1.0*vector;
+            vector = 1.0 * vector;
             for (var i = 0; i < Data.Length; i++)
             {
-                Assert.AreEqual(Data[i]*new Complex(2.0, 1), vector[i]);
+                Assert.AreEqual(Data[i] * new Complex(2.0, 1), vector[i]);
             }
         }
 
@@ -294,17 +294,17 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
         public void CanDivideDenseVectorByComplexUsingOperators()
         {
             var vector = new DenseVector(Data);
-            vector = vector/new Complex(2.0, 1);
+            vector = vector / new Complex(2.0, 1);
 
             for (var i = 0; i < Data.Length; i++)
             {
-                AssertHelpers.AlmostEqualRelative(Data[i]/new Complex(2.0, 1), vector[i], 14);
+                AssertHelpers.AlmostEqualRelative(Data[i] / new Complex(2.0, 1), vector[i], 14);
             }
 
-            vector = vector/1.0;
+            vector = vector / 1.0;
             for (var i = 0; i < Data.Length; i++)
             {
-                AssertHelpers.AlmostEqualRelative(Data[i]/new Complex(2.0, 1), vector[i], 14);
+                AssertHelpers.AlmostEqualRelative(Data[i] / new Complex(2.0, 1), vector[i], 14);
             }
         }
 
@@ -321,7 +321,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex
             {
                 for (var j = 0; j < vector2.Count; j++)
                 {
-                    Assert.AreEqual(m[i, j], vector1[i]*vector2[j]);
+                    Assert.AreEqual(m[i, j], vector1[i] * vector2[j]);
                 }
             }
         }
